@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خُطَي | نور الهدى - معلمة اللغة العربية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-base:#1E3E38;
+    --bg-alt:#17302B;
+    --panel:rgba(250,246,236,0.05);
+    --panel-border:rgba(250,246,236,0.14);
+    --line:rgba(250,246,236,0.16);
+    --cream:#FAF6EC;
+    --off-white:#F5F1E6;
+    --text-soft:#CBDAD3;
+    --teal-300:#A9CFC6;
+    --teal-500:#6FA69C;
+    --gold:#D3A667;
+    --max:1120px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Tajawal', sans-serif;
+    background:var(--bg-base);
+    color:var(--off-white);
+    line-height:1.75;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 28px; }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(30,62,56,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 0; }
+  .brand{ display:flex; align-items:center; gap:12px; font-weight:800; font-size:1.15rem; color:var(--cream); }
+  .brand-mark{ width:38px; height:38px; flex-shrink:0; }
+  .nav-links{ display:flex; gap:32px; font-weight:500; font-size:0.98rem; color:var(--text-soft); }
+  .nav-links a{ transition:color .2s ease; }
+  .nav-links a:hover{ color:var(--cream); }
+  .nav-cta{
+    background:var(--cream); color:var(--bg-base);
+    padding:11px 22px; border-radius:999px;
+    font-weight:700; font-size:0.92rem;
+    transition:background .2s ease, transform .2s ease;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{ background:var(--off-white); transform:translateY(-1px); }
+  .nav-toggle{ display:none; background:none; border:none; cursor:pointer; }
+
+  @media (max-width:820px){
+    .nav-links{
+      position:fixed; inset:64px 0 auto 0; flex-direction:column;
+      background:var(--bg-base); border-bottom:1px solid var(--line);
+      padding:20px 28px; gap:18px;
+      transform:translateY(-130%); transition:transform .3s ease;
+    }
+    .nav-links.open{ transform:translateY(0); }
+    .nav-toggle{ display:block; }
+    .nav-cta{ display:none; }
+  }
+
+  /* ---------- Hero ---------- */
+  section.hero{ padding:72px 0 96px; position:relative; }
+  .hero-grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
+  section.hero{
+    background:
+      radial-gradient(ellipse 55% 60% at 28% 55%, rgba(169,207,198,0.09), transparent 70%),
+      radial-gradient(ellipse 40% 40% at 75% 25%, rgba(211,166,103,0.06), transparent 70%);
+  }
+  .reveal-hero{ text-align:center; display:flex; flex-direction:column; align-items:center; }
+  .eyebrow-line{ display:flex; align-items:center; justify-content:center; gap:10px; color:var(--teal-300); font-weight:700; font-size:0.95rem; margin-bottom:18px; }
+  .eyebrow-line span.dot{ width:7px; height:7px; border-radius:50%; background:var(--gold); }
+
+  .hero h1{
+    font-size:clamp(2.1rem, 4vw, 3.15rem);
+    font-weight:800; color:var(--cream);
+    line-height:1.35;
+    letter-spacing:-0.01em;
+  }
+  .hero p.lead{ margin-top:22px; font-size:1.12rem; color:var(--text-soft); max-width:46ch; margin-inline:auto; }
+  .hero-actions{ display:flex; gap:16px; margin-top:34px; flex-wrap:wrap; justify-content:center; }
+  .btn-primary{
+    background:var(--cream); color:var(--bg-base);
+    padding:15px 30px; border-radius:999px; font-weight:700; font-size:1rem;
+    box-shadow:0 10px 24px -10px rgba(0,0,0,0.5);
+    transition:background .2s ease, transform .2s ease;
+  }
+  .btn-primary:hover{ background:var(--off-white); transform:translateY(-2px); }
+  .btn-ghost{
+    padding:15px 26px; border-radius:999px; font-weight:700; font-size:1rem;
+    color:var(--cream); border:1.5px solid var(--panel-border);
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .btn-ghost:hover{ border-color:var(--teal-300); background:var(--panel); }
+
+  .hero-stats{ display:flex; gap:34px; margin-top:48px; padding-top:28px; border-top:1px solid var(--line); justify-content:center; }
+  .hero-stats div b{ display:block; font-size:1.5rem; font-weight:800; color:var(--teal-300); }
+  .hero-stats div span{ font-size:0.88rem; color:var(--text-soft); }
+
+  .hero-visual{ position:relative; display:flex; align-items:center; justify-content:center; min-height:420px; }
+  .hero-visual svg{ width:100%; max-width:540px; height:auto; }
+
+  .reveal-hero > *{ opacity:0; transform:translateY(14px); animation:riseIn .7s ease forwards; }
+  .reveal-hero > *:nth-child(1){ animation-delay:.05s; }
+  .reveal-hero > *:nth-child(2){ animation-delay:.18s; }
+  .reveal-hero > *:nth-child(3){ animation-delay:.31s; }
+  .reveal-hero > *:nth-child(4){ animation-delay:.44s; }
+  .reveal-hero > *:nth-child(5){ animation-delay:.57s; }
+  @keyframes riseIn{ to{ opacity:1; transform:translateY(0);} }
+
+  /* ---------- Section shell ---------- */
+  section{ padding:88px 0; }
+  .section-alt{ background:var(--bg-alt); }
+  .section-head{ max-width:640px; margin-bottom:52px; }
+  .section-head h2{ font-size:clamp(1.6rem, 3vw, 2.2rem); font-weight:800; color:var(--cream); line-height:1.4; }
+  .section-head p{ margin-top:14px; color:var(--text-soft); font-size:1.05rem; }
+
+  .section-reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .section-reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* ---------- About ---------- */
+  .about-grid{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:56px; align-items:center; }
+  .about-visual{ display:flex; align-items:center; justify-content:center; }
+  .about-visual svg{ width:100%; max-width:300px; height:auto; }
+  .about-text p{ color:var(--text-soft); font-size:1.05rem; margin-top:18px; }
+  .about-text p:first-of-type{ margin-top:22px; }
+  .about-role{ color:var(--teal-300); font-weight:700; font-size:1rem; margin-top:10px !important; }
+  .check-list{ list-style:none; display:flex; flex-direction:column; gap:12px; margin-top:24px; }
+  .check-list li{ display:flex; align-items:flex-start; gap:10px; color:var(--text-soft); font-size:0.98rem; }
+  .check-list li .check{ color:var(--teal-300); flex-shrink:0; margin-top:2px; }
+  .about-quote{
+    margin-top:28px; padding-inline-start:22px; border-inline-start:3px solid var(--gold);
+  }
+  .about-quote p{ margin-top:0; color:var(--cream); font-weight:600; font-size:1.1rem; font-style:normal; }
+  @media (max-width:820px){
+    .about-grid{ grid-template-columns:1fr; text-align:center; }
+    .about-quote{ text-align:right; }
+    .check-list li{ text-align:right; }
+  }
+
+  /* ---------- Why section ---------- */
+  .why-list{ display:flex; flex-direction:column; }
+  .why-row{ display:grid; grid-template-columns:64px 1fr; gap:26px; padding:30px 0; border-top:1px solid var(--line); }
+  .why-row:last-child{ border-bottom:1px solid var(--line); }
+  .why-row .icon{
+    width:52px; height:52px; border-radius:14px;
+    background:var(--teal-300); display:flex; align-items:center; justify-content:center;
+    color:var(--bg-base);
+  }
+  .why-row h3{ font-size:1.15rem; font-weight:700; color:var(--cream); margin-bottom:6px; }
+  .why-row p{ color:var(--text-soft); max-width:60ch; }
+
+  /* ---------- Programs ---------- */
+  .programs{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--panel-border); border-radius:20px; overflow:hidden; }
+  .program{
+    padding:40px 32px; background:var(--panel); border-inline-start:1px solid var(--panel-border);
+    cursor:pointer; transition:background .2s ease;
+  }
+  .program:hover{ background:rgba(250,246,236,0.09); }
+  .program:first-child{ border-inline-start:none; }
+  .program .num{ font-size:2.1rem; font-weight:800; color:var(--gold); display:block; margin-bottom:18px; }
+  .program h3{ font-size:1.2rem; font-weight:700; color:var(--cream); margin-bottom:10px; }
+  .program p{ color:var(--text-soft); font-size:0.98rem; }
+  .program-more{
+    display:inline-block; margin-top:18px; font-size:0.85rem; font-weight:700; color:var(--teal-300);
+  }
+
+  @media (max-width:820px){
+    .programs{ grid-template-columns:1fr; }
+    .program{ border-inline-start:none; border-top:1px solid var(--panel-border); }
+    .program:first-child{ border-top:none; }
+  }
+
+  /* ---------- How it works ---------- */
+  .steps{ display:flex; flex-direction:column; gap:0; }
+  .step{ display:grid; grid-template-columns:56px 1fr; gap:24px; padding:26px 0; }
+  .step .step-num{
+    width:44px; height:44px; border-radius:50%;
+    border:1.5px solid var(--teal-300); color:var(--cream);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:1.05rem;
+  }
+  .step h3{ font-size:1.1rem; font-weight:700; color:var(--cream); margin-bottom:4px; }
+  .step p{ color:var(--text-soft); }
+  .step-connector{ width:1.5px; height:26px; background:var(--line); margin-inline-start:22px; }
+
+  /* ---------- Testimonials ---------- */
+  .quotes{ display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+  .quote{ position:relative; padding-inline-start:22px; border-inline-start:3px solid var(--gold); }
+  .quote p.text{ font-size:1.15rem; color:var(--cream); font-weight:500; line-height:1.8; }
+  .quote .who{ margin-top:16px; color:var(--text-soft); font-size:0.95rem; }
+
+  @media (max-width:820px){ .quotes{ grid-template-columns:1fr; gap:36px; } }
+
+  /* ---------- Contact / CTA (the bright, bold element) ---------- */
+  .cta-band{
+    background:var(--cream); color:var(--bg-base);
+    border-radius:28px; padding:64px 48px;
+    display:grid; grid-template-columns:1.3fr 1fr; gap:40px; align-items:center;
+  }
+  .cta-band h2{ font-size:clamp(1.5rem,3vw,2rem); font-weight:800; line-height:1.5; color:var(--bg-base); }
+  .cta-band p{ margin-top:14px; color:#3C6F68; font-size:1.02rem; max-width:48ch; }
+  .cta-actions{ display:flex; flex-direction:column; gap:14px; }
+  .btn-light{
+    background:var(--bg-base); color:var(--cream);
+    padding:16px 28px; border-radius:999px; font-weight:700; text-align:center;
+    transition:transform .2s ease, background .2s ease;
+  }
+  .btn-light:hover{ background:var(--bg-alt); transform:translateY(-2px); }
+  .btn-outline-light{
+    padding:16px 28px; border-radius:999px; font-weight:700; text-align:center;
+    border:1.5px solid rgba(30,62,56,0.35); color:var(--bg-base);
+    transition:border-color .2s ease;
+  }
+  .btn-outline-light:hover{ border-color:var(--bg-base); }
+
+  @media (max-width:820px){
+    .cta-band{ grid-template-columns:1fr; padding:44px 28px; border-radius:22px; }
+  }
+
+  /* ---------- Course modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(10,20,18,0.65);
+    display:none; align-items:center; justify-content:center; z-index:100; padding:24px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-box{
+    background:var(--bg-alt); border:1px solid var(--panel-border); border-radius:22px;
+    max-width:480px; width:100%; padding:40px 36px; position:relative;
+    animation:modalIn .25s ease;
+  }
+  @keyframes modalIn{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:translateY(0);} }
+  .modal-close{
+    position:absolute; top:18px; left:18px; background:none; border:none; cursor:pointer;
+    color:var(--text-soft); font-size:1.4rem; line-height:1;
+  }
+  .modal-close:hover{ color:var(--cream); }
+  .modal-box .num{ font-size:1.6rem; font-weight:800; color:var(--gold); display:block; margin-bottom:10px; }
+  .modal-box h3{ font-size:1.35rem; font-weight:800; color:var(--cream); margin-bottom:8px; }
+  .modal-box .modal-duration{ color:var(--teal-300); font-size:0.9rem; font-weight:600; margin-bottom:20px; }
+  .modal-topics{ list-style:none; display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
+  .modal-topics li{ display:flex; align-items:flex-start; gap:10px; color:var(--text-soft); font-size:0.98rem; }
+  .modal-topics li .check{ color:var(--teal-300); flex-shrink:0; margin-top:2px; }
+  .modal-box .btn-primary{ width:100%; text-align:center; box-shadow:none; }
+
+  /* ---------- Footer ---------- */
+  footer{ padding:52px 0 40px; border-top:1px solid var(--line); }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .footer-brand{ font-weight:800; color:var(--cream); }
+  .footer-links{ display:flex; gap:24px; color:var(--text-soft); font-size:0.95rem; }
+  .footer-social{ display:flex; gap:14px; }
+  .footer-social a{
+    width:36px; height:36px; border-radius:50%; border:1px solid var(--panel-border);
+    display:flex; align-items:center; justify-content:center; color:var(--text-soft);
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .footer-social a:hover{ color:var(--cream); border-color:var(--teal-300); }
+  .footer-copy{ margin-top:26px; color:var(--text-soft); font-size:0.85rem; }
+
+  @media (max-width:640px){
+    section.hero{ padding-top:44px; }
+    .hero-grid{ grid-template-columns:1fr; text-align:center; }
+    .hero-visual{ order:-1; max-width:260px; margin:0 auto; }
+    .hero h1{ max-width:none; margin:0 auto; }
+    .hero p.lead{ margin-inline:auto; }
+    .hero-actions{ justify-content:center; }
+    .hero-stats{ justify-content:center; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{ animation:none !important; transition:none !important; }
+    .reveal-hero > *{ opacity:1; transform:none; }
+    .section-reveal{ opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="19" stroke="#A9CFC6" stroke-width="1.5"/>
+        <path d="M20 6 L23 17 L34 20 L23 23 L20 34 L17 23 L6 20 L17 17 Z" fill="#D3A667"/>
+      </svg>
+      خُطَي
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FAF6EC" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#about">عني</a>
+      <a href="#why">ليه أنا</a>
+      <a href="#programs">البرامج</a>
+      <a href="#how">إزاي بنشتغل</a>
+      <a href="#testimonials">آراء الطالبات</a>
+      <a href="#contact">تواصل</a>
+    </nav>
+    <a href="#contact" class="nav-cta">احجزي حصتك</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid" style="padding:0; gap:56px;">
+    <div class="reveal-hero">
+      <div class="eyebrow-line"><span class="dot"></span> منصة خُطَي | مادة اللغة العربية</div>
+      <h1>خُطوة بخطوة نحو تفوقك في اللغة العربية</h1>
+      <p class="lead">مع الأستاذة نور الهدى، تقوية ومتابعة في مادة اللغة العربية للمرحلتين الإعدادية والثانوية، بأسلوب بسيط بيوصلك للفهم مش للحفظ.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">احجزي حصة تجريبية مجانية</a>
+        <a href="#programs" class="btn-ghost">تعرفي على المراحل الدراسية</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>+8</b><span>سنين خبرة تدريس</span></div>
+        <div><b>+300</b><span>طالبة وطالب</span></div>
+        <div><b>3</b><span>مراحل دراسية</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg viewBox="0 0 360 360" fill="none" overflow="visible">
+        <circle cx="60" cy="70" r="3" fill="#D3A667" opacity="0.7"/>
+        <circle cx="320" cy="90" r="2.5" fill="#A9CFC6" opacity="0.6"/>
+        <circle cx="40" cy="290" r="2.5" fill="#A9CFC6" opacity="0.5"/>
+        <circle cx="330" cy="280" r="3" fill="#D3A667" opacity="0.6"/>
+        <path d="M60 40 l5 5 l-5 5 l-5 -5 Z" fill="#A9CFC6" opacity="0.45"/>
+        <path d="M310 320 l5 5 l-5 5 l-5 -5 Z" fill="#D3A667" opacity="0.45"/>
+        <circle cx="180" cy="180" r="172" fill="rgba(250,246,236,0.045)"/>
+        <circle cx="180" cy="180" r="150" fill="none" stroke="rgba(250,246,236,0.1)" stroke-width="1"/>
+        <g opacity="0.95">
+          <path d="M180 60 L206 145 L291 180 L206 215 L180 300 L154 215 L69 180 L154 145 Z" stroke="#A9CFC6" stroke-width="2.5" fill="none"/>
+          <path d="M180 100 L195 148 L243 180 L195 212 L180 260 L165 212 L117 180 L165 148 Z" fill="#6FA69C"/>
+        </g>
+        <circle cx="180" cy="180" r="38" fill="#FAF6EC"/>
+        <circle cx="180" cy="180" r="38" fill="none" stroke="#D3A667" stroke-width="2"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-visual section-reveal">
+      <svg viewBox="0 0 280 280" fill="none">
+        <circle cx="140" cy="140" r="128" fill="rgba(250,246,236,0.045)"/>
+        <circle cx="140" cy="140" r="104" fill="none" stroke="rgba(250,246,236,0.14)" stroke-width="1"/>
+        <circle cx="140" cy="140" r="80" fill="#17302B" stroke="#D3A667" stroke-width="1.5"/>
+        <text x="140" y="163" text-anchor="middle" font-family="Tajawal, sans-serif" font-size="72" font-weight="800" fill="#FAF6EC">ن</text>
+      </svg>
+    </div>
+    <div class="about-text section-reveal">
+      <div class="eyebrow-line"><span class="dot"></span> عن المعلمة</div>
+      <h2>ميس نور الهدى</h2>
+      <p class="about-role">معلمة اللغة العربية للمرحلة الإعدادية والثانوية بالإسكندرية</p>
+      <p>بتؤمن إن التعلم الحقيقي بيحصل لما الطالبة تحس بالأمان، من غير ضغط أو خوف من الغلط. عشان كده كل خطة تعليمية بتتصمم على مستوى الطالبة الفعلي، مش على منهج جامد بيتكرر مع الكل.</p>
+      <ul class="check-list">
+        <li><span class="check">✓</span><span>ماجستير دراسات أدبية ونقدية، جامعة الإسكندرية</span></li>
+        <li><span class="check">✓</span><span>معلمة اللغة العربية بمدرسة البحر المتوسط الثانوية الحكومية للبنات</span></li>
+        <li><span class="check">✓</span><span>معلمة اللغة العربية (سابقًا) بمدرسة محمد زهران الثانوية بنين</span></li>
+        <li><span class="check">✓</span><span>معلمة اللغة العربية بسنتر برافو - جليم</span></li>
+        <li><span class="check">✓</span><span>معلمة اللغة العربية بسنتر إنفينيتي - سيدي جابر</span></li>
+      </ul>
+      <div class="about-quote">
+        <p>"اللغة مش قواعد بس، اللغة جسر لثقة الطالبة في نفسها."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <div class="section-head section-reveal">
+      <h2>ليه تختاري تتعلمي عربي مع نور الهدى</h2>
+      <p>مش مجرد دروس نحو وصرف، ده أسلوب تدريس مبني على احتياجك الفعلي.</p>
+    </div>
+    <div class="why-list section-reveal">
+      <div class="why-row">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M13 4v5h5"/></svg>
+        </div>
+        <div>
+          <h3>خبرة تدريس حقيقية</h3>
+          <p>أكتر من 8 سنين في تدريس اللغة العربية للمرحلتين الإعدادية والثانوية، جوه المدرسة والسناتر الخاصة.</p>
+        </div>
+      </div>
+      <div class="why-row">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <div>
+          <h3>مواعيد تناسبك</h3>
+          <p>حصص أونلاين تقدري تحطي معادها حسب وقتك، مع مرونة في التأجيل والمتابعة.</p>
+        </div>
+      </div>
+      <div class="why-row">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-4 5 5 0 0 1 9 4c-2 4.5-9 9-9 9Z"/></svg>
+        </div>
+        <div>
+          <h3>خطة مبنية عليكي</h3>
+          <p>مفيش منهج جاهز بيتكرر مع الكل، كل خطة بتتبني على مستواك وهدفك من تعلم اللغة.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt" id="programs">
+  <div class="wrap">
+    <div class="section-head section-reveal">
+      <h2>المراحل الدراسية</h2>
+      <p>اختاري مرحلتك، وابدئي المذاكرة بطريقة أوضح.</p>
+    </div>
+    <div class="programs section-reveal">
+      <div class="program" onclick="openCourseModal('prep')">
+        <span class="num">٠١</span>
+        <h3>المرحلة الإعدادية</h3>
+        <p>تأسيس قوي في النحو والصرف والتعبير، مع متابعة المذاكرة أول بأول.</p>
+        <span class="program-more">اضغطي للتفاصيل ←</span>
+      </div>
+      <div class="program" onclick="openCourseModal('secondary')">
+        <span class="num">٠٢</span>
+        <h3>المرحلة الثانوية</h3>
+        <p>مراجعة شاملة للمنهج مع تبسيط النحو والأدب، وتدريب على أسئلة الامتحانات.</p>
+        <span class="program-more">اضغطي للتفاصيل ←</span>
+      </div>
+      <div class="program" onclick="openCourseModal('thanaweya')">
+        <span class="num">٠٣</span>
+        <h3>الثانوية العامة</h3>
+        <p>مراجعات مكثفة ونماذج امتحانات لمادة اللغة العربية، بمتابعة قريبة لحد الامتحان.</p>
+        <span class="program-more">اضغطي للتفاصيل ←</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head section-reveal">
+      <h2>إزاي هنشتغل مع بعض</h2>
+      <p>رحلة بسيطة من أول تواصل لحد ما توصلي لهدفك.</p>
+    </div>
+    <div class="steps section-reveal" style="max-width:640px;">
+      <div class="step">
+        <div class="step-num">١</div>
+        <div><h3>احجزي حصة تجريبية</h3><p>كلمينا وحددي الميعاد اللي يناسبك، من غير أي التزام.</p></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step">
+        <div class="step-num">٢</div>
+        <div><h3>نحدد مستواك وهدفك</h3><p>نتكلم عن اللي عايزة توصليله، ونبني خطة تعلم مناسبة ليكي.</p></div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step">
+        <div class="step-num">٣</div>
+        <div><h3>تبدأ رحلتك</h3><p>حصص أسبوعية منتظمة مع متابعة مستمرة لتقدمك.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt" id="testimonials">
+  <div class="wrap">
+    <div class="section-head section-reveal">
+      <h2>آراء الطالبات والطلاب</h2>
+    </div>
+    <div class="quotes section-reveal">
+      <div class="quote">
+        <p class="text">مع الأستاذة نور بقيت فاهمة النحو صح، وقادرة أذاكر عربي لوحدي من غير خوف من الغلط.</p>
+        <div class="who">سارة، طالبة بالصف الثاني الإعدادي</div>
+      </div>
+      <div class="quote">
+        <p class="text">أسلوبها في شرح الأدب والنصوص بسيط وبيوصل بسرعة، حسيت بفرق واضح قبل امتحانات الترم.</p>
+        <div class="who">ليلى، طالبة بالثانوية العامة</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="cta-band section-reveal">
+      <div>
+        <h2>جاهزة تبدئي خطواتك مع خُطَي؟</h2>
+        <p>احجزي حصتك التجريبية دلوقتي، ونحدد مستواك ونساعدك تفهمي اللغة العربية صح.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="https://wa.me/000000000000" class="btn-light">تواصلي عبر واتساب</a>
+        <a href="mailto:hello@nooralhoda.com" class="btn-outline-light">راسليني عبر الإيميل</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <div class="footer-brand">خُطَي — مع الأستاذة نور الهدى</div>
+      <div class="footer-links">
+        <a href="#about">عني</a>
+        <a href="#why">ليه أنا</a>
+        <a href="#programs">البرامج</a>
+        <a href="#how">إزاي بنشتغل</a>
+        <a href="#contact">تواصل</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/noure.lhoda00?stkn=NnduaGducXZsMTQ3" target="_blank" rel="noopener" aria-label="انستجرام">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@mis.nourelhoda" target="_blank" rel="noopener" aria-label="تيك توك">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 3v10.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M15 3c.5 2.5 2 4 4.5 4.3"/></svg>
+        </a>
+        <a href="https://www.facebook.com/share/17bUsq5j4c/" target="_blank" rel="noopener" aria-label="فيسبوك">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9h2V6h-2c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h2.2l.8-3H14V9Z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 خُطَي. جميع الحقوق محفوظة.</div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="courseModal" onclick="if(event.target===this) closeCourseModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeCourseModal()" aria-label="إغلاق">✕</button>
+    <span class="num" id="modalNum"></span>
+    <h3 id="modalTitle"></h3>
+    <div class="modal-duration" id="modalDuration"></div>
+    <ul class="modal-topics" id="modalTopics"></ul>
+    <a href="#contact" class="btn-primary" onclick="closeCourseModal()">احجزي حصة في هذا المستوى</a>
+  </div>
+</div>
+
+<script>
+  const coursesData = {
+    prep: {
+      num: '٠١',
+      title: 'المرحلة الإعدادية',
+      duration: 'حصص أسبوعية طول العام الدراسي',
+      topics: [
+        'تقوية أساسيات النحو والصرف',
+        'تحسين مهارات التعبير والإملاء',
+        'شرح مبسط لدروس المنهج أول بأول',
+        'حل نماذج امتحانات وتقييم مستمر'
+      ]
+    },
+    secondary: {
+      num: '٠٢',
+      title: 'المرحلة الثانوية',
+      duration: 'حصص أسبوعية طول العام الدراسي',
+      topics: [
+        'مراجعة شاملة لقواعد النحو والبلاغة',
+        'تحليل النصوص الأدبية بطريقة مبسطة',
+        'تقوية مهارة التعبير والكتابة',
+        'حل نماذج امتحانات على نظام المنهج الحالي'
+      ]
+    },
+    thanaweya: {
+      num: '٠٣',
+      title: 'الثانوية العامة',
+      duration: 'متابعة مكثفة مع اقتراب الامتحانات',
+      topics: [
+        'مراجعات مكثفة لكل أجزاء المنهج',
+        'تدريب مركز على نماذج امتحانات الثانوية العامة',
+        'التركيز على نقاط الضعف الفردية لكل طالبة',
+        'متابعة قريبة لحد موعد الامتحان'
+      ]
+    }
+  };
+
+  function openCourseModal(key){
+    const data = coursesData[key];
+    if(!data) return;
+    document.getElementById('modalNum').textContent = data.num;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalDuration').textContent = data.duration;
+    document.getElementById('modalTopics').innerHTML = data.topics
+      .map(t => `<li><span class="check">✓</span><span>${t}</span></li>`).join('');
+    document.getElementById('courseModal').classList.add('open');
+  }
+  function closeCourseModal(){
+    document.getElementById('courseModal').classList.remove('open');
+  }
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeCourseModal(); });
+
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  const revealEls = document.querySelectorAll('.section-reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
