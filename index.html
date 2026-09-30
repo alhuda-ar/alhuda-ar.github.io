@@ -324,24 +324,58 @@
   @media (max-width:900px){ .why-list{ grid-template-columns:1fr; max-width:480px; margin-inline:auto; } }
 
   /* ---------- Programs ---------- */
-  .programs{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--panel-border); border-radius:20px; overflow:hidden; }
-  .program{
-    padding:40px 32px; background:var(--panel); border-inline-start:1px solid var(--panel-border);
-    cursor:pointer; transition:background .2s ease;
+  .grades-row + .grades-row{ margin-top:56px; }
+  .grades-row-head{ display:flex; align-items:center; gap:16px; margin-bottom:24px; }
+  .grades-row-head h3{ font-size:1.25rem; font-weight:800; color:var(--cream); white-space:nowrap; }
+  .grades-row-head .count{
+    font-size:0.8rem; font-weight:700; color:var(--gold); padding:4px 12px;
+    border:1px solid rgba(211,166,103,0.45); border-radius:999px; white-space:nowrap;
   }
-  .program:hover{ background:rgba(250,246,236,0.09); }
-  .program:first-child{ border-inline-start:none; }
-  .program .num{ font-size:2.1rem; font-weight:800; color:var(--gold); display:block; margin-bottom:18px; }
-  .program h3{ font-size:1.2rem; font-weight:700; color:var(--cream); margin-bottom:10px; }
-  .program p{ color:var(--text-soft); font-size:0.98rem; }
-  .program-more{
-    display:inline-block; margin-top:18px; font-size:0.85rem; font-weight:700; color:var(--teal-300);
+  .grades-row-head::after{ content:""; flex:1; height:1px; background:var(--line); }
+  .grades{ display:flex; flex-wrap:wrap; justify-content:center; gap:24px; }
+  .grade-card{
+    flex:0 1 calc((100% - 48px)/3); min-width:0; cursor:pointer;
+    display:flex; flex-direction:column; border-radius:24px; overflow:hidden;
+    background:var(--panel); border:1px solid var(--panel-border);
+    box-shadow:0 18px 40px -22px rgba(0,0,0,0.6);
+    transition:transform .28s ease, border-color .28s ease, box-shadow .28s ease;
   }
+  .grade-card:hover, .grade-card:focus-visible{
+    transform:translateY(-6px); border-color:rgba(211,166,103,0.55);
+    box-shadow:0 26px 50px -24px rgba(0,0,0,0.75);
+  }
+  .grade-media{ position:relative; aspect-ratio:800/560; overflow:hidden; background:linear-gradient(135deg,#2b5246,#1c3a32); }
+  .grade-media img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    transition:transform .6s ease;
+  }
+  .grade-card:hover .grade-media img{ transform:scale(1.05); }
+  .grade-ph{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    color:var(--cream); text-align:center;
+    background:radial-gradient(circle at 75% 25%, rgba(211,166,103,0.22), transparent 55%), linear-gradient(135deg,#2f5b4e,#1c3a32);
+  }
+  .grade-ph b{ font-size:4.2rem; font-weight:800; line-height:1; color:var(--gold); opacity:.9; }
+  .grade-ph span{ font-size:1.2rem; font-weight:700; }
+  .grade-ph em{
+    font-style:normal; margin-top:8px; font-size:0.78rem; font-weight:700; padding:4px 12px;
+    border-radius:999px; background:rgba(250,246,236,0.1); border:1px solid var(--panel-border); color:var(--teal-300);
+  }
+  .grade-body{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding:20px 22px; }
+  .grade-body h4{ font-size:1.1rem; font-weight:800; color:var(--cream); line-height:1.4; }
+  .grade-btn{
+    flex-shrink:0; display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px;
+    font-size:0.9rem; font-weight:700; color:var(--bg-base); background:var(--cream);
+    transition:background .2s ease, gap .2s ease;
+  }
+  .grade-btn svg{ transition:transform .2s ease; }
+  .grade-card:hover .grade-btn{ background:var(--gold); }
+  .grade-card:hover .grade-btn svg{ transform:translateX(-3px); }
 
-  @media (max-width:820px){
-    .programs{ grid-template-columns:1fr; }
-    .program{ border-inline-start:none; border-top:1px solid var(--panel-border); }
-    .program:first-child{ border-top:none; }
+  @media (max-width:900px){ .grade-card{ flex-basis:calc((100% - 24px)/2); } }
+  @media (max-width:600px){
+    .grade-card{ flex-basis:100%; }
+    .grades-row + .grades-row{ margin-top:44px; }
   }
 
   /* ---------- How it works ---------- */
@@ -723,28 +757,63 @@
 
 <section class="section-alt" id="programs">
   <div class="wrap">
-    <div class="section-head section-reveal">
-      <h2>المراحل الدراسية</h2>
-      <p>اختار مرحلتك، وابدأ المذاكرة بطريقة أوضح.</p>
+    <div class="section-head center section-reveal">
+      <h2>الصفوف الدراسية</h2>
+      <p>اختار صفك الدراسي وابدأ المذاكرة بطريقة أوضح.</p>
     </div>
-    <div class="programs section-reveal">
-      <div class="program" role="button" tabindex="0" onclick="openCourseModal(\'prep\')">
-        <span class="num">٠١</span>
-        <h3>المرحلة الإعدادية</h3>
-        <p>تأسيس قوي في النحو والصرف والتعبير، مع متابعة المذاكرة أول بأول.</p>
-        <span class="program-more">اضغط للتفاصيل ←</span>
+    <div class="grades-row section-reveal">
+      <div class="grades-row-head"><h3>المرحلة الإعدادية</h3><span class="count">3 صفوف</span></div>
+      <div class="grades">
+        <div class="grade-card" role="button" tabindex="0" data-grade="prep1" aria-label="الصف الأول الإعدادي - التفاصيل">
+          <div class="grade-media">
+            <img src="images/prep-1-800.webp" srcset="images/prep-1-480.webp 480w, images/prep-1-800.webp 800w" sizes="(max-width:600px) 92vw, (max-width:900px) 46vw, 360px" width="800" height="560" loading="lazy" decoding="async" alt="الصف الأول الإعدادي">
+          </div>
+          <div class="grade-body">
+            <h4>الصف الأول الإعدادي</h4>
+            <span class="grade-btn">ابدأ الآن <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6"/></svg></span>
+          </div>
+        </div>
+        <div class="grade-card" role="button" tabindex="0" data-grade="prep2" aria-label="الصف الثاني الإعدادي - التفاصيل">
+          <div class="grade-media">
+            <img src="images/prep-2-800.webp" srcset="images/prep-2-480.webp 480w, images/prep-2-800.webp 800w" sizes="(max-width:600px) 92vw, (max-width:900px) 46vw, 360px" width="800" height="560" loading="lazy" decoding="async" alt="الصف الثاني الإعدادي">
+          </div>
+          <div class="grade-body">
+            <h4>الصف الثاني الإعدادي</h4>
+            <span class="grade-btn">ابدأ الآن <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6"/></svg></span>
+          </div>
+        </div>
+        <div class="grade-card" role="button" tabindex="0" data-grade="prep3" aria-label="الصف الثالث الإعدادي - التفاصيل">
+          <div class="grade-media">
+            <img src="images/prep-3-800.webp" srcset="images/prep-3-480.webp 480w, images/prep-3-800.webp 800w" sizes="(max-width:600px) 92vw, (max-width:900px) 46vw, 360px" width="800" height="560" loading="lazy" decoding="async" alt="الصف الثالث الإعدادي">
+          </div>
+          <div class="grade-body">
+            <h4>الصف الثالث الإعدادي</h4>
+            <span class="grade-btn">ابدأ الآن <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6"/></svg></span>
+          </div>
+        </div>
       </div>
-      <div class="program" role="button" tabindex="0" onclick="openCourseModal(\'secondary\')">
-        <span class="num">٠٢</span>
-        <h3>المرحلة الثانوية</h3>
-        <p>مراجعة شاملة للمنهج مع تبسيط النحو والأدب، وتدريب على أسئلة الامتحانات.</p>
-        <span class="program-more">اضغط للتفاصيل ←</span>
-      </div>
-      <div class="program" role="button" tabindex="0" onclick="openCourseModal(\'thanaweya\')">
-        <span class="num">٠٣</span>
-        <h3>الثانوية العامة</h3>
-        <p>مراجعات مكثفة ونماذج امتحانات لمادة اللغة العربية، بمتابعة قريبة لحد الامتحان.</p>
-        <span class="program-more">اضغط للتفاصيل ←</span>
+    </div>
+    <div class="grades-row section-reveal">
+      <div class="grades-row-head"><h3>المرحلة الثانوية</h3><span class="count">صفين</span></div>
+      <div class="grades">
+        <div class="grade-card" role="button" tabindex="0" data-grade="sec1" aria-label="الصف الأول الثانوي - التفاصيل">
+          <div class="grade-media">
+            <div class="grade-ph" aria-hidden="true"><b>01</b><span>الصف الأول الثانوي</span><em>قريبًا</em></div><img src="images/sec-1-800.webp" srcset="images/sec-1-480.webp 480w, images/sec-1-800.webp 800w" sizes="(max-width:600px) 92vw, (max-width:900px) 46vw, 360px" width="800" height="560" loading="lazy" decoding="async" alt="الصف الأول الثانوي" onerror="this.remove()">
+          </div>
+          <div class="grade-body">
+            <h4>الصف الأول الثانوي</h4>
+            <span class="grade-btn">ابدأ الآن <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6"/></svg></span>
+          </div>
+        </div>
+        <div class="grade-card" role="button" tabindex="0" data-grade="sec2" aria-label="الصف الثاني الثانوي - التفاصيل">
+          <div class="grade-media">
+            <div class="grade-ph" aria-hidden="true"><b>02</b><span>الصف الثاني الثانوي</span><em>قريبًا</em></div><img src="images/sec-2-800.webp" srcset="images/sec-2-480.webp 480w, images/sec-2-800.webp 800w" sizes="(max-width:600px) 92vw, (max-width:900px) 46vw, 360px" width="800" height="560" loading="lazy" decoding="async" alt="الصف الثاني الثانوي" onerror="this.remove()">
+          </div>
+          <div class="grade-body">
+            <h4>الصف الثاني الثانوي</h4>
+            <span class="grade-btn">ابدأ الآن <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6"/></svg></span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -918,9 +987,9 @@
 
 <script>
   const coursesData = {
-    prep: {
+    prep1: {
       num: '٠١',
-      title: 'المرحلة الإعدادية',
+      title: 'الصف الأول الإعدادي',
       duration: 'حصص أسبوعية طول العام الدراسي',
       topics: [
         'تقوية أساسيات النحو والصرف',
@@ -929,9 +998,31 @@
         'حل نماذج امتحانات وتقييم مستمر'
       ]
     },
-    secondary: {
+    prep2: {
       num: '٠٢',
-      title: 'المرحلة الثانوية',
+      title: 'الصف الثاني الإعدادي',
+      duration: 'حصص أسبوعية طول العام الدراسي',
+      topics: [
+        'تقوية أساسيات النحو والصرف',
+        'تحسين مهارات التعبير والإملاء',
+        'شرح مبسط لدروس المنهج أول بأول',
+        'حل نماذج امتحانات وتقييم مستمر'
+      ]
+    },
+    prep3: {
+      num: '٠٣',
+      title: 'الصف الثالث الإعدادي',
+      duration: 'حصص أسبوعية طول العام الدراسي',
+      topics: [
+        'تقوية أساسيات النحو والصرف',
+        'تحسين مهارات التعبير والإملاء',
+        'شرح مبسط لدروس المنهج أول بأول',
+        'حل نماذج امتحانات وتقييم مستمر'
+      ]
+    },
+    sec1: {
+      num: '٠١',
+      title: 'الصف الأول الثانوي',
       duration: 'حصص أسبوعية طول العام الدراسي',
       topics: [
         'مراجعة شاملة لقواعد النحو والبلاغة',
@@ -940,18 +1031,20 @@
         'حل نماذج امتحانات على نظام المنهج الحالي'
       ]
     },
-    thanaweya: {
-      num: '٠٣',
-      title: 'الثانوية العامة',
-      duration: 'متابعة مكثفة مع اقتراب الامتحانات',
+    sec2: {
+      num: '٠٢',
+      title: 'الصف الثاني الثانوي',
+      duration: 'حصص أسبوعية طول العام الدراسي',
       topics: [
-        'مراجعات مكثفة لكل أجزاء المنهج',
-        'تدريب مركز على نماذج امتحانات الثانوية العامة',
-        'التركيز على نقاط الضعف الفردية لكل طالب',
-        'متابعة قريبة لحد موعد الامتحان'
+        'مراجعة شاملة لقواعد النحو والبلاغة',
+        'تحليل النصوص الأدبية بطريقة مبسطة',
+        'تقوية مهارة التعبير والكتابة',
+        'حل نماذج امتحانات على نظام المنهج الحالي'
       ]
     }
   };
+
+  document.querySelectorAll('.grade-card').forEach(c => c.addEventListener('click', () => openCourseModal(c.dataset.grade)));
 
   let lastFocus = null;
   function openCourseModal(key){
@@ -985,7 +1078,7 @@
       if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
       else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
     }
-    if((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('program')){
+    if((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('grade-card')){
       e.preventDefault(); e.target.click();
     }
   });
