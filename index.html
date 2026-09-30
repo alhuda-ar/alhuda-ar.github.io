@@ -293,16 +293,35 @@
   }
 
   /* ---------- Why section ---------- */
-  .why-list{ display:flex; flex-direction:column; }
-  .why-row{ display:grid; grid-template-columns:64px 1fr; gap:26px; padding:30px 0; border-top:1px solid var(--line); }
-  .why-row:last-child{ border-bottom:1px solid var(--line); }
-  .why-row .icon{
-    width:52px; height:52px; border-radius:14px;
-    background:var(--teal-300); display:flex; align-items:center; justify-content:center;
-    color:var(--bg-base);
+  .section-head.center{ margin-inline:auto; text-align:center; }
+  .section-head.center h2::after{
+    content:""; display:block; width:100px; height:4px; border-radius:999px;
+    margin:18px auto 0; background:linear-gradient(90deg,var(--gold),var(--teal-300));
   }
-  .why-row h3{ font-size:1.15rem; font-weight:700; color:var(--cream); margin-bottom:6px; }
-  .why-row p{ color:var(--text-soft); max-width:60ch; }
+  .why-list{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .why-card{
+    text-align:center; padding:36px 28px 34px; border-radius:24px;
+    background:var(--panel); border:1px solid var(--panel-border);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    transition:transform .25s ease, border-color .25s ease, background .25s ease;
+  }
+  .why-card:hover{ transform:translateY(-6px); border-color:rgba(169,207,198,0.4); background:rgba(250,246,236,0.075); }
+  .why-card .icon{
+    width:72px; height:72px; margin:0 auto 22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; color:var(--teal-300);
+    background:radial-gradient(circle at 30% 25%, rgba(169,207,198,0.22), rgba(211,166,103,0.12));
+    border:1px solid rgba(169,207,198,0.35);
+  }
+  .why-card h3{
+    position:relative; display:inline-block; padding-bottom:12px; margin-bottom:16px;
+    font-size:1.2rem; font-weight:800; color:var(--cream);
+  }
+  .why-card h3::after{
+    content:""; position:absolute; bottom:0; right:0; left:0; height:3px; border-radius:999px;
+    background:linear-gradient(90deg,var(--gold),var(--teal-500));
+  }
+  .why-card p{ color:var(--text-soft); font-size:0.98rem; line-height:1.9; }
+  @media (max-width:900px){ .why-list{ grid-template-columns:1fr; max-width:480px; margin-inline:auto; } }
 
   /* ---------- Programs ---------- */
   .programs{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--panel-border); border-radius:20px; overflow:hidden; }
@@ -672,37 +691,31 @@
 
 <section id="why">
   <div class="wrap">
-    <div class="section-head section-reveal">
-      <h2>ليه تختار تتعلم عربي مع نور الهدى</h2>
+    <div class="section-head center section-reveal">
+      <h2>ليه تختار منصتنا؟</h2>
       <p>مش مجرد دروس نحو وصرف، ده أسلوب تدريس مبني على احتياجك الفعلي.</p>
     </div>
     <div class="why-list section-reveal">
-      <div class="why-row">
+      <div class="why-card">
         <div class="icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M13 4v5h5"/></svg>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 9 12 4 2 9l10 5 10-5Z"/><path d="M6 11.5V16c0 1.4 2.7 3 6 3s6-1.6 6-3v-4.5"/><path d="M22 9v6"/></svg>
         </div>
-        <div>
-          <h3>خبرة تدريس حقيقية</h3>
-          <p>أكتر من 8 سنين في تدريس اللغة العربية للمرحلتين الإعدادية والثانوية، جوه المدرسة والسناتر الخاصة.</p>
-        </div>
+        <h3>خبرة تدريس حقيقية</h3>
+        <p>أكتر من 8 سنين في تدريس اللغة العربية للمرحلتين الإعدادية والثانوية، جوه المدرسة والسناتر الخاصة.</p>
       </div>
-      <div class="why-row">
+      <div class="why-card">
         <div class="icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
         </div>
-        <div>
-          <h3>مواعيد تناسبك</h3>
-          <p>حصص أونلاين تقدر تحط معادها حسب وقتك، مع مرونة في التأجيل والمتابعة.</p>
-        </div>
+        <h3>مواعيد تناسبك</h3>
+        <p>حصص أونلاين تقدر تحط معادها حسب وقتك، مع مرونة في التأجيل والمتابعة.</p>
       </div>
-      <div class="why-row">
+      <div class="why-card">
         <div class="icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-4 5 5 0 0 1 9 4c-2 4.5-9 9-9 9Z"/></svg>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
         </div>
-        <div>
-          <h3>خطة مبنية عليك</h3>
-          <p>مفيش منهج جاهز بيتكرر مع الكل، كل خطة بتتبني على مستواك وهدفك من تعلم اللغة.</p>
-        </div>
+        <h3>خطة مبنية عليك</h3>
+        <p>مفيش منهج جاهز بيتكرر مع الكل، كل خطة بتتبني على مستواك وهدفك من تعلم اللغة.</p>
       </div>
     </div>
   </div>
