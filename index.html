@@ -714,6 +714,63 @@
     .ap-art{ display:none; }
     .ap-form{ border-radius:0; border:none; padding:72px 20px 32px; min-height:100vh; justify-content:flex-start; }
   }
+
+  /* ---------- Grade sections ---------- */
+  .opts{ display:flex; flex-direction:column; gap:12px; margin:6px 0 20px; }
+  .opt{ display:flex; align-items:center; gap:14px; width:100%; text-align:start; font-family:inherit; cursor:pointer; background:var(--panel); border:1px solid var(--panel-border); border-radius:16px; padding:14px 16px; color:var(--cream); transition:border-color .2s ease, transform .2s ease; }
+  .opt:hover{ border-color:var(--teal-300); transform:translateY(-1px); }
+  .opt .oi{ width:46px; height:46px; border-radius:12px; background:rgba(0,0,0,.25); display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; }
+  .opt b{ display:block; font-weight:800; font-size:1rem; }
+  .opt small{ color:var(--text-soft); font-size:.85rem; }
+  .sp{ position:fixed; inset:0; z-index:150; background:#0f1f1c; overflow:auto; padding:20px; }
+  .sp[hidden]{ display:none; }
+  .sp-in{ max-width:860px; margin:0 auto; padding-bottom:40px; }
+  .sp-back{ font-family:inherit; font-weight:700; cursor:pointer; background:var(--panel); color:var(--gold); border:1px solid var(--panel-border); border-radius:999px; padding:10px 22px; margin-bottom:22px; }
+  .sp h2{ color:var(--gold); font-size:1.5rem; font-weight:800; margin-bottom:20px; }
+  .vid,.fr,.cc{ background:var(--bg-alt); border:1px solid var(--line); border-radius:16px; margin-bottom:14px; }
+  .vid{ padding:14px; } .vid h4{ color:var(--cream); font-weight:700; margin-bottom:10px; font-size:1rem; }
+  .vf{ position:relative; aspect-ratio:16/9; border-radius:12px; overflow:hidden; background:#000; }
+  .vf iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .fr{ display:flex; align-items:center; gap:14px; padding:14px 16px; }
+  .fr span{ width:42px; height:42px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.25); border-radius:12px; }
+  .fr b{ flex:1; color:var(--cream); font-weight:700; font-size:.98rem; }
+  .fr button{ font-family:inherit; font-weight:800; cursor:pointer; background:var(--gold); color:var(--bg-base); border:none; border-radius:999px; padding:10px 22px; }
+  .cgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:16px; }
+  .cc{ padding:14px; display:flex; flex-direction:column; gap:8px; margin:0; }
+  .cc .th{ aspect-ratio:16/9; border-radius:12px; background:linear-gradient(135deg,#2f6b61,#1E3E38); display:flex; align-items:center; justify-content:center; font-size:2.2rem; overflow:hidden; }
+  .cc .th img{ width:100%; height:100%; object-fit:cover; }
+  .cc h4{ color:var(--cream); font-weight:800; font-size:1.05rem; margin-top:4px; }
+  .cc .pr{ color:var(--gold); font-weight:800; }
+  .cc p{ color:var(--text-soft); font-size:.9rem; line-height:1.7; flex:1; }
+  .cc .b1,.cc .b2{ display:block; text-align:center; font-family:inherit; font-weight:800; cursor:pointer; border-radius:12px; padding:11px; font-size:.95rem; text-decoration:none; }
+  .cc .b1{ background:transparent; color:var(--cream); border:1.5px solid var(--teal-300); }
+  .cc .b2{ background:var(--cream); color:var(--bg-base); border:none; }
+  .sub-h{ color:var(--teal-300); font-weight:700; margin:22px 0 12px; font-size:1.05rem; }
+
+  /* ---------- Admin ---------- */
+  .ad .sp-in{ max-width:980px; }
+  .ad-top{ display:flex; gap:10px; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; }
+  .ad-top .sp-back{ margin:0; }
+  .ad .seg{ max-width:380px; margin-bottom:18px; }
+  .ad input,.ad textarea,.ad select{ width:100%; font-family:inherit; font-size:.95rem; color:var(--cream); background:rgba(0,0,0,.28); border:1.5px solid var(--panel-border); border-radius:12px; padding:11px 13px; outline:none; margin-bottom:10px; }
+  .ad textarea{ min-height:96px; resize:vertical; line-height:1.7; }
+  .ad select option{ background:var(--bg-alt); }
+  .ad label{ display:block; color:var(--teal-300); font-weight:700; font-size:.9rem; margin:10px 2px 6px; }
+  .ad-stats{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .ad-stats span{ background:var(--panel); border:1px solid var(--panel-border); border-radius:999px; padding:6px 16px; color:var(--cream); font-weight:700; font-size:.88rem; }
+  .ad-f{ display:grid; grid-template-columns:2fr 1fr; gap:10px; }
+  .stu{ background:var(--bg-alt); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .stu .i{ flex:1; min-width:220px; } .stu b{ color:var(--cream); display:block; margin-bottom:4px; }
+  .stu small{ color:var(--text-soft); font-size:.82rem; line-height:1.7; display:block; }
+  .bd{ font-size:.8rem; font-weight:700; padding:4px 12px; border-radius:99px; background:rgba(211,166,103,.16); color:var(--gold); }
+  .bd.active{ background:rgba(111,166,156,.18); color:var(--teal-300); } .bd.suspended{ background:rgba(229,138,128,.15); color:#f0a39a; }
+  .stu button,.ad-save,.ad-add{ font-family:inherit; font-weight:800; cursor:pointer; border-radius:999px; padding:8px 18px; border:none; font-size:.88rem; }
+  .stu .on{ background:var(--teal-300); color:var(--bg-base); } .stu .off{ background:transparent; color:#f0a39a; border:1px solid rgba(229,138,128,.5); }
+  .ad-save{ background:var(--cream); color:var(--bg-base); padding:12px 32px; font-size:1rem; margin-top:10px; }
+  .ad-add{ background:transparent; color:var(--gold); border:1.5px dashed var(--gold); margin:4px 0 10px; }
+  .edc{ background:var(--bg-alt); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:12px; }
+  .edc .x{ background:none; border:none; color:#f0a39a; cursor:pointer; font-family:inherit; font-weight:700; float:left; }
+  .ad-msg{ color:var(--teal-300); font-weight:700; margin-top:10px; min-height:1.3em; }
 </style>
 <noscript><style>.section-reveal{opacity:1 !important; transform:none !important;}</style></noscript>
 </head>
@@ -1055,7 +1112,7 @@
     <span class="num" id="modalNum"></span>
     <h3 id="modalTitle"></h3>
     <div class="modal-duration" id="modalDuration"></div>
-    <ul class="modal-topics" id="modalTopics"></ul>
+    <div class="opts" id="modalTopics"></div>
     <a href="#contact" class="btn-primary" onclick="closeCourseModal()">احجز حصة في هذا المستوى</a>
   </div>
 </div>
@@ -1074,7 +1131,7 @@
         <h2>أهلاً بيك تاني!</h2>
         <p class="sub">ادخل بحسابك برقم الموبايل وكلمة السر.</p>
         <form id="loginForm" novalidate>
-          <div class="f"><div class="inp"><span class="ic" data-i="phone"></span><input id="lPhone" type="tel" inputmode="numeric" maxlength="11" placeholder="رقم الموبايل" aria-label="رقم الموبايل" autocomplete="tel" dir="rtl"></div></div>
+          <div class="f"><div class="inp"><span class="ic" data-i="phone"></span><input id="lPhone" type="text" placeholder="رقم الموبايل" aria-label="رقم الموبايل" autocomplete="username" dir="rtl"></div></div>
           <div class="f"><div class="inp pw"><span class="ic" data-i="lock"></span><input id="lPass" type="password" placeholder="كلمة السر" aria-label="كلمة السر" autocomplete="current-password" dir="rtl"><button type="button" class="eye" data-eye="lPass" aria-label="إظهار كلمة السر"></button></div></div>
           <div class="ap-alt" style="margin:0 0 14px;text-align:start">نسيت كلمة السر؟ <a href="https://wa.me/201240014420?text=%D9%86%D8%B3%D9%8A%D8%AA%20%D9%83%D9%84%D9%85%D8%A9%20%D8%A7%D9%84%D8%B3%D8%B1%20%D8%A7%D9%84%D8%AE%D8%A7%D8%B5%D8%A9%20%D8%A8%D8%A7%D9%84%D9%85%D9%86%D8%B5%D8%A9" target="_blank" rel="noopener">كلّمنا واتساب</a></div>
           <button type="submit" class="ap-btn">تسجيل الدخول</button>
@@ -1145,6 +1202,26 @@
   </div>
 </div>
 
+<div class="sp ad" id="adminPage" hidden><div class="sp-in">
+  <div class="ad-top"><h2 style="margin:0">لوحة التحكم</h2><div style="display:flex;gap:8px"><button type="button" class="sp-back" id="adClose">إغلاق</button><button type="button" class="sp-back" id="adOut">تسجيل الخروج</button></div></div>
+  <div class="seg" id="adTabs"><button type="button" data-t="stu" aria-pressed="true">الطلبة</button><button type="button" data-t="con" aria-pressed="false">المحتوى</button></div>
+  <div id="adStu">
+    <div class="ad-stats" id="adStats"></div>
+    <div class="ad-f"><input id="adQ" placeholder="ابحث بالاسم أو الرقم"><select id="adS"><option value="">كل الحالات</option><option value="pending">قيد المراجعة</option><option value="active">مفعّل</option><option value="suspended">موقوف</option></select></div>
+    <div id="adList"></div>
+  </div>
+  <div id="adCon" hidden>
+    <label>الصف</label><select id="edGrade"></select>
+    <label>الفيديوهات التعليمية (سطر لكل فيديو: العنوان | لينك يوتيوب)</label><textarea id="edVideos"></textarea>
+    <label>المذكرات والملازم (سطر لكل ملف: العنوان | لينك جوجل درايف)</label><textarea id="edNotes"></textarea>
+    <label>الكورسات المميزة</label><div id="edCourses"></div>
+    <button type="button" class="ad-add" id="edAdd">+ كورس جديد</button><br>
+    <button type="button" class="ad-save" id="edSave">حفظ التغييرات</button><div class="ad-msg" id="edMsg"></div>
+  </div>
+</div></div>
+
+<div class="sp" id="secPage" hidden><div class="sp-in"><button type="button" class="sp-back" id="spBack">← رجوع</button><h2 id="spTitle"></h2><div id="spBody"></div></div></div>
+
 <script>
   const coursesData = {
     prep1: {
@@ -1206,6 +1283,62 @@
 
   document.querySelectorAll('.grade-card').forEach(c => c.addEventListener('click', () => openCourseModal(c.dataset.grade)));
 
+
+  /* ====== محتوى الصفوف: عدّل هنا ======
+     لتخصيص صف بمحتوى مختلف: CONTENT.prep1 = { videos:[...], notes:[...], courses:[...] } */
+  const SAMPLE_FILE = 'https://drive.google.com/file/d/1x-2cc8VdvfxaLCcNfyRALrqIw7IL3JrW/view?usp=sharing';
+  const DEF = {
+    videos: [{ t:'شرح تجريبي: اسم المفعول – الصف الثالث الإعدادي', id:'8LI5PwNmwTE' }],
+    notes: [{ t:'ملزمة الترم الأول', url:SAMPLE_FILE }],
+    courses: [{
+      t:'اسم الكورس (مؤقت)', img:'', price:'',
+      desc:'وصف الكورس وتفاصيله هيتضاف هنا.',
+      videos:[{ t:'المحاضرة الأولى (مؤقتة)', id:'8LI5PwNmwTE' }],
+      files:[{ t:'ملزمة المحاضرة الأولى (مؤقتة)', url:SAMPLE_FILE }]
+    }]
+  };
+  const CONTENT = {};
+  const EMPTY = '<p class="sub-h">قريبًا… المحتوى هيتضاف هنا.</p>';
+  const SECS = [
+    { k:'videos', i:'🎬', t:'الفيديوهات التعليمية', s:'شرح مبسط بالفيديو لكل درس' },
+    { k:'notes', i:'📄', t:'المذكرات والملازم', s:'ملفات PDF لكل وحدة' },
+    { k:'courses', i:'⭐', t:'كورسات مميزة', s:'باقات خاصة بأسعار مخفضة' }
+  ];
+  let curGrade = '', spView = '';
+  const esc = x => String(x).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const vidH = v => `<div class="vid"><h4>${esc(v.t)}</h4><div class="vf"><iframe src="https://www.youtube.com/embed/${esc(v.id)}" title="${esc(v.t)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>`;
+  const fileH = f => `<div class="fr"><span>📄</span><b>${esc(f.t)}</b><button type="button" data-dl="${esc(f.url)}">⬇ تحميل</button></div>`;
+  const courseCard = (c, i) => `<div class="cc"><div class="th">${c.img ? `<img src="${esc(c.img)}" alt="" loading="lazy">` : '⭐'}</div><h4>${esc(c.t)}</h4>${c.price ? `<div class="pr">${esc(c.price)}</div>` : ''}<p>${esc(c.desc)}</p><button type="button" class="b1" data-course="${i}">الدخول للكورس</button><a class="b2" href="#contact" data-sub>الاشتراك في الكورس !</a></div>`;
+  function paintSec(kind, ci){
+    const d = CONTENT[curGrade] || DEF, sp = document.getElementById('spBody'), tt = document.getElementById('spTitle');
+    const g = (coursesData[curGrade] || {}).title || '';
+    spView = kind === 'course' ? 'course' : kind;
+    if(kind === 'videos'){ tt.textContent = '🎬 الفيديوهات التعليمية – ' + g; sp.innerHTML = d.videos.map(vidH).join('') || EMPTY; }
+    if(kind === 'notes'){ tt.textContent = '📄 المذكرات والملازم – ' + g; sp.innerHTML = d.notes.map(fileH).join('') || EMPTY; }
+    if(kind === 'courses'){ tt.textContent = '⭐ كورسات مميزة – ' + g; sp.innerHTML = d.courses.length ? '<div class="cgrid">' + d.courses.map(courseCard).join('') + '</div>' : EMPTY; }
+    if(kind === 'course'){ const c = d.courses[ci]; tt.textContent = c.t; sp.innerHTML = `<p style="color:var(--text-soft);line-height:1.8;margin-bottom:8px">${esc(c.desc)}</p><div class="sub-h">الفيديوهات التعليمية</div>${c.videos.map(vidH).join('') || EMPTY}<div class="sub-h">الملفات</div>${c.files.map(fileH).join('') || EMPTY}`; }
+    const m = document.getElementById('courseModal'); m.classList.remove('open');
+    document.getElementById('secPage').hidden = false; document.getElementById('secPage').scrollTop = 0;
+  }
+  function spBack(){
+    if(spView === 'course') return paintSec('courses');
+    document.getElementById('secPage').hidden = true; document.getElementById('spBody').innerHTML = '';
+    document.getElementById('courseModal').classList.add('open');
+  }
+  function dl(url){
+    const m = url.match(/\/d\/([\w-]+)|[?&]id=([\w-]+)/); if(!m) return;
+    const f = document.createElement('iframe'); f.style.display = 'none';
+    f.src = 'https://drive.google.com/uc?export=download&id=' + (m[1] || m[2]);
+    document.body.appendChild(f); setTimeout(() => f.remove(), 60000);
+  }
+  document.getElementById('spBack').addEventListener('click', spBack);
+  document.getElementById('modalTopics').addEventListener('click', e => { const b = e.target.closest('[data-sec]'); if(b) paintSec(b.dataset.sec); });
+  document.getElementById('secPage').addEventListener('click', e => {
+    const d = e.target.closest('[data-dl]'); if(d) return dl(d.dataset.dl);
+    const c = e.target.closest('[data-course]'); if(c) return paintSec('course', +c.dataset.course);
+    if(e.target.closest('[data-sub]')){ document.getElementById('secPage').hidden = true; document.body.classList.remove('modal-open'); }
+  });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !document.getElementById('secPage').hidden && document.getElementById('authPage').hidden) spBack(); });
   let lastFocus = null;
   function openCourseModal(key){
     lastFocus = document.activeElement;
@@ -1214,8 +1347,8 @@
     document.getElementById('modalNum').textContent = data.num;
     document.getElementById('modalTitle').textContent = data.title;
     document.getElementById('modalDuration').textContent = data.duration;
-    document.getElementById('modalTopics').innerHTML = data.topics
-      .map(t => `<li><span class="check">✓</span><span>${t}</span></li>`).join('');
+    curGrade = key;
+    document.getElementById('modalTopics').innerHTML = SECS.map(x => `<button type="button" class="opt" data-sec="${x.k}"><span class="oi">${x.i}</span><span><b>${x.t}</b><small>${x.s}</small></span></button>`).join('');
     document.getElementById('courseModal').classList.add('open');
     document.body.classList.add('modal-open');
     document.querySelector('#courseModal .modal-close').focus();
@@ -1366,7 +1499,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, getDocs, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const app = initializeApp({
   apiKey: "AIzaSyDHKNywy1vuzskBAJjD0QRMlhjNuI-r57Q",
@@ -1381,6 +1514,8 @@ const auth = getAuth(app), db = getFirestore(app);
 auth.languageCode = 'ar';
 const $ = id => document.getElementById(id);
 const toEmail = phone => phone + '@alhuda-ar.app';
+const ADMINS = ['opaidamazed@gmail.com','obaidamazed@gmail.com','016nooralhuda@gmail.com'];
+const isAdmin = u => !!(u && u.email && ADMINS.includes(u.email.toLowerCase()));
 
 /* ---- icons ---- */
 const P = {
@@ -1416,9 +1551,15 @@ const ERR = {
   'auth/weak-password':'كلمة السر ضعيفة، لازم ٦ أحرف على الأقل.',
   'auth/too-many-requests':'محاولات كتير، استنى شوية وحاول تاني.',
   'auth/network-request-failed':'مشكلة في الاتصال بالإنترنت.',
-  'permission-denied':'مش مسموح بحفظ البيانات، راجع قواعد Firestore.'
+  'auth/operation-not-allowed':'تسجيل الدخول بالإيميل/كلمة السر مش مفعّل في Firebase (Authentication ← Sign-in method).',
+  'auth/configuration-not-found':'خدمة Authentication مش مفعّلة في Firebase، دوس Get started في Authentication.',
+  'auth/unauthorized-domain':'الدومين ده مش مضاف في Authorized domains في Firebase.',
+  'permission-denied':'مش مسموح بحفظ البيانات، راجع قواعد Firestore.',
+  'failed-precondition':'قاعدة بيانات Firestore لسه متعملتش في Firebase.',
+  'not-found':'قاعدة بيانات Firestore لسه متعملتش في Firebase.',
+  'unavailable':'تعذر الوصول لـ Firestore، اتأكد إنها اتعملت وجرب تاني.'
 };
-const errText = e => ERR[e.code] || 'حصلت مشكلة، حاول تاني.';
+const errText = e => ERR[e.code] || ('حصلت مشكلة، حاول تاني. (' + (e.code || e.message || 'unknown') + ')');
 
 /* ---- page / views ---- */
 const page = $('authPage');
@@ -1493,7 +1634,7 @@ async function loadProfile(u){
 function paintBtn(u){
   const name = (profile && profile.n1) || (u && u.displayName || '').split(' ')[0] || '';
   $('authBtn').classList.toggle('in', !!u);
-  $('authNm').textContent = u ? (name || 'حسابي') : 'دخول';
+  $('authNm').textContent = u ? (isAdmin(u) ? 'لوحة التحكم' : (name || 'حسابي')) : 'دخول';
   $('authAv').textContent = u ? (name[0] || '؟') : '';
 }
 function paintProfile(u){
@@ -1520,20 +1661,21 @@ onAuthStateChanged(auth, async u => {
 });
 $('authBtn').addEventListener('click', () => {
   const u = auth.currentUser;
-  if(u){ paintProfile(u); show('profile'); } else show('login');
+  if(u && isAdmin(u)) openAdmin(); else if(u){ paintProfile(u); show('profile'); } else show('login');
 });
 
 /* ---- login ---- */
 $('loginForm').addEventListener('submit', async e => {
   e.preventDefault(); clearErr();
-  const phone = digits($('lPhone').value), pass = $('lPass').value, m = $('lMsg'), btn = e.submitter;
-  if(!phoneOk(phone)) return bad('lPhone', 'اكتب رقم موبايل صحيح (11 رقم يبدأ بـ 01).', m);
+  const raw = $('lPhone').value.trim(), isMail = raw.includes('@'), phone = digits(raw), pass = $('lPass').value, m = $('lMsg'), btn = e.submitter;
+  if(!isMail && !phoneOk(phone)) return bad('lPhone', 'اكتب رقم موبايل صحيح (11 رقم يبدأ بـ 01).', m);
   if(!pass) return bad('lPass', 'اكتب كلمة السر.', m);
   btn.disabled = true; msg(m, '');
   try{
-    const { user } = await signInWithEmailAndPassword(auth, toEmail(phone), pass);
+    const { user } = await signInWithEmailAndPassword(auth, isMail ? raw : toEmail(phone), pass);
     await loadProfile(user); paintBtn(user); paintProfile(user);
-    e.target.reset(); show('profile');
+    e.target.reset();
+    if(isAdmin(user)){ hide(); openAdmin(); } else show('profile');
   }catch(err){ msg(m, errText(err)); }
   btn.disabled = false;
 });
@@ -1551,8 +1693,10 @@ $('signupForm').addEventListener('submit', async e => {
     gender:choice.gender, email:$('sEmail').value.trim(), status:'pending'
   };
   btn.disabled = true; msg(m, '');
+  let created = null;
   try{
     const { user } = await createUserWithEmailAndPassword(auth, toEmail(data.phone), $('sPass').value);
+    created = user;
     await updateProfile(user, { displayName:data.fullName });
     await setDoc(doc(db, 'users', user.uid), { ...data, createdAt:serverTimestamp() });
     profile = data; paintBtn(user); paintProfile(user);
@@ -1560,6 +1704,8 @@ $('signupForm').addEventListener('submit', async e => {
     document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', 'false'));
     show('profile');
   }catch(err){
+    console.error(err);
+    if(created){ try{ await created.delete(); }catch(_){} }
     msg(m, errText(err));
     if(err.code === 'auth/email-already-in-use'){ goStep(1); $('sPhone').closest('.inp').classList.add('err'); msg($('sMsg'), errText(err)); }
   }
@@ -1568,6 +1714,85 @@ $('signupForm').addEventListener('submit', async e => {
 
 /* ---- logout ---- */
 $('logoutBtn').addEventListener('click', async () => { await signOut(auth); hide(); });
+
+/* ---- site content (public read) ---- */
+getDoc(doc(db, 'site', 'content')).then(s => {
+  const d = s.exists() ? s.data() : {};
+  Object.keys(d).forEach(k => { CONTENT[k] = { videos:[], notes:[], courses:[], ...d[k] }; });
+}).catch(() => {});
+
+/* ---- admin panel ---- */
+const adP = $('adminPage');
+let users = [];
+const STL = { pending:'قيد المراجعة', active:'مفعّل', suspended:'موقوف' };
+function openAdmin(){ adP.hidden = false; document.body.classList.add('modal-open'); loadUsers(); fillGrades(); }
+$('adClose').addEventListener('click', () => { adP.hidden = true; document.body.classList.remove('modal-open'); });
+$('adOut').addEventListener('click', async () => { await signOut(auth); $('adClose').click(); });
+$('adTabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  $('adTabs').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  $('adStu').hidden = b.dataset.t !== 'stu'; $('adCon').hidden = b.dataset.t !== 'con';
+});
+async function loadUsers(){
+  $('adList').innerHTML = '<p class="sub-h">جاري التحميل…</p>';
+  try{
+    const snap = await getDocs(collection(db, 'users'));
+    users = snap.docs.map(d => ({ id:d.id, ...d.data() })).sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    paintUsers();
+  }catch(e){ $('adList').innerHTML = '<p class="sub-h">تعذر تحميل الطلبة، راجع قواعد Firestore.</p>'; }
+}
+function paintUsers(){
+  const q = $('adQ').value.trim(), st = $('adS').value;
+  const c = k => users.filter(u => (u.status || 'pending') === k).length;
+  $('adStats').innerHTML = `<span>الكل: ${users.length}</span><span>قيد المراجعة: ${c('pending')}</span><span>مفعّل: ${c('active')}</span><span>موقوف: ${c('suspended')}</span>`;
+  const list = users.filter(u => (!st || (u.status || 'pending') === st) && (!q || (u.fullName || '').includes(q) || (u.phone || '').includes(q)));
+  $('adList').innerHTML = list.map(u => { const s = u.status || 'pending'; return `<div class="stu"><div class="i"><b>${esc(u.fullName || '')}</b><small>${esc(u.grade || '')} • ${esc(u.phone || '')} • ولي الأمر: ${esc(u.parentPhone || '')}</small><small>${esc(u.school || '')} • ${u.mode === 'center' ? 'سنتر' : 'أونلاين'} • ${esc(u.email || '')}</small></div><span class="bd ${s}">${STL[s]}</span>${s !== 'active' ? `<button class="on" data-id="${u.id}" data-s="active">تفعيل</button>` : ''}${s !== 'suspended' ? `<button class="off" data-id="${u.id}" data-s="suspended">إيقاف</button>` : ''}</div>`; }).join('') || '<p class="sub-h">مفيش نتائج.</p>';
+}
+$('adQ').addEventListener('input', paintUsers); $('adS').addEventListener('change', paintUsers);
+$('adList').addEventListener('click', async e => {
+  const b = e.target.closest('button[data-id]'); if(!b) return;
+  b.disabled = true;
+  try{ await updateDoc(doc(db, 'users', b.dataset.id), { status:b.dataset.s }); users.find(u => u.id === b.dataset.id).status = b.dataset.s; paintUsers(); }
+  catch(err){ b.disabled = false; alert('تعذر التحديث: ' + (err.code || '')); }
+});
+
+/* content editor */
+const ytId = v => { v = v.trim(); const m = v.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/); return m ? m[1] : v; };
+const parse = (txt, key) => txt.split('\n').map(l => l.trim()).filter(Boolean).map(l => { const i = l.lastIndexOf('|'); const t = i < 0 ? l : l.slice(0, i).trim(), v = i < 0 ? '' : l.slice(i + 1).trim(); return key === 'id' ? { t, id:ytId(v) } : { t, url:v }; }).filter(x => x.t && (x.id || x.url));
+const lines = (arr, key) => (arr || []).map(x => x.t + ' | ' + (key === 'id' ? 'https://youtu.be/' + x.id : x.url)).join('\n');
+function fillGrades(){
+  if($('edGrade').options.length) return;
+  $('edGrade').innerHTML = Object.keys(coursesData).map(k => `<option value="${k}">${esc(coursesData[k].title)}</option>`).join('');
+  loadEd();
+}
+function courseBlock(c){
+  c = c || { t:'', img:'', price:'', desc:'', videos:[], files:[] };
+  const d = document.createElement('div'); d.className = 'edc';
+  d.innerHTML = `<button type="button" class="x">حذف الكورس</button><input data-f="t" placeholder="اسم الكورس"><input data-f="img" placeholder="رابط الصورة (مثال: images/course1.webp)" dir="ltr"><input data-f="price" placeholder="السعر (اختياري)"><textarea data-f="desc" placeholder="وصف الكورس وتفاصيله"></textarea><label>فيديوهات الكورس (العنوان | لينك يوتيوب)</label><textarea data-f="videos"></textarea><label>ملفات الكورس (العنوان | لينك درايف)</label><textarea data-f="files"></textarea>`;
+  d.querySelector('[data-f=t]').value = c.t || ''; d.querySelector('[data-f=img]').value = c.img || ''; d.querySelector('[data-f=price]').value = c.price || '';
+  d.querySelector('[data-f=desc]').value = c.desc || ''; d.querySelector('[data-f=videos]').value = lines(c.videos, 'id'); d.querySelector('[data-f=files]').value = lines(c.files, 'url');
+  return d;
+}
+function loadEd(){
+  const d = CONTENT[$('edGrade').value] || DEF;
+  $('edVideos').value = lines(d.videos, 'id'); $('edNotes').value = lines(d.notes, 'url');
+  $('edCourses').innerHTML = ''; (d.courses || []).forEach(c => $('edCourses').appendChild(courseBlock(c))); msgEd('');
+}
+const msgEd = t => { $('edMsg').textContent = t; };
+$('edGrade').addEventListener('change', loadEd);
+$('edAdd').addEventListener('click', () => $('edCourses').appendChild(courseBlock()));
+$('edCourses').addEventListener('click', e => { if(e.target.classList.contains('x') && confirm('حذف الكورس؟')) e.target.closest('.edc').remove(); });
+$('edSave').addEventListener('click', async () => {
+  const g = $('edGrade').value, f = (b, k) => b.querySelector(`[data-f=${k}]`).value;
+  const data = {
+    videos:parse($('edVideos').value, 'id'), notes:parse($('edNotes').value, 'url'),
+    courses:[...$('edCourses').querySelectorAll('.edc')].map(b => ({ t:f(b, 't').trim(), img:f(b, 'img').trim(), price:f(b, 'price').trim(), desc:f(b, 'desc').trim(), videos:parse(f(b, 'videos'), 'id'), files:parse(f(b, 'files'), 'url') })).filter(c => c.t)
+  };
+  $('edSave').disabled = true; msgEd('');
+  try{ await setDoc(doc(db, 'site', 'content'), { [g]:data }, { merge:true }); CONTENT[g] = data; msgEd('تم الحفظ ✓'); }
+  catch(err){ msgEd('تعذر الحفظ: ' + (err.code || 'error')); }
+  $('edSave').disabled = false;
+});
 </script>
 
 </body>
