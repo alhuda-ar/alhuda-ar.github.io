@@ -612,6 +612,154 @@
     section{ padding:68px 0; }
   }
   @media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } .skip-link,.to-top{ transition:none; } }
+
+  /* ---------- Auth button (header) ---------- */
+  .auth-btn{
+    display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-family:inherit;
+    background:transparent; color:var(--cream); border:1.5px solid var(--panel-border);
+    padding:9px 18px; border-radius:999px; font-weight:700; font-size:0.92rem; white-space:nowrap;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .auth-btn:hover{ border-color:var(--teal-300); background:var(--panel); }
+  .auth-btn .av{ width:26px; height:26px; border-radius:50%; background:var(--gold); color:var(--bg-base); display:none; align-items:center; justify-content:center; font-weight:800; font-size:0.85rem; }
+  .auth-btn.in .av{ display:inline-flex; }
+  .nav .auth-btn{ margin-inline-start:10px; }
+  @media (max-width:820px){ .nav .auth-btn{ margin-inline-start:0; padding:7px 14px; font-size:0.85rem; } .auth-btn .nm{ max-width:84px; overflow:hidden; text-overflow:ellipsis; } }
+
+  /* ---------- Auth page (full screen) ---------- */
+  .ap{ position:fixed; inset:0; z-index:200; background:#0f1f1c; overflow:auto; padding:20px; }
+  .ap[hidden]{ display:none; }
+  .ap-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; min-height:100%; max-width:1280px; margin:0 auto; }
+  .ap-form{ position:relative; background:var(--bg-alt); border:1px solid var(--line); border-radius:22px; padding:76px 44px 40px; display:flex; flex-direction:column; justify-content:center; }
+  .ap-back{ position:absolute; top:18px; inset-inline-end:18px; display:inline-flex; align-items:center; gap:8px; background:rgba(0,0,0,.28); color:var(--cream); border:none; border-radius:12px; padding:10px 16px; font-family:inherit; font-weight:700; font-size:.88rem; cursor:pointer; }
+  .ap-back:hover{ background:rgba(0,0,0,.45); }
+  .ap-brand{ display:flex; align-items:center; justify-content:center; gap:12px; font-weight:800; font-size:1.5rem; color:var(--cream); margin-bottom:22px; }
+  .ap-brand svg{ width:44px; height:44px; }
+  .ap-view{ width:100%; max-width:520px; margin:0 auto; }
+  .ap-view[hidden]{ display:none; }
+  .ap-view h2{ text-align:center; color:var(--cream); font-size:1.5rem; font-weight:800; margin-bottom:8px; }
+  .ap-view .sub{ text-align:center; color:var(--text-soft); font-size:.95rem; margin-bottom:24px; }
+  .ap-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .f{ margin-bottom:14px; }
+  .inp{ position:relative; }
+  .inp .ic{ position:absolute; inset-inline-start:16px; top:50%; transform:translateY(-50%); color:var(--gold); display:flex; pointer-events:none; }
+  .inp input,.inp select{
+    width:100%; font-family:inherit; font-size:1rem; color:var(--cream);
+    background:rgba(0,0,0,.28); border:1.5px solid var(--panel-border); border-radius:14px;
+    padding:15px 46px 15px 14px; outline:none; transition:border-color .2s ease; appearance:none; -webkit-appearance:none;
+  }
+  .inp input::placeholder{ color:var(--text-soft); opacity:.75; }
+  .inp input:focus,.inp select:focus{ border-color:var(--teal-300); }
+  .inp select option{ background:var(--bg-alt); }
+  .inp.err input,.inp.err select{ border-color:#e58a80; }
+  .inp .eye{ position:absolute; inset-inline-end:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-soft); cursor:pointer; display:flex; padding:4px; }
+  .inp.pw input{ padding-inline-end:44px; }
+  .hint{ color:var(--text-soft); font-size:.78rem; margin:6px 4px 0; opacity:.85; }
+  .seg-l{ color:var(--teal-300); font-size:.88rem; font-weight:600; margin:2px 4px 8px; }
+  .seg{ display:flex; gap:8px; margin-bottom:16px; }
+  .seg button{ flex:1; font-family:inherit; font-weight:700; font-size:.98rem; color:var(--text-soft); background:rgba(0,0,0,.28); border:1.5px solid var(--panel-border); border-radius:14px; padding:13px; cursor:pointer; transition:all .2s ease; }
+  .seg button[aria-pressed="true"]{ background:var(--cream); color:var(--bg-base); border-color:var(--cream); }
+  .ap-btn{ width:100%; font-family:inherit; font-weight:800; font-size:1rem; background:var(--cream); color:var(--bg-base); border:none; border-radius:14px; padding:15px; cursor:pointer; transition:background .2s ease, transform .2s ease; display:block; text-align:center; }
+  .ap-btn:hover{ background:var(--off-white); transform:translateY(-1px); }
+  .ap-btn[disabled]{ opacity:.6; cursor:wait; transform:none; }
+  .ap-btn.ghost{ background:transparent; color:var(--cream); border:1.5px solid var(--panel-border); }
+  .ap-btn.ghost:hover{ background:var(--panel); }
+  .ap-nav{ display:flex; gap:10px; margin-top:6px; }
+  .ap-nav .ap-btn.ghost{ flex:0 0 32%; }
+  .ap-msg{ min-height:1.3em; margin:10px 0 0; text-align:center; font-size:.9rem; font-weight:600; color:#f0a39a; }
+  .ap-msg.ok{ color:var(--teal-300); }
+  .ap-alt{ text-align:center; color:var(--text-soft); font-size:.92rem; margin-top:18px; }
+  .ap-alt a,.ap-alt button{ color:var(--gold); background:none; border:none; font-family:inherit; font-weight:700; font-size:inherit; cursor:pointer; }
+  .ap-alt a:hover,.ap-alt button:hover{ text-decoration:underline; }
+  .prog{ margin-bottom:22px; }
+  .prog-top{ display:flex; justify-content:space-between; color:var(--teal-300); font-weight:700; font-size:.85rem; margin-bottom:8px; }
+  .prog-bar{ height:3px; background:var(--line); border-radius:99px; overflow:hidden; }
+  .prog-bar i{ display:block; height:100%; width:33%; background:var(--teal-300); transition:width .3s ease; margin-inline-start:auto; }
+  .step[hidden]{ display:none; }
+  /* art side */
+  .ap-art{ position:relative; border-radius:22px; overflow:hidden; border:1px solid var(--line);
+    background:radial-gradient(ellipse 80% 60% at 50% 38%, #2f6b61 0%, #1E3E38 55%, #12251f 100%); }
+  .ap-art img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .ap-art-txt{ position:absolute; inset-inline:0; bottom:0; padding:60px 44px 44px; text-align:center; color:var(--cream);
+    background:linear-gradient(to top, rgba(10,22,19,.82), transparent); }
+  .ap-art-txt svg{ width:56px; height:56px; margin-bottom:12px; }
+  .ap-art-txt p{ font-size:1.05rem; line-height:1.8; color:var(--off-white); max-width:34ch; margin:0 auto; }
+  /* profile */
+  .pf-av{ width:84px; height:84px; border-radius:50%; background:var(--gold); color:var(--bg-base); display:flex; align-items:center; justify-content:center; font-size:2.4rem; font-weight:800; margin:0 auto 14px; }
+  .pf-name{ text-align:center; color:var(--cream); font-size:1.4rem; font-weight:800; }
+  .pf-badge{ display:table; margin:12px auto 6px; padding:6px 16px; border-radius:99px; font-weight:700; font-size:.88rem; }
+  .pf-badge.pending{ background:rgba(211,166,103,.16); color:var(--gold); border:1px solid rgba(211,166,103,.4); }
+  .pf-badge.active{ background:rgba(111,166,156,.18); color:var(--teal-300); border:1px solid rgba(111,166,156,.45); }
+  .pf-badge.suspended{ background:rgba(229,138,128,.15); color:#f0a39a; border:1px solid rgba(229,138,128,.4); }
+  .pf-note{ text-align:center; color:var(--text-soft); font-size:.9rem; margin-bottom:20px; }
+  .pf-list{ border:1px solid var(--line); border-radius:16px; overflow:hidden; margin-bottom:18px; background:rgba(0,0,0,.16); }
+  .pf-list div{ display:flex; justify-content:space-between; gap:12px; padding:14px 18px; }
+  .pf-list div + div{ border-top:1px solid var(--line); }
+  .pf-list span{ color:var(--text-soft); font-size:.92rem; }
+  .pf-list b{ color:var(--cream); font-weight:700; text-align:end; }
+  @media (max-width:820px){
+    .ap{ padding:0; }
+    .ap-grid{ grid-template-columns:1fr; gap:0; }
+    .ap-art{ display:none; }
+    .ap-form{ border-radius:0; border:none; padding:72px 20px 32px; min-height:100vh; justify-content:flex-start; }
+  }
+
+  /* ---------- Grade sections ---------- */
+  .opts{ display:flex; flex-direction:column; gap:12px; margin:6px 0 20px; }
+  .opt{ display:flex; align-items:center; gap:14px; width:100%; text-align:start; font-family:inherit; cursor:pointer; background:var(--panel); border:1px solid var(--panel-border); border-radius:16px; padding:14px 16px; color:var(--cream); transition:border-color .2s ease, transform .2s ease; }
+  .opt:hover{ border-color:var(--teal-300); transform:translateY(-1px); }
+  .opt .oi{ width:46px; height:46px; border-radius:12px; background:rgba(0,0,0,.25); display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; }
+  .opt b{ display:block; font-weight:800; font-size:1rem; }
+  .opt small{ color:var(--text-soft); font-size:.85rem; }
+  .sp{ position:fixed; inset:0; z-index:150; background:#0f1f1c; overflow:auto; padding:20px; }
+  .sp[hidden]{ display:none; }
+  .sp-in{ max-width:860px; margin:0 auto; padding-bottom:40px; }
+  .sp-back{ font-family:inherit; font-weight:700; cursor:pointer; background:var(--panel); color:var(--gold); border:1px solid var(--panel-border); border-radius:999px; padding:10px 22px; margin-bottom:22px; }
+  .sp h2{ color:var(--gold); font-size:1.5rem; font-weight:800; margin-bottom:20px; }
+  .vid,.fr,.cc{ background:var(--bg-alt); border:1px solid var(--line); border-radius:16px; margin-bottom:14px; }
+  .vid{ padding:14px; } .vid h4{ color:var(--cream); font-weight:700; margin-bottom:10px; font-size:1rem; }
+  .vf{ position:relative; aspect-ratio:16/9; border-radius:12px; overflow:hidden; background:#000; }
+  .vf iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .fr{ display:flex; align-items:center; gap:14px; padding:14px 16px; }
+  .fr span{ width:42px; height:42px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.25); border-radius:12px; }
+  .fr b{ flex:1; color:var(--cream); font-weight:700; font-size:.98rem; }
+  .fr button{ font-family:inherit; font-weight:800; cursor:pointer; background:var(--gold); color:var(--bg-base); border:none; border-radius:999px; padding:10px 22px; }
+  .cgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:16px; }
+  .cc{ padding:14px; display:flex; flex-direction:column; gap:8px; margin:0; }
+  .cc .th{ aspect-ratio:16/9; border-radius:12px; background:linear-gradient(135deg,#2f6b61,#1E3E38); display:flex; align-items:center; justify-content:center; font-size:2.2rem; overflow:hidden; }
+  .cc .th img{ width:100%; height:100%; object-fit:cover; }
+  .cc h4{ color:var(--cream); font-weight:800; font-size:1.05rem; margin-top:4px; }
+  .cc .pr{ color:var(--gold); font-weight:800; }
+  .cc p{ color:var(--text-soft); font-size:.9rem; line-height:1.7; flex:1; }
+  .cc .b1,.cc .b2{ display:block; text-align:center; font-family:inherit; font-weight:800; cursor:pointer; border-radius:12px; padding:11px; font-size:.95rem; text-decoration:none; }
+  .cc .b1{ background:transparent; color:var(--cream); border:1.5px solid var(--teal-300); }
+  .cc .b2{ background:var(--cream); color:var(--bg-base); border:none; }
+  .sub-h{ color:var(--teal-300); font-weight:700; margin:22px 0 12px; font-size:1.05rem; }
+
+  /* ---------- Admin ---------- */
+  .ad .sp-in{ max-width:980px; }
+  .ad-top{ display:flex; gap:10px; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; }
+  .ad-top .sp-back{ margin:0; }
+  .ad .seg{ max-width:380px; margin-bottom:18px; }
+  .ad input,.ad textarea,.ad select{ width:100%; font-family:inherit; font-size:.95rem; color:var(--cream); background:rgba(0,0,0,.28); border:1.5px solid var(--panel-border); border-radius:12px; padding:11px 13px; outline:none; margin-bottom:10px; }
+  .ad textarea{ min-height:96px; resize:vertical; line-height:1.7; }
+  .ad select option{ background:var(--bg-alt); }
+  .ad label{ display:block; color:var(--teal-300); font-weight:700; font-size:.9rem; margin:10px 2px 6px; }
+  .ad-stats{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .ad-stats span{ background:var(--panel); border:1px solid var(--panel-border); border-radius:999px; padding:6px 16px; color:var(--cream); font-weight:700; font-size:.88rem; }
+  .ad-f{ display:grid; grid-template-columns:2fr 1fr; gap:10px; }
+  .stu{ background:var(--bg-alt); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .stu .i{ flex:1; min-width:220px; } .stu b{ color:var(--cream); display:block; margin-bottom:4px; }
+  .stu small{ color:var(--text-soft); font-size:.82rem; line-height:1.7; display:block; }
+  .bd{ font-size:.8rem; font-weight:700; padding:4px 12px; border-radius:99px; background:rgba(211,166,103,.16); color:var(--gold); }
+  .bd.active{ background:rgba(111,166,156,.18); color:var(--teal-300); } .bd.suspended{ background:rgba(229,138,128,.15); color:#f0a39a; }
+  .stu button,.ad-save,.ad-add{ font-family:inherit; font-weight:800; cursor:pointer; border-radius:999px; padding:8px 18px; border:none; font-size:.88rem; }
+  .stu .on{ background:var(--teal-300); color:var(--bg-base); } .stu .off{ background:transparent; color:#f0a39a; border:1px solid rgba(229,138,128,.5); }
+  .ad-save{ background:var(--cream); color:var(--bg-base); padding:12px 32px; font-size:1rem; margin-top:10px; }
+  .ad-add{ background:transparent; color:var(--gold); border:1.5px dashed var(--gold); margin:4px 0 10px; }
+  .edc{ background:var(--bg-alt); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:12px; }
+  .edc .x{ background:none; border:none; color:#f0a39a; cursor:pointer; font-family:inherit; font-weight:700; float:left; }
+  .ad-msg{ color:var(--teal-300); font-weight:700; margin-top:10px; min-height:1.3em; }
 </style>
 <noscript><style>.section-reveal{opacity:1 !important; transform:none !important;}</style></noscript>
 </head>
@@ -640,6 +788,7 @@
       <a href="#contact">تواصل</a>
     </nav>
     <a href="#contact" class="nav-cta">احجز حصتك</a>
+    <button type="button" class="auth-btn" id="authBtn" aria-label="الحساب"><span class="av" id="authAv"></span><span class="nm" id="authNm">دخول</span></button>
   </div>
 </header>
 
@@ -952,10 +1101,115 @@
     <span class="num" id="modalNum"></span>
     <h3 id="modalTitle"></h3>
     <div class="modal-duration" id="modalDuration"></div>
-    <ul class="modal-topics" id="modalTopics"></ul>
+    <div class="opts" id="modalTopics"></div>
     <a href="#contact" class="btn-primary" onclick="closeCourseModal()">احجز حصة في هذا المستوى</a>
   </div>
 </div>
+
+<div class="ap" id="authPage" hidden>
+  <div class="ap-grid">
+    <section class="ap-form">
+      <button type="button" class="ap-back" id="apBack">الرجوع للرئيسية <span aria-hidden="true">→</span></button>
+      <div class="ap-brand">
+        <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><circle cx="20" cy="20" r="19" stroke="#A9CFC6" stroke-width="1.5"/><path d="M20 6 L23 17 L34 20 L23 23 L20 34 L17 23 L6 20 L17 17 Z" fill="#D3A667"/></svg>
+        الهُدى
+      </div>
+
+      <!-- Login -->
+      <div class="ap-view" id="vLogin">
+        <h2>أهلاً بيك تاني!</h2>
+        <p class="sub">ادخل بحسابك برقم الموبايل وكلمة السر.</p>
+        <form id="loginForm" novalidate>
+          <div class="f"><div class="inp"><span class="ic" data-i="phone"></span><input id="lPhone" type="text" placeholder="رقم الموبايل" aria-label="رقم الموبايل" autocomplete="username" dir="rtl"></div></div>
+          <div class="f"><div class="inp pw"><span class="ic" data-i="lock"></span><input id="lPass" type="password" placeholder="كلمة السر" aria-label="كلمة السر" autocomplete="current-password" dir="rtl"><button type="button" class="eye" data-eye="lPass" aria-label="إظهار كلمة السر"></button></div></div>
+          <div class="ap-alt" style="margin:0 0 14px;text-align:start">نسيت كلمة السر؟ <a href="https://wa.me/201240014420?text=%D9%86%D8%B3%D9%8A%D8%AA%20%D9%83%D9%84%D9%85%D8%A9%20%D8%A7%D9%84%D8%B3%D8%B1%20%D8%A7%D9%84%D8%AE%D8%A7%D8%B5%D8%A9%20%D8%A8%D8%A7%D9%84%D9%85%D9%86%D8%B5%D8%A9" target="_blank" rel="noopener">كلّمنا واتساب</a></div>
+          <button type="submit" class="ap-btn">تسجيل الدخول</button>
+          <p class="ap-msg" id="lMsg" role="status" aria-live="polite"></p>
+        </form>
+        <p class="ap-alt">معندكش حساب؟ <button type="button" data-go="signup">أنشئ حسابك الآن!</button></p>
+      </div>
+
+      <!-- Signup -->
+      <div class="ap-view" id="vSignup" hidden>
+        <div class="prog"><div class="prog-top"><span id="progLbl">الخطوة الأولى</span><span id="progPct">33%</span></div><div class="prog-bar"><i id="progBar"></i></div></div>
+        <h2>طلب إنشاء حساب</h2>
+        <p class="sub" id="stepSub">ادخل بياناتك بشكل صحيح وهنراجع طلبك خلال ساعات.</p>
+        <form id="signupForm" novalidate>
+          <div class="step" data-step="1">
+            <div class="ap-row">
+              <div class="f"><div class="inp"><span class="ic" data-i="user"></span><input id="n1" placeholder="الاسم الأول" aria-label="الاسم الأول" autocomplete="given-name"></div></div>
+              <div class="f"><div class="inp"><span class="ic" data-i="user"></span><input id="n2" placeholder="الاسم الثاني" aria-label="الاسم الثاني"></div></div>
+              <div class="f"><div class="inp"><span class="ic" data-i="user"></span><input id="n3" placeholder="الاسم الثالث" aria-label="الاسم الثالث"></div></div>
+              <div class="f"><div class="inp"><span class="ic" data-i="user"></span><input id="n4" placeholder="الاسم الأخير" aria-label="الاسم الأخير"></div></div>
+            </div>
+            <p class="hint" style="margin:-4px 4px 14px">اكتب اسمك بالعربي زي ما هو في البطاقة.</p>
+            <div class="f"><div class="inp"><span class="ic" data-i="phone"></span><input id="sPhone" type="tel" inputmode="numeric" maxlength="11" placeholder="رقم الموبايل (11 رقم يبدأ بـ 01)" aria-label="رقم الموبايل" autocomplete="tel"></div></div>
+            <div class="f"><div class="inp"><span class="ic" data-i="book"></span>
+              <select id="sGrade" aria-label="الصف الدراسي"><option value="">الصف الدراسي</option><option>الأول الإعدادي</option><option>الثاني الإعدادي</option><option>الثالث الإعدادي</option><option>الأول الثانوي</option><option>الثاني الثانوي</option><option>الثالث الثانوي</option></select></div></div>
+          </div>
+
+          <div class="step" data-step="2" hidden>
+            <div class="f"><div class="inp"><span class="ic" data-i="phone"></span><input id="sParent" type="tel" inputmode="numeric" maxlength="11" placeholder="رقم ولي الأمر" aria-label="رقم ولي الأمر"></div></div>
+            <div class="f"><div class="inp"><span class="ic" data-i="school"></span><input id="sSchool" placeholder="اسم المدرسة" aria-label="اسم المدرسة"></div></div>
+            <div class="seg-l">بتذاكر إزاي؟</div>
+            <div class="seg" id="modeSeg"><button type="button" data-v="center" aria-pressed="false">سنتر</button><button type="button" data-v="online" aria-pressed="false">أونلاين</button></div>
+          </div>
+
+          <div class="step" data-step="3" hidden>
+            <div class="seg-l">النوع</div>
+            <div class="seg" id="genderSeg"><button type="button" data-v="male" aria-pressed="false">ذكر</button><button type="button" data-v="female" aria-pressed="false">أنثى</button></div>
+            <div class="f"><div class="inp"><span class="ic" data-i="mail"></span><input id="sEmail" type="email" dir="ltr" placeholder="البريد الإلكتروني" aria-label="البريد الإلكتروني" autocomplete="email" style="text-align:right"></div></div>
+            <div class="f"><div class="inp pw"><span class="ic" data-i="lock"></span><input id="sPass" type="password" placeholder="كلمة السر (٦ أحرف على الأقل)" aria-label="كلمة السر" autocomplete="new-password"><button type="button" class="eye" data-eye="sPass" aria-label="إظهار كلمة السر"></button></div></div>
+            <div class="f"><div class="inp pw"><span class="ic" data-i="lock"></span><input id="sPass2" type="password" placeholder="تأكيد كلمة السر" aria-label="تأكيد كلمة السر" autocomplete="new-password"><button type="button" class="eye" data-eye="sPass2" aria-label="إظهار كلمة السر"></button></div></div>
+            <p class="hint" style="margin:-4px 4px 14px">كلمة السر دي للمنصة بس، ملهاش علاقة بكلمة سر الإيميل.</p>
+          </div>
+
+          <div class="ap-nav"><button type="button" class="ap-btn ghost" id="stepBack" hidden>السابق</button><button type="submit" class="ap-btn" id="stepNext">التالي</button></div>
+          <p class="ap-msg" id="sMsg" role="status" aria-live="polite"></p>
+        </form>
+        <p class="ap-alt">عندك حساب بالفعل؟ <button type="button" data-go="login">ادخل إلى حسابك الآن!</button></p>
+      </div>
+
+      <!-- Profile -->
+      <div class="ap-view" id="vProfile" hidden>
+        <div class="pf-av" id="pfAv"></div>
+        <div class="pf-name" id="pfName"></div>
+        <span class="pf-badge pending" id="pfBadge">قيد المراجعة</span>
+        <p class="pf-note" id="pfNote"></p>
+        <div class="pf-list" id="pfList"></div>
+        <button type="button" class="ap-btn ghost" id="logoutBtn">تسجيل الخروج</button>
+      </div>
+    </section>
+
+    <aside class="ap-art" aria-hidden="true">
+      <img src="images/auth-side.webp" alt="" onerror="this.remove()">
+      <div class="ap-art-txt">
+        <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="#A9CFC6" stroke-width="1.5"/><path d="M20 6 L23 17 L34 20 L23 23 L20 34 L17 23 L6 20 L17 17 Z" fill="#D3A667"/></svg>
+        <p>مع ميس نور الهدى، العربي بقى أسهل. سجّل وابدأ رحلتك لأعلى الدرجات.</p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="sp ad" id="adminPage" hidden><div class="sp-in">
+  <div class="ad-top"><h2 style="margin:0">لوحة التحكم</h2><div style="display:flex;gap:8px"><button type="button" class="sp-back" id="adClose">إغلاق</button><button type="button" class="sp-back" id="adOut">تسجيل الخروج</button></div></div>
+  <div class="seg" id="adTabs"><button type="button" data-t="stu" aria-pressed="true">الطلبة</button><button type="button" data-t="con" aria-pressed="false">المحتوى</button></div>
+  <div id="adStu">
+    <div class="ad-stats" id="adStats"></div>
+    <div class="ad-f"><input id="adQ" placeholder="ابحث بالاسم أو الرقم"><select id="adS"><option value="">كل الحالات</option><option value="pending">قيد المراجعة</option><option value="active">مفعّل</option><option value="suspended">موقوف</option></select></div>
+    <div id="adList"></div>
+  </div>
+  <div id="adCon" hidden>
+    <label>الصف</label><select id="edGrade"></select>
+    <label>الفيديوهات التعليمية (سطر لكل فيديو: العنوان | لينك يوتيوب)</label><textarea id="edVideos"></textarea>
+    <label>المذكرات والملازم (سطر لكل ملف: العنوان | لينك جوجل درايف)</label><textarea id="edNotes"></textarea>
+    <label>الكورسات المميزة</label><div id="edCourses"></div>
+    <button type="button" class="ad-add" id="edAdd">+ كورس جديد</button><br>
+    <button type="button" class="ad-save" id="edSave">حفظ التغييرات</button><div class="ad-msg" id="edMsg"></div>
+  </div>
+</div></div>
+
+<div class="sp" id="secPage" hidden><div class="sp-in"><button type="button" class="sp-back" id="spBack">← رجوع</button><h2 id="spTitle"></h2><div id="spBody"></div></div></div>
 
 <script>
   const coursesData = {
@@ -1018,6 +1272,62 @@
 
   document.querySelectorAll('.grade-card').forEach(c => c.addEventListener('click', () => openCourseModal(c.dataset.grade)));
 
+
+  /* ====== محتوى الصفوف: عدّل هنا ======
+     لتخصيص صف بمحتوى مختلف: CONTENT.prep1 = { videos:[...], notes:[...], courses:[...] } */
+  const SAMPLE_FILE = 'https://drive.google.com/file/d/1x-2cc8VdvfxaLCcNfyRALrqIw7IL3JrW/view?usp=sharing';
+  const DEF = {
+    videos: [{ t:'شرح تجريبي: اسم المفعول – الصف الثالث الإعدادي', id:'8LI5PwNmwTE' }],
+    notes: [{ t:'ملزمة الترم الأول', url:SAMPLE_FILE }],
+    courses: [{
+      t:'اسم الكورس (مؤقت)', img:'', price:'',
+      desc:'وصف الكورس وتفاصيله هيتضاف هنا.',
+      videos:[{ t:'المحاضرة الأولى (مؤقتة)', id:'8LI5PwNmwTE' }],
+      files:[{ t:'ملزمة المحاضرة الأولى (مؤقتة)', url:SAMPLE_FILE }]
+    }]
+  };
+  const CONTENT = {};
+  const EMPTY = '<p class="sub-h">قريبًا… المحتوى هيتضاف هنا.</p>';
+  const SECS = [
+    { k:'videos', i:'🎬', t:'الفيديوهات التعليمية', s:'شرح مبسط بالفيديو لكل درس' },
+    { k:'notes', i:'📄', t:'المذكرات والملازم', s:'ملفات PDF لكل وحدة' },
+    { k:'courses', i:'⭐', t:'كورسات مميزة', s:'باقات خاصة بأسعار مخفضة' }
+  ];
+  let curGrade = '', spView = '';
+  const esc = x => String(x).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const vidH = v => `<div class="vid"><h4>${esc(v.t)}</h4><div class="vf"><iframe src="https://www.youtube.com/embed/${esc(v.id)}" title="${esc(v.t)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>`;
+  const fileH = f => `<div class="fr"><span>📄</span><b>${esc(f.t)}</b><button type="button" data-dl="${esc(f.url)}">⬇ تحميل</button></div>`;
+  const courseCard = (c, i) => `<div class="cc"><div class="th">${c.img ? `<img src="${esc(c.img)}" alt="" loading="lazy">` : '⭐'}</div><h4>${esc(c.t)}</h4>${c.price ? `<div class="pr">${esc(c.price)}</div>` : ''}<p>${esc(c.desc)}</p><button type="button" class="b1" data-course="${i}">الدخول للكورس</button><a class="b2" href="#contact" data-sub>الاشتراك في الكورس !</a></div>`;
+  function paintSec(kind, ci){
+    const d = CONTENT[curGrade] || DEF, sp = document.getElementById('spBody'), tt = document.getElementById('spTitle');
+    const g = (coursesData[curGrade] || {}).title || '';
+    spView = kind === 'course' ? 'course' : kind;
+    if(kind === 'videos'){ tt.textContent = '🎬 الفيديوهات التعليمية – ' + g; sp.innerHTML = d.videos.map(vidH).join('') || EMPTY; }
+    if(kind === 'notes'){ tt.textContent = '📄 المذكرات والملازم – ' + g; sp.innerHTML = d.notes.map(fileH).join('') || EMPTY; }
+    if(kind === 'courses'){ tt.textContent = '⭐ كورسات مميزة – ' + g; sp.innerHTML = d.courses.length ? '<div class="cgrid">' + d.courses.map(courseCard).join('') + '</div>' : EMPTY; }
+    if(kind === 'course'){ const c = d.courses[ci]; tt.textContent = c.t; sp.innerHTML = `<p style="color:var(--text-soft);line-height:1.8;margin-bottom:8px">${esc(c.desc)}</p><div class="sub-h">الفيديوهات التعليمية</div>${c.videos.map(vidH).join('') || EMPTY}<div class="sub-h">الملفات</div>${c.files.map(fileH).join('') || EMPTY}`; }
+    const m = document.getElementById('courseModal'); m.classList.remove('open');
+    document.getElementById('secPage').hidden = false; document.getElementById('secPage').scrollTop = 0;
+  }
+  function spBack(){
+    if(spView === 'course') return paintSec('courses');
+    document.getElementById('secPage').hidden = true; document.getElementById('spBody').innerHTML = '';
+    document.getElementById('courseModal').classList.add('open');
+  }
+  function dl(url){
+    const m = url.match(/\/d\/([\w-]+)|[?&]id=([\w-]+)/); if(!m) return;
+    const f = document.createElement('iframe'); f.style.display = 'none';
+    f.src = 'https://drive.google.com/uc?export=download&id=' + (m[1] || m[2]);
+    document.body.appendChild(f); setTimeout(() => f.remove(), 60000);
+  }
+  document.getElementById('spBack').addEventListener('click', spBack);
+  document.getElementById('modalTopics').addEventListener('click', e => { const b = e.target.closest('[data-sec]'); if(b) paintSec(b.dataset.sec); });
+  document.getElementById('secPage').addEventListener('click', e => {
+    const d = e.target.closest('[data-dl]'); if(d) return dl(d.dataset.dl);
+    const c = e.target.closest('[data-course]'); if(c) return paintSec('course', +c.dataset.course);
+    if(e.target.closest('[data-sub]')){ document.getElementById('secPage').hidden = true; document.body.classList.remove('modal-open'); }
+  });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !document.getElementById('secPage').hidden && document.getElementById('authPage').hidden) spBack(); });
   let lastFocus = null;
   function openCourseModal(key){
     lastFocus = document.activeElement;
@@ -1026,8 +1336,8 @@
     document.getElementById('modalNum').textContent = data.num;
     document.getElementById('modalTitle').textContent = data.title;
     document.getElementById('modalDuration').textContent = data.duration;
-    document.getElementById('modalTopics').innerHTML = data.topics
-      .map(t => `<li><span class="check">✓</span><span>${t}</span></li>`).join('');
+    curGrade = key;
+    document.getElementById('modalTopics').innerHTML = SECS.map(x => `<button type="button" class="opt" data-sec="${x.k}"><span class="oi">${x.i}</span><span><b>${x.t}</b><small>${x.s}</small></span></button>`).join('');
     document.getElementById('courseModal').classList.add('open');
     document.body.classList.add('modal-open');
     document.querySelector('#courseModal .modal-close').focus();
@@ -1173,6 +1483,305 @@
     document.querySelectorAll('a[href^="https://wa.me/"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
   })();
 
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, getDocs, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyDHKNywy1vuzskBAJjD0QRMlhjNuI-r57Q",
+  authDomain: "alhuda-ar.firebaseapp.com",
+  projectId: "alhuda-ar",
+  storageBucket: "alhuda-ar.firebasestorage.app",
+  messagingSenderId: "6966963823",
+  appId: "1:6966963823:web:1bf1577072e8cfa9ae679a",
+  measurementId: "G-7H23D23WKM"
+});
+const auth = getAuth(app), db = getFirestore(app);
+auth.languageCode = 'ar';
+const $ = id => document.getElementById(id);
+const toEmail = phone => phone + '@alhuda-ar.app';
+const ADMINS = ['opaidamazed@gmail.com','obaidamazed@gmail.com','016nooralhuda@gmail.com','01223093974@alhuda-ar.app'];
+const isAdmin = u => !!(u && u.email && ADMINS.includes(u.email.toLowerCase()));
+
+/* ---- icons ---- */
+const P = {
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+  phone:'<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  school:'<path d="M3 10 12 5l9 5-9 5z"/><path d="M7 12.5V17c0 1 2.5 2 5 2s5-1 5-2v-4.5"/>',
+  book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>',
+  eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'
+};
+const svg = k => `<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[k]}</svg>`;
+document.querySelectorAll('.ic[data-i]').forEach(el => el.innerHTML = svg(el.dataset.i));
+document.querySelectorAll('.eye').forEach(b => {
+  b.innerHTML = svg('eye');
+  b.addEventListener('click', () => { const i = $(b.dataset.eye); i.type = i.type === 'password' ? 'text' : 'password'; });
+});
+
+/* ---- helpers ---- */
+const msg = (el, t, ok) => { el.textContent = t || ''; el.classList.toggle('ok', !!ok); };
+const clearErr = () => document.querySelectorAll('.inp.err').forEach(x => x.classList.remove('err'));
+const bad = (id, text, el) => { $(id).closest('.inp')?.classList.add('err'); $(id).focus(); msg(el, text); return false; };
+const digits = s => s.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\D/g, '');
+const phoneOk = s => /^01\d{9}$/.test(s);
+const arName = s => /^[\u0600-\u06FF\s]{2,}$/.test(s.trim());
+document.querySelectorAll('input[type=tel]').forEach(i => i.addEventListener('input', () => { i.value = digits(i.value).slice(0, 11); }));
+document.querySelectorAll('.inp input,.inp select').forEach(i => i.addEventListener('input', () => i.closest('.inp').classList.remove('err')));
+const ERR = {
+  'auth/email-already-in-use':'رقم الموبايل ده مسجل قبل كده، جرب تسجل دخول.',
+  'auth/invalid-credential':'رقم الموبايل أو كلمة السر غلط.',
+  'auth/user-not-found':'مفيش حساب بالرقم ده.',
+  'auth/wrong-password':'كلمة السر غلط.',
+  'auth/weak-password':'كلمة السر ضعيفة، لازم ٦ أحرف على الأقل.',
+  'auth/too-many-requests':'محاولات كتير، استنى شوية وحاول تاني.',
+  'auth/network-request-failed':'مشكلة في الاتصال بالإنترنت.',
+  'auth/operation-not-allowed':'تسجيل الدخول بالإيميل/كلمة السر مش مفعّل في Firebase (Authentication ← Sign-in method).',
+  'auth/configuration-not-found':'خدمة Authentication مش مفعّلة في Firebase، دوس Get started في Authentication.',
+  'auth/unauthorized-domain':'الدومين ده مش مضاف في Authorized domains في Firebase.',
+  'permission-denied':'مش مسموح بحفظ البيانات، راجع قواعد Firestore.',
+  'failed-precondition':'قاعدة بيانات Firestore لسه متعملتش في Firebase.',
+  'not-found':'قاعدة بيانات Firestore لسه متعملتش في Firebase.',
+  'unavailable':'تعذر الوصول لـ Firestore، اتأكد إنها اتعملت وجرب تاني.'
+};
+const errText = e => ERR[e.code] || ('حصلت مشكلة، حاول تاني. (' + (e.code || e.message || 'unknown') + ')');
+
+/* ---- page / views ---- */
+const page = $('authPage');
+const views = { login:$('vLogin'), signup:$('vSignup'), profile:$('vProfile') };
+function show(v){
+  Object.entries(views).forEach(([k, el]) => el.hidden = k !== v);
+  page.hidden = false; document.body.classList.add('modal-open'); page.scrollTop = 0;
+  clearErr(); ['lMsg','sMsg'].forEach(i => msg($(i), ''));
+  if(v === 'signup') goStep(1);
+}
+function hide(){ page.hidden = true; document.body.classList.remove('modal-open'); }
+$('apBack').addEventListener('click', hide);
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && !page.hidden) hide(); });
+page.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => show(b.dataset.go)));
+
+/* ---- segmented choices ---- */
+const choice = { mode:'', gender:'' };
+[['modeSeg','mode'], ['genderSeg','gender']].forEach(([id, key]) => {
+  $(id).addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b) return;
+    choice[key] = b.dataset.v;
+    $(id).querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  });
+});
+
+/* ---- steps ---- */
+let step = 1;
+const LBL = ['', 'الخطوة الأولى', 'الخطوة الثانية', 'الخطوة الثالثة'];
+function goStep(n){
+  step = n;
+  document.querySelectorAll('#signupForm .step').forEach(s => s.hidden = +s.dataset.step !== n);
+  $('progLbl').textContent = LBL[n]; $('progPct').textContent = Math.round(n / 3 * 100) + '%';
+  $('progBar').style.width = (n / 3 * 100) + '%';
+  $('stepBack').hidden = n === 1;
+  $('stepNext').textContent = n === 3 ? 'إنشاء الحساب' : 'التالي';
+  msg($('sMsg'), ''); clearErr();
+}
+$('stepBack').addEventListener('click', () => goStep(step - 1));
+function validate(n){
+  const m = $('sMsg'); clearErr();
+  if(n === 1){
+    for(const id of ['n1','n2','n3','n4']) if(!arName($(id).value)) return bad(id, 'اكتب الأسماء الأربعة بالعربي.', m);
+    if(!phoneOk($('sPhone').value)) return bad('sPhone', 'رقم الموبايل لازم يبدأ بـ 01 ويكون 11 رقم.', m);
+    if(!$('sGrade').value) return bad('sGrade', 'اختار الصف الدراسي.', m);
+  }
+  if(n === 2){
+    if(!phoneOk($('sParent').value)) return bad('sParent', 'رقم ولي الأمر لازم يبدأ بـ 01 ويكون 11 رقم.', m);
+    if($('sParent').value === $('sPhone').value) return bad('sParent', 'رقم ولي الأمر لازم يكون مختلف عن رقمك.', m);
+    if($('sSchool').value.trim().length < 2) return bad('sSchool', 'اكتب اسم المدرسة.', m);
+    if(!choice.mode) return msg(m, 'اختار سنتر ولا أونلاين.'), false;
+  }
+  if(n === 3){
+    if(!choice.gender) return msg(m, 'اختار ذكر ولا أنثى.'), false;
+    if(!/^\S+@\S+\.\S+$/.test($('sEmail').value.trim())) return bad('sEmail', 'اكتب بريد إلكتروني صحيح.', m);
+    if($('sPass').value.length < 6) return bad('sPass', 'كلمة السر لازم ٦ أحرف على الأقل.', m);
+    if($('sPass').value !== $('sPass2').value) return bad('sPass2', 'كلمتي السر مش متطابقتين.', m);
+  }
+  return true;
+}
+
+/* ---- state & profile ---- */
+let profile = null;
+const STATUS = {
+  pending:['قيد المراجعة', 'طلبك قيد المراجعة، وهنفعّل حسابك خلال ساعات.'],
+  active:['مفعّل', 'حسابك مفعّل. بالتوفيق!'],
+  suspended:['موقوف', 'حسابك موقوف حاليًا، كلّمنا لو محتاج مساعدة.']
+};
+async function loadProfile(u){
+  try{ const s = await getDoc(doc(db, 'users', u.uid)); profile = s.exists() ? s.data() : null; }
+  catch(e){ profile = null; }
+}
+function paintBtn(u){
+  const name = (profile && profile.n1) || (u && u.displayName || '').split(' ')[0] || '';
+  $('authBtn').classList.toggle('in', !!u);
+  $('authNm').textContent = u ? (isAdmin(u) ? 'لوحة التحكم' : (name || 'حسابي')) : 'دخول';
+  $('authAv').textContent = u ? (name[0] || '؟') : '';
+}
+function paintProfile(u){
+  const p = profile || {};
+  const full = p.fullName || u.displayName || '';
+  const st = STATUS[p.status] ? p.status : 'pending';
+  $('pfAv').textContent = full.trim()[0] || '؟';
+  $('pfName').textContent = full;
+  $('pfBadge').textContent = STATUS[st][0]; $('pfBadge').className = 'pf-badge ' + st;
+  $('pfNote').textContent = STATUS[st][1];
+  const since = u.metadata.creationTime ? new Date(u.metadata.creationTime).toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' }) : '';
+  const rows = [
+    ['الصف الدراسي', p.grade], ['رقم الموبايل', p.phone], ['المدرسة', p.school],
+    ['طريقة الدراسة', p.mode === 'center' ? 'سنتر' : p.mode === 'online' ? 'أونلاين' : ''],
+    ['تاريخ الانضمام', since]
+  ].filter(r => r[1]);
+  $('pfList').innerHTML = rows.map(r => `<div><span>${r[0]}</span><b></b></div>`).join('');
+  $('pfList').querySelectorAll('b').forEach((b, i) => b.textContent = rows[i][1]);
+}
+onAuthStateChanged(auth, async u => {
+  if(u) await loadProfile(u); else profile = null;
+  paintBtn(u);
+  if(u && !page.hidden && !views.profile.hidden) paintProfile(u);
+});
+$('authBtn').addEventListener('click', () => {
+  const u = auth.currentUser;
+  if(u && isAdmin(u)) openAdmin(); else if(u){ paintProfile(u); show('profile'); } else show('login');
+});
+
+/* ---- login ---- */
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault(); clearErr();
+  const raw = $('lPhone').value.trim(), isMail = raw.includes('@'), phone = digits(raw), pass = $('lPass').value, m = $('lMsg'), btn = e.submitter;
+  if(!isMail && !phoneOk(phone)) return bad('lPhone', 'اكتب رقم موبايل صحيح (11 رقم يبدأ بـ 01).', m);
+  if(!pass) return bad('lPass', 'اكتب كلمة السر.', m);
+  btn.disabled = true; msg(m, '');
+  try{
+    const { user } = await signInWithEmailAndPassword(auth, isMail ? raw : toEmail(phone), pass);
+    await loadProfile(user); paintBtn(user); paintProfile(user);
+    e.target.reset();
+    if(isAdmin(user)){ hide(); openAdmin(); } else show('profile');
+  }catch(err){ msg(m, errText(err)); }
+  btn.disabled = false;
+});
+
+/* ---- signup ---- */
+$('signupForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  if(!validate(step)) return;
+  if(step < 3){ goStep(step + 1); return; }
+  const m = $('sMsg'), btn = $('stepNext');
+  const names = ['n1','n2','n3','n4'].map(id => $(id).value.trim().replace(/\s+/g, ' '));
+  const data = {
+    n1:names[0], fullName:names.join(' '), phone:$('sPhone').value, grade:$('sGrade').value,
+    parentPhone:$('sParent').value, school:$('sSchool').value.trim(), mode:choice.mode,
+    gender:choice.gender, email:$('sEmail').value.trim(), status:'pending'
+  };
+  btn.disabled = true; msg(m, '');
+  let created = null;
+  try{
+    const { user } = await createUserWithEmailAndPassword(auth, toEmail(data.phone), $('sPass').value);
+    created = user;
+    await updateProfile(user, { displayName:data.fullName });
+    await setDoc(doc(db, 'users', user.uid), { ...data, createdAt:serverTimestamp() });
+    profile = data; paintBtn(user); paintProfile(user);
+    e.target.reset(); choice.mode = choice.gender = '';
+    document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    show('profile');
+  }catch(err){
+    console.error(err);
+    if(created){ try{ await created.delete(); }catch(_){} }
+    msg(m, errText(err));
+    if(err.code === 'auth/email-already-in-use'){ goStep(1); $('sPhone').closest('.inp').classList.add('err'); msg($('sMsg'), errText(err)); }
+  }
+  btn.disabled = false;
+});
+
+/* ---- logout ---- */
+$('logoutBtn').addEventListener('click', async () => { await signOut(auth); hide(); });
+
+/* ---- site content (public read) ---- */
+getDoc(doc(db, 'site', 'content')).then(s => {
+  const d = s.exists() ? s.data() : {};
+  Object.keys(d).forEach(k => { CONTENT[k] = { videos:[], notes:[], courses:[], ...d[k] }; });
+}).catch(() => {});
+
+/* ---- admin panel ---- */
+const adP = $('adminPage');
+let users = [];
+const STL = { pending:'قيد المراجعة', active:'مفعّل', suspended:'موقوف' };
+function openAdmin(){ adP.hidden = false; document.body.classList.add('modal-open'); loadUsers(); fillGrades(); }
+$('adClose').addEventListener('click', () => { adP.hidden = true; document.body.classList.remove('modal-open'); });
+$('adOut').addEventListener('click', async () => { await signOut(auth); $('adClose').click(); });
+$('adTabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  $('adTabs').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  $('adStu').hidden = b.dataset.t !== 'stu'; $('adCon').hidden = b.dataset.t !== 'con';
+});
+async function loadUsers(){
+  $('adList').innerHTML = '<p class="sub-h">جاري التحميل…</p>';
+  try{
+    const snap = await getDocs(collection(db, 'users'));
+    users = snap.docs.map(d => ({ id:d.id, ...d.data() })).sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    paintUsers();
+  }catch(e){ $('adList').innerHTML = '<p class="sub-h">تعذر تحميل الطلبة، راجع قواعد Firestore.</p>'; }
+}
+function paintUsers(){
+  const q = $('adQ').value.trim(), st = $('adS').value;
+  const c = k => users.filter(u => (u.status || 'pending') === k).length;
+  $('adStats').innerHTML = `<span>الكل: ${users.length}</span><span>قيد المراجعة: ${c('pending')}</span><span>مفعّل: ${c('active')}</span><span>موقوف: ${c('suspended')}</span>`;
+  const list = users.filter(u => (!st || (u.status || 'pending') === st) && (!q || (u.fullName || '').includes(q) || (u.phone || '').includes(q)));
+  $('adList').innerHTML = list.map(u => { const s = u.status || 'pending'; return `<div class="stu"><div class="i"><b>${esc(u.fullName || '')}</b><small>${esc(u.grade || '')} • ${esc(u.phone || '')} • ولي الأمر: ${esc(u.parentPhone || '')}</small><small>${esc(u.school || '')} • ${u.mode === 'center' ? 'سنتر' : 'أونلاين'} • ${esc(u.email || '')}</small></div><span class="bd ${s}">${STL[s]}</span>${s !== 'active' ? `<button class="on" data-id="${u.id}" data-s="active">تفعيل</button>` : ''}${s !== 'suspended' ? `<button class="off" data-id="${u.id}" data-s="suspended">إيقاف</button>` : ''}</div>`; }).join('') || '<p class="sub-h">مفيش نتائج.</p>';
+}
+$('adQ').addEventListener('input', paintUsers); $('adS').addEventListener('change', paintUsers);
+$('adList').addEventListener('click', async e => {
+  const b = e.target.closest('button[data-id]'); if(!b) return;
+  b.disabled = true;
+  try{ await updateDoc(doc(db, 'users', b.dataset.id), { status:b.dataset.s }); users.find(u => u.id === b.dataset.id).status = b.dataset.s; paintUsers(); }
+  catch(err){ b.disabled = false; alert('تعذر التحديث: ' + (err.code || '')); }
+});
+
+/* content editor */
+const ytId = v => { v = v.trim(); const m = v.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/); return m ? m[1] : v; };
+const parse = (txt, key) => txt.split('\n').map(l => l.trim()).filter(Boolean).map(l => { const i = l.lastIndexOf('|'); const t = i < 0 ? l : l.slice(0, i).trim(), v = i < 0 ? '' : l.slice(i + 1).trim(); return key === 'id' ? { t, id:ytId(v) } : { t, url:v }; }).filter(x => x.t && (x.id || x.url));
+const lines = (arr, key) => (arr || []).map(x => x.t + ' | ' + (key === 'id' ? 'https://youtu.be/' + x.id : x.url)).join('\n');
+function fillGrades(){
+  if($('edGrade').options.length) return;
+  $('edGrade').innerHTML = Object.keys(coursesData).map(k => `<option value="${k}">${esc(coursesData[k].title)}</option>`).join('');
+  loadEd();
+}
+function courseBlock(c){
+  c = c || { t:'', img:'', price:'', desc:'', videos:[], files:[] };
+  const d = document.createElement('div'); d.className = 'edc';
+  d.innerHTML = `<button type="button" class="x">حذف الكورس</button><input data-f="t" placeholder="اسم الكورس"><input data-f="img" placeholder="رابط الصورة (مثال: images/course1.webp)" dir="ltr"><input data-f="price" placeholder="السعر (اختياري)"><textarea data-f="desc" placeholder="وصف الكورس وتفاصيله"></textarea><label>فيديوهات الكورس (العنوان | لينك يوتيوب)</label><textarea data-f="videos"></textarea><label>ملفات الكورس (العنوان | لينك درايف)</label><textarea data-f="files"></textarea>`;
+  d.querySelector('[data-f=t]').value = c.t || ''; d.querySelector('[data-f=img]').value = c.img || ''; d.querySelector('[data-f=price]').value = c.price || '';
+  d.querySelector('[data-f=desc]').value = c.desc || ''; d.querySelector('[data-f=videos]').value = lines(c.videos, 'id'); d.querySelector('[data-f=files]').value = lines(c.files, 'url');
+  return d;
+}
+function loadEd(){
+  const d = CONTENT[$('edGrade').value] || DEF;
+  $('edVideos').value = lines(d.videos, 'id'); $('edNotes').value = lines(d.notes, 'url');
+  $('edCourses').innerHTML = ''; (d.courses || []).forEach(c => $('edCourses').appendChild(courseBlock(c))); msgEd('');
+}
+const msgEd = t => { $('edMsg').textContent = t; };
+$('edGrade').addEventListener('change', loadEd);
+$('edAdd').addEventListener('click', () => $('edCourses').appendChild(courseBlock()));
+$('edCourses').addEventListener('click', e => { if(e.target.classList.contains('x') && confirm('حذف الكورس؟')) e.target.closest('.edc').remove(); });
+$('edSave').addEventListener('click', async () => {
+  const g = $('edGrade').value, f = (b, k) => b.querySelector(`[data-f=${k}]`).value;
+  const data = {
+    videos:parse($('edVideos').value, 'id'), notes:parse($('edNotes').value, 'url'),
+    courses:[...$('edCourses').querySelectorAll('.edc')].map(b => ({ t:f(b, 't').trim(), img:f(b, 'img').trim(), price:f(b, 'price').trim(), desc:f(b, 'desc').trim(), videos:parse(f(b, 'videos'), 'id'), files:parse(f(b, 'files'), 'url') })).filter(c => c.t)
+  };
+  $('edSave').disabled = true; msgEd('');
+  try{ await setDoc(doc(db, 'site', 'content'), { [g]:data }, { merge:true }); CONTENT[g] = data; msgEd('تم الحفظ ✓'); }
+  catch(err){ msgEd('تعذر الحفظ: ' + (err.code || 'error')); }
+  $('edSave').disabled = false;
+});
 </script>
 
 </body>
