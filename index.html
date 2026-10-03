@@ -3,6 +3,7 @@
 <head>
 <meta name="google-site-verification" content="AdWBxb-n7zd79DslRVtZb86kg6VE-Yr_Sm-tZ4zLl0g" />
 <meta charset="UTF-8">
+<script>document.documentElement.classList.add("js")</script>
 <script>(function(l){if(l.search[1]==="/"){var d=l.search.slice(1).split("&").map(function(x){return x.replace(/~and~/g,"&")}).join("?");window.history.replaceState(null,null,l.pathname.slice(0,-1)+d+l.hash)}}(window.location))</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ميس نور الهدى | مدرسة لغة عربية للإعدادي والثانوي بالإسكندرية</title>
@@ -837,6 +838,119 @@
     .dp-chips{ justify-content:center; }
     .dp-main{ padding:20px; }
   }
+
+  /* ---------- Motion & interaction ---------- */
+  :root{ --ease:cubic-bezier(.2,.8,.2,1); }
+  @keyframes rvIn{ from{ opacity:0; transform:translateY(26px) scale(.97); } }
+  @keyframes viewIn{ from{ opacity:0; transform:translateY(12px); } }
+  @keyframes overlayUp{ from{ opacity:0; transform:translateY(24px) scale(.985); } }
+  @keyframes popIn{ from{ opacity:0; transform:scale(.9); } }
+  @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-9px); } }
+  @keyframes waPulse{ 0%{ transform:scale(1); opacity:.65; } 80%,100%{ transform:scale(1.75); opacity:0; } }
+  @keyframes rpl{ to{ transform:scale(1); opacity:0; } }
+  @keyframes shake{ 0%,100%{ transform:translateX(0); } 20%{ transform:translateX(-6px); } 40%{ transform:translateX(5px); } 60%{ transform:translateX(-4px); } 80%{ transform:translateX(3px); } }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @keyframes shimmer{ to{ background-position:-200% 0; } }
+  @keyframes barGrow{ from{ width:0; } }
+  @keyframes toastIn{ from{ opacity:0; transform:translateY(14px) scale(.96); } }
+
+  /* scroll progress + header state */
+  .scroll-progress{ position:fixed; inset:0 0 auto 0; height:3px; z-index:120; pointer-events:none; transform:scaleX(0); transform-origin:100% 50%; background:linear-gradient(90deg,var(--gold),var(--teal-300)); transition:opacity .25s ease; }
+  body.modal-open .scroll-progress{ opacity:0; }
+  header{ transition:background .3s ease, box-shadow .3s ease; }
+  .nav{ transition:padding .3s var(--ease); }
+  header.scrolled{ background:rgba(23,48,43,0.94); box-shadow:0 12px 30px -20px rgba(0,0,0,.7); }
+  header.scrolled .nav{ padding-block:11px; }
+  .nav-links a::after{ content:''; position:absolute; inset-inline:0; bottom:-6px; height:2px; background:var(--gold); border-radius:2px; transform:scaleX(0); transition:transform .3s var(--ease); }
+  .nav-links a:hover::after, .nav-links a.active::after{ transform:scaleX(1); }
+
+  /* staggered reveal */
+  .js .rv{ opacity:0; }
+  .stagger.in-view > .rv, .in-view .stagger > .rv{ opacity:1; animation:rvIn .75s var(--ease) var(--d,0ms) backwards; }
+  .section-reveal.stagger{ opacity:1; transform:none; }
+  .js .section-head.center h2::after{ width:0; transition:width .9s var(--ease) .3s; }
+  .js .section-head.center.in-view h2::after{ width:100px; }
+
+  /* hero */
+  .hero-stage{ animation:popIn 1s var(--ease) .15s backwards; }
+  .hero-stage .bob{ transform-box:fill-box; transform-origin:center; animation:bob 5s ease-in-out infinite; }
+  .hero-stage .b2{ animation-delay:-1.2s; animation-duration:6s; } .hero-stage .b3{ animation-delay:-2.4s; }
+  .hero-stage .b4{ animation-delay:-3.1s; animation-duration:5.5s; } .hero-stage .b5{ animation-delay:-.7s; } .hero-stage .b6{ animation-delay:-1.9s; animation-duration:6.5s; }
+  @media (hover:hover) and (pointer:fine){
+    .hero-stage > svg:first-child{ transform:translate3d(calc(var(--px,0) * -12px), calc(var(--py,0) * -10px), 0); transition:transform .3s ease-out; }
+    .hero-student img{ transform:translate3d(calc(var(--px,0) * 7px), calc(var(--py,0) * 5px), 0) scale(1.04); transform-origin:50% 100%; transition:transform .3s ease-out; }
+  }
+
+  /* spotlight cards */
+  @media (hover:hover) and (pointer:fine){
+    .why-card, .grade-card, .dp-info, .dp-nav{ position:relative; }
+    .why-card::before, .grade-card::before, .dp-info::before, .dp-nav::before{
+      content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0; z-index:3; transition:opacity .35s ease;
+      background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%), rgba(211,166,103,.17), transparent 62%);
+    }
+    .why-card:hover::before, .grade-card:hover::before, .dp-info:hover::before, .dp-nav:hover::before{ opacity:1; }
+  }
+
+  /* buttons: press, shine, ripple */
+  .btn-primary, .btn-light, .btn-ghost, .btn-outline-light, .ap-btn, .grade-btn, .dp-top, .dp-link, .opt, .auth-btn{ position:relative; overflow:hidden; -webkit-tap-highlight-color:transparent; }
+  .btn-primary:active, .btn-light:active, .btn-ghost:active, .btn-outline-light:active, .ap-btn:active, .dp-top:active, .dp-link:active, .opt:active, .auth-btn:active{ transform:scale(.97); }
+  .grade-card:active{ transform:translateY(-2px) scale(.985); }
+  .btn-primary::after, .ap-btn:not(.ghost)::after{
+    content:""; position:absolute; inset:0; pointer-events:none; transform:translateX(120%);
+    background:linear-gradient(110deg, transparent 30%, rgba(255,255,255,.6) 50%, transparent 70%); transition:transform .75s var(--ease);
+  }
+  .btn-primary:hover::after, .ap-btn:not(.ghost):hover::after{ transform:translateX(-120%); }
+  .ap-btn[disabled]::after{ display:none; }
+  .rpl{ position:absolute; border-radius:50%; background:currentColor; opacity:.22; transform:scale(0); animation:rpl .6s ease-out forwards; pointer-events:none; }
+  .ap-btn[disabled]::before{ content:""; display:inline-block; width:14px; height:14px; margin-inline-end:8px; border:2px solid currentColor; border-top-color:transparent; border-radius:50%; animation:spin .7s linear infinite; vertical-align:-2px; }
+
+  /* whatsapp pulse, testimonial dots, faq */
+  .wa-float::after{ content:""; position:absolute; inset:0; border-radius:50%; border:2px solid #25D366; pointer-events:none; animation:waPulse 2.6s ease-out infinite; }
+  .wa-float:hover::after{ animation-play-state:paused; opacity:0; }
+  .tdots button{ transition:width .3s var(--ease), background .3s ease; }
+  .tdots button.on{ width:26px; border-radius:99px; }
+  .faq-list details p{ overflow:hidden; }
+
+  /* overlays & views */
+  .ap:not([hidden]), .dp:not([hidden]), .sp:not([hidden]){ animation:fadeIn .3s ease; }
+  .ap:not([hidden]) .ap-grid, .dp:not([hidden]) .dp-in{ animation:overlayUp .55s var(--ease); }
+  .ap-view:not([hidden]), #signupForm .step:not([hidden]){ animation:viewIn .4s var(--ease); }
+  .dp-main > *{ animation:viewIn .45s var(--ease) backwards; }
+  .dp-main > .dp-grid{ animation:none; }
+  .dp-grid > .dp-info{ animation:viewIn .5s var(--ease) backwards; animation-delay:calc(var(--i,0) * 45ms); }
+  .dp-grid > :nth-child(1){--i:0} .dp-grid > :nth-child(2){--i:1} .dp-grid > :nth-child(3){--i:2} .dp-grid > :nth-child(4){--i:3}
+  .dp-grid > :nth-child(5){--i:4} .dp-grid > :nth-child(6){--i:5} .dp-grid > :nth-child(7){--i:6} .dp-grid > :nth-child(8){--i:7}
+  .dp-grid > :nth-child(9){--i:8} .dp-grid > :nth-child(10){--i:9} .dp-grid > :nth-child(11){--i:10} .dp-grid > :nth-child(12){--i:11}
+  .dp-h::after{ animation:barGrow .6s var(--ease) .15s backwards; }
+  .dp-chip{ animation:viewIn .5s var(--ease) backwards; }
+  .dp-chip:nth-child(2){ animation-delay:.08s; } .dp-chip:nth-child(3){ animation-delay:.16s; }
+  .dp-av{ animation:popIn .7s var(--ease) .1s backwards; }
+  .stu{ animation:viewIn .4s var(--ease) backwards; }
+  .stu:nth-child(2){ animation-delay:.04s; } .stu:nth-child(3){ animation-delay:.08s; } .stu:nth-child(4){ animation-delay:.12s; } .stu:nth-child(5){ animation-delay:.16s; }
+
+  /* forms */
+  .inp input, .inp select{ transition:border-color .2s ease, box-shadow .2s ease; }
+  .inp input:focus, .inp select:focus{ box-shadow:0 0 0 3px rgba(169,207,198,.2); }
+  .inp.err{ animation:shake .4s ease; }
+
+  /* image loading */
+  .grade-media{ background-size:200% 100%; background-image:linear-gradient(100deg,#25463f 30%,#2f5b4e 50%,#25463f 70%); animation:shimmer 1.6s linear infinite; }
+  .grade-media.ld{ animation:none; }
+  .js .grade-media img{ opacity:0; transition:opacity .6s ease, transform .6s ease; }
+  .js .grade-media img.loaded{ opacity:1; }
+
+  /* admin skeleton + toast */
+  .skel{ height:92px; border-radius:18px; margin-bottom:12px; background:linear-gradient(100deg,rgba(250,246,236,.04) 30%,rgba(250,246,236,.1) 50%,rgba(250,246,236,.04) 70%); background-size:200% 100%; animation:shimmer 1.4s linear infinite; }
+  .toast-wrap{ position:fixed; inset-inline:0; bottom:calc(26px + env(safe-area-inset-bottom,0px)); z-index:400; display:flex; flex-direction:column; align-items:center; gap:10px; pointer-events:none; }
+  .toast{ display:flex; align-items:center; gap:10px; background:var(--cream); color:var(--bg-alt); font-weight:800; padding:12px 22px; border-radius:999px; box-shadow:0 16px 36px -14px rgba(0,0,0,.7); animation:toastIn .4s var(--ease) backwards; transition:opacity .3s ease, transform .3s ease; }
+  .toast.out{ opacity:0; transform:translateY(10px); }
+  .toast i{ width:22px; height:22px; border-radius:50%; background:var(--teal-500); color:#10241f; font-style:normal; display:flex; align-items:center; justify-content:center; font-size:.8rem; }
+
+  @media (prefers-reduced-motion:reduce){
+    .js .rv, .js .grade-media img{ opacity:1 !important; }
+    .scroll-progress, .wa-float::after{ display:none; }
+    .js .section-head.center h2::after{ width:100px; }
+  }
 </style>
 <noscript><style>.section-reveal{opacity:1 !important; transform:none !important;}</style></noscript>
 </head>
@@ -887,12 +1001,12 @@
     <div class="hero-visual">
       <div class="hero-stage">
       <svg viewBox="0 0 360 360" fill="none" overflow="visible" aria-hidden="true" focusable="false">
-        <circle cx="60" cy="70" r="3" fill="#D3A667" opacity="0.7"/>
-        <circle cx="320" cy="90" r="2.5" fill="#A9CFC6" opacity="0.6"/>
-        <circle cx="40" cy="290" r="2.5" fill="#A9CFC6" opacity="0.5"/>
-        <circle cx="330" cy="280" r="3" fill="#D3A667" opacity="0.6"/>
-        <path d="M60 40 l5 5 l-5 5 l-5 -5 Z" fill="#A9CFC6" opacity="0.45"/>
-        <path d="M310 320 l5 5 l-5 5 l-5 -5 Z" fill="#D3A667" opacity="0.45"/>
+        <circle class="bob b1" cx="60" cy="70" r="3" fill="#D3A667" opacity="0.7"/>
+        <circle class="bob b2" cx="320" cy="90" r="2.5" fill="#A9CFC6" opacity="0.6"/>
+        <circle class="bob b3" cx="40" cy="290" r="2.5" fill="#A9CFC6" opacity="0.5"/>
+        <circle class="bob b4" cx="330" cy="280" r="3" fill="#D3A667" opacity="0.6"/>
+        <path class="bob b5" d="M60 40 l5 5 l-5 5 l-5 -5 Z" fill="#A9CFC6" opacity="0.45"/>
+        <path class="bob b6" d="M310 320 l5 5 l-5 5 l-5 -5 Z" fill="#D3A667" opacity="0.45"/>
         <circle cx="180" cy="180" r="172" fill="rgba(250,246,236,0.045)"/>
         <circle cx="180" cy="180" r="150" fill="none" stroke="rgba(250,246,236,0.1)" stroke-width="1"/>
       </svg>
@@ -1671,6 +1785,117 @@ window.addEventListener('popstate', applyRoute);
 applyRoute();
 </script>
 
+<script>
+/* ---- motion & interaction layer ---- */
+(function(){
+  const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FINE = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const $$ = (q, r = document) => [...r.querySelectorAll(q)];
+
+  /* scroll progress + header state */
+  const bar = document.createElement('div'); bar.className = 'scroll-progress'; bar.setAttribute('aria-hidden', 'true'); document.body.appendChild(bar);
+  const hdr = document.querySelector('header'); let queued = false;
+  const upd = () => {
+    queued = false;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, scrollY / max) : 0) + ')';
+    if(hdr) hdr.classList.toggle('scrolled', scrollY > 24);
+  };
+  addEventListener('scroll', () => { if(!queued){ queued = true; requestAnimationFrame(upd); } }, { passive:true });
+  addEventListener('resize', upd); upd();
+
+  /* staggered reveal for grids */
+  ['.why-list', '.grades', '.faq-list'].forEach(sel => $$(sel).forEach(box => {
+    box.classList.add('stagger');
+    [...box.children].forEach((c, i) => { c.classList.add('rv'); c.style.setProperty('--d', i * 110 + 'ms'); });
+  }));
+
+  /* grade images: fade in when loaded */
+  $$('.grade-media img').forEach(img => {
+    const done = () => { img.classList.add('loaded'); img.parentNode.classList.add('ld'); };
+    if(img.complete && img.naturalWidth) done(); else { img.addEventListener('load', done); img.addEventListener('error', done); }
+  });
+
+  /* pointer effects: card spotlight + hero parallax */
+  if(FINE && !RM){
+    let raf = 0, ev = null;
+    document.addEventListener('pointermove', e => {
+      ev = e; if(raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const c = ev.target.closest && ev.target.closest('.why-card, .grade-card, .dp-info, .dp-nav');
+        if(c){ const r = c.getBoundingClientRect(); c.style.setProperty('--mx', ev.clientX - r.left + 'px'); c.style.setProperty('--my', ev.clientY - r.top + 'px'); }
+      });
+    }, { passive:true });
+    const stage = document.querySelector('.hero-stage'), hero = document.querySelector('section.hero');
+    if(stage && hero){
+      hero.addEventListener('pointermove', e => {
+        const r = stage.getBoundingClientRect();
+        stage.style.setProperty('--px', Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - .5) * 2)).toFixed(3));
+        stage.style.setProperty('--py', Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height - .5) * 2)).toFixed(3));
+      }, { passive:true });
+      hero.addEventListener('pointerleave', () => { stage.style.setProperty('--px', 0); stage.style.setProperty('--py', 0); });
+    }
+  }
+
+  /* button ripple */
+  const RIP = '.btn-primary, .btn-light, .btn-ghost, .btn-outline-light, .ap-btn, .grade-btn, .dp-top, .dp-link, .opt, .auth-btn';
+  if(!RM) document.addEventListener('pointerdown', e => {
+    const b = e.target.closest && e.target.closest(RIP); if(!b || b.disabled) return;
+    const r = b.getBoundingClientRect(), d = Math.max(r.width, r.height) * 2, s = document.createElement('span');
+    s.className = 'rpl'; s.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d / 2}px;top:${e.clientY - r.top - d / 2}px`;
+    b.appendChild(s); s.addEventListener('animationend', () => s.remove());
+  }, { passive:true });
+
+  /* smooth FAQ accordion (one open at a time) */
+  const EASE = 'cubic-bezier(.2,.8,.2,1)';
+  function faqAnim(d, open){
+    const p = d.querySelector('summary ~ *');
+    if(RM || !p){ d.open = open; return; }
+    const cs = getComputedStyle(p), pt = cs.paddingTop, pb = cs.paddingBottom;
+    if(open){
+      d.open = true; const h = p.offsetHeight;
+      p.animate([{ height:'0px', paddingTop:'0px', paddingBottom:'0px', opacity:0 }, { height:h + 'px', paddingTop:pt, paddingBottom:pb, opacity:1 }], { duration:340, easing:EASE });
+    }else{
+      const h = p.offsetHeight;
+      p.animate([{ height:h + 'px', paddingTop:pt, paddingBottom:pb, opacity:1 }, { height:'0px', paddingTop:'0px', paddingBottom:'0px', opacity:0 }], { duration:260, easing:'ease' }).onfinish = () => { d.open = false; };
+    }
+  }
+  $$('.faq-list details').forEach(d => {
+    d.querySelector('summary').addEventListener('click', e => {
+      e.preventDefault();
+      const willOpen = !d.open;
+      if(willOpen) $$('.faq-list details[open]').forEach(o => { if(o !== d) faqAnim(o, false); });
+      faqAnim(d, willOpen);
+    });
+  });
+
+  /* testimonials autoplay (pauses on interaction / off-screen / hidden tab) */
+  const tr = document.getElementById('ttrack'), tc = document.getElementById('tcontrols'), tn = document.getElementById('tNext');
+  if(tr && tn && !RM){
+    let hold = false, vis = false, resume = 0;
+    const pause = () => { hold = true; clearTimeout(resume); };
+    const go = () => { clearTimeout(resume); resume = setTimeout(() => { hold = false; }, 4000); };
+    ['pointerenter', 'focusin', 'touchstart'].forEach(t => tr.addEventListener(t, pause, { passive:true }));
+    ['pointerleave', 'focusout', 'touchend'].forEach(t => tr.addEventListener(t, go, { passive:true }));
+    if('IntersectionObserver' in window) new IntersectionObserver(en => { vis = en[0].isIntersecting; }, { threshold:.4 }).observe(tr);
+    setInterval(() => {
+      if(hold || !vis || document.hidden || (tc && tc.hidden)) return;
+      const atEnd = Math.abs(tr.scrollLeft) + tr.clientWidth >= tr.scrollWidth - 4;
+      if(atEnd) tr.scrollTo({ left:0, behavior:'smooth' }); else tn.click();
+    }, 6500);
+  }
+
+  /* toast */
+  window.toast = function(msg){
+    let w = document.querySelector('.toast-wrap');
+    if(!w){ w = document.createElement('div'); w.className = 'toast-wrap'; w.setAttribute('role', 'status'); w.setAttribute('aria-live', 'polite'); document.body.appendChild(w); }
+    const t = document.createElement('div'); t.className = 'toast'; t.innerHTML = '<i aria-hidden="true">✓</i>'; t.appendChild(document.createTextNode(msg)); w.appendChild(t);
+    setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 320); }, 2600);
+  };
+})();
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -1886,6 +2111,14 @@ function openDash(u, tab = 'overview', course = -1){
   $('dashPage').hidden = false; document.body.classList.add('modal-open');
   paintDash(u); $('dashPage').scrollTop = 0;
   navTo(dashPath());
+  countMoney(Number((profile || {}).balance) || 0);
+}
+function countMoney(v){
+  const el = $('dpBal');
+  if(!v || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const t0 = performance.now();
+  const tick = t => { const p = Math.min((t - t0) / 1100, 1), e = 1 - Math.pow(1 - p, 3); el.textContent = money(Number.isInteger(v) ? Math.round(v * e) : v * e) + ' ج.م'; if(p < 1) requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
 }
 const dashPath = () => '/studentprofile/' + (dCourse >= 0 ? 'courses/' + (dCourse + 1) + '/' : dTab === 'overview' ? '' : TAB_SLUG[dTab] + '/');
 function closeDash(){ const was = !$('dashPage').hidden; $('dashPage').hidden = true; document.body.classList.remove('modal-open'); if(was) navTo('/'); }
@@ -2016,7 +2249,7 @@ $('adTabs').addEventListener('click', e => {
   adTab(b.dataset.t); navTo(b.dataset.t === 'con' ? '/admin-dash/content/' : '/admin-dash/');
 });
 async function loadUsers(){
-  $('adList').innerHTML = '<p class="sub-h">جاري التحميل…</p>';
+  $('adList').innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
   try{
     const snap = await getDocs(collection(db, 'users'));
     users = snap.docs.map(d => ({ id:d.id, ...d.data() })).sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
@@ -2034,7 +2267,7 @@ $('adQ').addEventListener('input', paintUsers); $('adS').addEventListener('chang
 $('adList').addEventListener('click', async e => {
   const b = e.target.closest('button[data-id]'); if(!b) return;
   b.disabled = true;
-  try{ await updateDoc(doc(db, 'users', b.dataset.id), { status:b.dataset.s }); users.find(u => u.id === b.dataset.id).status = b.dataset.s; paintUsers(); }
+  try{ await updateDoc(doc(db, 'users', b.dataset.id), { status:b.dataset.s }); users.find(u => u.id === b.dataset.id).status = b.dataset.s; paintUsers(); window.toast && toast({ active:'تم تفعيل الحساب', suspended:'تم إيقاف الحساب', pending:'تم تحويل الحساب لقيد المراجعة' }[b.dataset.s] || 'تم التحديث'); }
   catch(err){ b.disabled = false; alert('تعذر التحديث: ' + (err.code || '')); }
 });
 
@@ -2051,6 +2284,7 @@ $('adList').addEventListener('click', async e => {
     await updateDoc(doc(db, 'users', id), { balance: add ? increment(amt) : amt });
     u.balance = add ? Math.round(((Number(u.balance) || 0) + amt) * 100) / 100 : amt;
     paintUsers();
+    window.toast && toast(add ? 'تم شحن ' + money(amt) + ' ج.م' : 'تم تعيين الرصيد: ' + money(amt) + ' ج.م');
   }catch(err){ c.disabled = false; alert('تعذر التحديث: ' + (err.code || '')); }
 });
 
