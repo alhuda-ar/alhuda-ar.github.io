@@ -712,6 +712,32 @@
   .cc .b1,.cc .b2{ display:block; text-align:center; font-family:inherit; font-weight:800; cursor:pointer; border-radius:12px; padding:11px; font-size:.95rem; text-decoration:none; }
   .cc .b1{ background:transparent; color:var(--cream); border:1.5px solid var(--teal-300); }
   .cc .b2{ background:var(--cream); color:var(--bg-base); border:none; }
+  .cc .th{ position:relative; }
+  .cc .b1.locked{ display:flex; align-items:center; justify-content:center; gap:8px; color:var(--text-soft); border-color:var(--panel-border); }
+  .cc .b1.locked svg{ color:var(--gold); }
+  .lk-badge{ position:absolute; top:10px; inset-inline-start:10px; width:34px; height:34px; border-radius:50%; background:rgba(15,31,28,.82); color:var(--gold); display:flex; align-items:center; justify-content:center; border:1px solid rgba(211,166,103,.45); }
+  .cc .own{ text-align:center; font-weight:800; font-size:.92rem; color:var(--teal-300); background:rgba(169,207,198,.1); border:1px solid rgba(169,207,198,.28); border-radius:12px; padding:10px; }
+  .bp{ position:fixed; inset:0; z-index:250; background:rgba(7,15,13,.88); backdrop-filter:blur(6px); overflow:auto; padding:20px; display:flex; }
+  .bp[hidden]{ display:none; }
+  .bp-in{ margin:auto; width:100%; max-width:480px; background:var(--bg-alt); border:1px solid var(--panel-border); border-radius:24px; padding:22px; box-shadow:0 30px 70px -30px rgba(0,0,0,.7); }
+  .bp-x{ font-family:inherit; font-weight:700; cursor:pointer; background:var(--panel); color:var(--gold); border:1px solid var(--panel-border); border-radius:999px; padding:8px 18px; margin-bottom:16px; }
+  .bp .bp-th{ aspect-ratio:16/9; border-radius:14px; background:linear-gradient(135deg,#2f6b61,#1E3E38); display:flex; align-items:center; justify-content:center; font-size:2.4rem; overflow:hidden; }
+  .bp .bp-th img{ width:100%; height:100%; object-fit:cover; }
+  .bp h3{ color:var(--cream); font-weight:800; font-size:1.3rem; margin:16px 0 8px; }
+  .bp .bp-d{ color:var(--text-soft); line-height:1.8; font-size:.95rem; }
+  .bp .bp-m{ display:flex; gap:10px; flex-wrap:wrap; margin:14px 0; }
+  .bp .bp-m span{ background:var(--panel); border:1px solid var(--panel-border); color:var(--teal-300); font-weight:700; font-size:.85rem; padding:6px 14px; border-radius:99px; }
+  .bp .bp-rows{ background:var(--panel); border:1px solid var(--panel-border); border-radius:16px; padding:6px 16px; margin:16px 0; }
+  .bp .bp-r{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:11px 0; border-bottom:1px dashed var(--line); color:var(--text-soft); font-weight:700; }
+  .bp .bp-r:last-child{ border-bottom:0; }
+  .bp .bp-r b{ color:var(--cream); font-weight:800; }
+  .bp .bp-r.pr b{ color:var(--gold); font-size:1.25rem; }
+  .bp .bp-r.bad b{ color:#f0a39a; }
+  .bp .bp-note{ border-radius:14px; padding:12px 14px; font-weight:700; line-height:1.7; font-size:.92rem; margin-bottom:14px; background:rgba(169,207,198,.1); border:1px solid rgba(169,207,198,.28); color:var(--teal-300); }
+  .bp .bp-note.bad{ background:rgba(240,163,154,.1); border-color:rgba(240,163,154,.4); color:#f0a39a; }
+  .bp .bp-btn{ display:block; width:100%; text-align:center; text-decoration:none; font-family:inherit; font-weight:800; font-size:1rem; cursor:pointer; border-radius:14px; padding:13px; border:none; background:var(--cream); color:var(--bg-base); margin-top:10px; }
+  .bp .bp-btn.alt{ background:transparent; color:var(--cream); border:1.5px solid var(--teal-300); }
+  .bp .bp-btn:disabled{ opacity:.45; cursor:not-allowed; }
   .sub-h{ color:var(--teal-300); font-weight:700; margin:22px 0 12px; font-size:1.05rem; }
 
   /* ---------- Admin dashboard ---------- */
@@ -1655,6 +1681,7 @@
   </div>
 </div>
 
+<div class="bp" id="buyPage" hidden><div class="bp-in" id="buyBody"></div></div>
 <div class="sp" id="secPage" hidden><div class="sp-in"><button type="button" class="sp-back" id="spBack">← رجوع</button><h2 id="spTitle"></h2><div id="spBody"></div></div></div>
 
 <script>
@@ -1801,10 +1828,28 @@ function replaceTo(path){ history.replaceState(null, '', path); syncMeta(); }
   const esc = x => String(x).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   const vidH = v => `<div class="vid"><h4>${esc(v.t)}</h4><div class="vf"><iframe src="https://www.youtube.com/embed/${esc(v.id)}" title="${esc(v.t)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>`;
   const fileH = f => `<div class="fr"><span>📄</span><b>${esc(f.t)}</b><button type="button" data-dl="${esc(f.url)}">⬇ تحميل</button></div>`;
-  const courseCard = (c, i) => `<div class="cc"><div class="th">${c.img ? `<img src="${esc(c.img)}" alt="" loading="lazy">` : '⭐'}</div><h4>${esc(c.t)}</h4>${c.price ? `<div class="pr">${esc(c.price)}</div>` : ''}<p>${esc(c.desc)}</p><button type="button" class="b1" data-course="${i}">الدخول للكورس</button><a class="b2" href="#contact" data-sub>الاشتراك في الكورس !</a></div>`;
+  /* ---- أسعار الكورسات والاشتراك ---- */
+  const priceOf = c => {
+    const t = String((c && c.price) || '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/٫/g, '.').replace(/(\d)[,،](?=\d{3}(?!\d))/g, '$1');
+    const m = t.match(/\d+(?:\.\d+)?/);
+    return m ? Math.round(parseFloat(m[0]) * 100) / 100 : 0;
+  };
+  const ownedSet = new Set();
+  window.__acc = { admin:false };
+  const isLocked = c => !!c && priceOf(c) > 0 && !window.__acc.admin && !ownedSet.has(c.id);
+  const LOCK_IC = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+  const courseCard = (c, i) => {
+    const lk = isLocked(c), own = priceOf(c) > 0 && ownedSet.has(c.id);
+    return `<div class="cc"><div class="th">${c.img ? `<img src="${esc(c.img)}" alt="" loading="lazy">` : '⭐'}${lk ? `<span class="lk-badge">${LOCK_IC}</span>` : ''}</div><h4>${esc(c.t)}</h4>${c.price ? `<div class="pr">${esc(c.price)}</div>` : ''}<p>${esc(c.desc)}</p><button type="button" class="b1${lk ? ' locked' : ''}" data-course="${i}">${lk ? LOCK_IC : ''}الدخول للكورس</button>${lk ? `<button type="button" class="b2" data-buy="${i}">الاشتراك في الكورس !</button>` : own ? '<div class="own">✓ أنت مشترك في الكورس</div>' : '<a class="b2" href="#contact" data-sub>الاشتراك في الكورس !</a>'}</div>`;
+  };
   function paintSec(kind, ci){
     const d = CONTENT[curGrade] || DEF, sp = document.getElementById('spBody'), tt = document.getElementById('spTitle');
     const g = (coursesData[curGrade] || {}).title || '';
+    if(kind === 'course'){
+      const cc = d.courses[ci];
+      if(!cc) return paintSec('courses');
+      if(isLocked(cc)){ paintSec('courses'); if(window.openBuy) window.openBuy(curGrade, ci, 'sec'); return; }
+    }
     spView = kind === 'course' ? 'course' : kind;
     if(kind === 'videos'){ tt.textContent = '🎬 الفيديوهات التعليمية – ' + g; sp.innerHTML = d.videos.map(vidH).join('') || EMPTY; }
     if(kind === 'notes'){ tt.textContent = '📄 المذكرات والملازم – ' + g; sp.innerHTML = d.notes.map(fileH).join('') || EMPTY; }
@@ -1831,6 +1876,7 @@ function replaceTo(path){ history.replaceState(null, '', path); syncMeta(); }
   document.getElementById('modalTopics').addEventListener('click', e => { const b = e.target.closest('[data-sec]'); if(b) paintSec(b.dataset.sec); });
   document.getElementById('secPage').addEventListener('click', e => {
     const d = e.target.closest('[data-dl]'); if(d) return dl(d.dataset.dl);
+    const bb = e.target.closest('[data-buy]'); if(bb) return window.openBuy && window.openBuy(curGrade, +bb.dataset.buy, 'sec');
     const c = e.target.closest('[data-course]'); if(c) return paintSec('course', +c.dataset.course);
     if(e.target.closest('[data-sub]')){ document.getElementById('secPage').hidden = true; document.body.classList.remove('modal-open'); navTo('/'); }
   });
@@ -2006,6 +2052,7 @@ function replaceTo(path){ history.replaceState(null, '', path); syncMeta(); }
 function hideOverlays(){
   document.getElementById('courseModal').classList.remove('open');
   document.getElementById('secPage').hidden = true;
+  document.getElementById('buyPage').hidden = true;
   document.body.classList.remove('modal-open');
   if(window.__authHooks) window.__authHooks.closeAll();
 }
@@ -2153,7 +2200,7 @@ applyRoute();
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, getDocs, collection, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, getDocs, collection, serverTimestamp, increment, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const app = initializeApp({
   apiKey: "AIzaSyDHKNywy1vuzskBAJjD0QRMlhjNuI-r57Q",
@@ -2285,6 +2332,13 @@ const STATUS = {
 async function loadProfile(u){
   try{ const s = await getDoc(doc(db, 'users', u.uid)); profile = s.exists() ? s.data() : null; }
   catch(e){ profile = null; }
+  syncOwned();
+}
+function syncOwned(){
+  ownedSet.clear();
+  const pu = profile && profile.purchased;
+  if(pu && typeof pu === 'object') Object.keys(pu).forEach(k => ownedSet.add(k));
+  window.__acc.admin = isAdmin(auth.currentUser);
 }
 function paintBtn(u){
   const name = (profile && profile.n1) || (u && u.displayName || '').split(' ')[0] || '';
@@ -2311,8 +2365,9 @@ function paintProfile(u){
 }
 let _authOk; const authReady = new Promise(r => { _authOk = r; });
 onAuthStateChanged(auth, async u => {
-  if(u) await loadProfile(u); else profile = null;
+  if(u) await loadProfile(u); else { profile = null; syncOwned(); }
   paintBtn(u);
+  if(!document.getElementById('secPage').hidden && spView === 'courses') paintSec('courses');
   if(u && !page.hidden && !views.profile.hidden) paintProfile(u);
   if(!u) closeDash(); else if(!$('dashPage').hidden) paintDash(u);
   _authOk();
@@ -2354,6 +2409,7 @@ const SOON = {
 const GKEY = { 'الأول الإعدادي':'prep1', 'الثاني الإعدادي':'prep2', 'الثالث الإعدادي':'prep3', 'الأول الثانوي':'sec1', 'الثاني الثانوي':'sec2' };
 const money = n => (Math.round((Number(n) || 0) * 100) / 100).toLocaleString('ar-EG', { maximumFractionDigits:2 });
 let dTab = 'overview', dCourse = -1;
+const dGrade = () => GKEY[(profile || {}).grade];
 const dContent = () => { const k = GKEY[(profile || {}).grade]; return (k && CONTENT[k]) || { videos:[], notes:[], courses:[] }; };
 
 function route(u){
@@ -2407,7 +2463,8 @@ function paintTab(){
   }else if(dTab === 'notes'){
     box.innerHTML = head('المذكرات والملازم') + (d.notes.map(fileH).join('') || EMPTY);
   }else if(dTab === 'courses'){
-    const c = d.courses[dCourse];
+    let c = d.courses[dCourse];
+    if(c && isLocked(c)){ const ix = dCourse; dCourse = -1; c = null; navTo(dashPath()); setTimeout(() => openBuy(dGrade(), ix, 'dash'), 0); }
     if(c) box.innerHTML = `<button type="button" class="dp-link" data-dback>← الكورسات</button>${head(esc(c.t))}<p style="color:var(--text-soft);line-height:1.8;margin-bottom:8px">${esc(c.desc || '')}</p><div class="sub-h">الفيديوهات التعليمية</div>${(c.videos || []).map(vidH).join('') || EMPTY}<div class="sub-h">الملفات</div>${(c.files || []).map(fileH).join('') || EMPTY}`;
     else box.innerHTML = head('الكورسات') + (d.courses.length ? '<div class="cgrid">' + d.courses.map(courseCard).join('') + '</div>' : EMPTY);
   }else{
@@ -2421,13 +2478,90 @@ $('dpNav').addEventListener('click', e => {
 });
 $('dpMain').addEventListener('click', e => {
   const x = e.target.closest('[data-dl]'); if(x) return dl(x.dataset.dl);
-  const c = e.target.closest('[data-course]'); if(c){ dCourse = +c.dataset.course; paintTab(); navTo(dashPath()); return; }
+  const bb = e.target.closest('[data-buy]'); if(bb) return openBuy(dGrade(), +bb.dataset.buy, 'dash');
+  const c = e.target.closest('[data-course]'); if(c){
+    const cc = dContent().courses[+c.dataset.course];
+    if(cc && isLocked(cc)) return openBuy(dGrade(), +c.dataset.course, 'dash');
+    dCourse = +c.dataset.course; paintTab(); navTo(dashPath()); return;
+  }
   if(e.target.closest('[data-dback]')){ dCourse = -1; paintTab(); navTo(dashPath()); return; }
   if(e.target.closest('[data-sub]')) closeDash();
 });
 $('dpBack').addEventListener('click', closeDash);
 $('dpOut').addEventListener('click', async () => { await signOut(auth); closeDash(); });
 document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('dashPage').hidden) closeDash(); });
+
+/* ---- course purchase (wallet) ---- */
+const buyEl = $('buyPage'), buyBody = $('buyBody');
+let BUY = null, buying = false;
+const closeBuy = () => { buyEl.hidden = true; BUY = null; };
+function enterCourse(b){
+  if(b.ctx === 'dash'){ dTab = 'courses'; dCourse = b.ci; paintTab(); navTo(dashPath()); }
+  else { curGrade = b.g; paintSec('course', b.ci); }
+}
+window.openBuy = async (g, ci, ctx) => {
+  await authReady;
+  const c = ((CONTENT[g] || DEF).courses || [])[ci]; if(!c) return;
+  BUY = { g, ci, ctx, c };
+  if(!isLocked(c)){ BUY = null; return enterCourse({ g, ci, ctx }); }
+  renderBuy();
+  buyEl.hidden = false; buyEl.scrollTop = 0;
+};
+function renderBuy(){
+  const { c } = BUY, u = auth.currentUser, price = priceOf(c);
+  const meta = `<div class="bp-m"><span>🎬 ${nfmt((c.videos || []).length)} فيديو</span><span>📄 ${nfmt((c.files || []).length)} ملف</span></div>`;
+  const head = `<button type="button" class="bp-x" data-bclose>← رجوع</button><div class="bp-th">${c.img ? `<img src="${esc(c.img)}" alt="" onerror="this.remove()">` : '⭐'}</div><h3>${esc(c.t)}</h3><p class="bp-d">${esc(c.desc || '')}</p>${meta}`;
+  let h = head, rows = `<div class="bp-r pr"><span>سعر الكورس</span><b>${money(price)} ج.م</b></div>`;
+  if(!u){
+    h += `<div class="bp-rows">${rows}</div><div class="bp-note">لازم تسجّل دخولك الأول عشان تقدر تشترك في الكورس.</div><button type="button" class="bp-btn" data-blogin>تسجيل الدخول</button>`;
+  }else if(!profile || profile.status !== 'active'){
+    h += `<div class="bp-rows">${rows}</div><div class="bp-note bad">حسابك لسه مش مفعّل، تقدر تشترك أول ما يتفعّل.</div>`;
+  }else{
+    const bal = Number(profile.balance) || 0, ok = bal + 1e-9 >= price, left = Math.round((bal - price) * 100) / 100;
+    rows += `<div class="bp-r"><span>رصيد محفظتك</span><b>${money(bal)} ج.م</b></div>`;
+    rows += ok ? `<div class="bp-r"><span>الرصيد بعد الاشتراك</span><b>${money(left)} ج.م</b></div>` : `<div class="bp-r bad"><span>المبلغ الناقص</span><b>${money(Math.round((price - bal) * 100) / 100)} ج.م</b></div>`;
+    h += `<div class="bp-rows">${rows}</div>`;
+    if(ok) h += `<div class="bp-note">هيتم خصم ${money(price)} ج.م من محفظتك وتدخل الكورس على طول.</div><button type="button" class="bp-btn" data-bconfirm>تأكيد الاشتراك وخصم ${money(price)} ج.م</button>`;
+    else h += `<div class="bp-note bad">رصيدك مش كافي للاشتراك في الكورس. اشحن محفظتك وارجع كمّل.</div><a class="bp-btn" target="_blank" rel="noopener" href="${waSupport('أهلاً، عايز أشحن رصيد في حسابي عشان أشترك في كورس: ' + c.t + '\nالاسم: ' + (profile.fullName || u.displayName || '') + '\nرقم الموبايل: ' + (profile.phone || ''))}">اشحن رصيدك</a><button type="button" class="bp-btn alt" disabled>الاشتراك في الكورس</button>`;
+  }
+  buyBody.innerHTML = h;
+}
+async function confirmBuy(btn){
+  if(buying || !BUY) return;
+  const u = auth.currentUser; if(!u) return;
+  const b = BUY, c = b.c, price = priceOf(c), cid = String(c.id);
+  if(!/^[\w-]+$/.test(cid) || !(price > 0)) return;
+  buying = true; btn.disabled = true; btn.textContent = 'جاري الاشتراك…';
+  const ref = doc(db, 'users', u.uid);
+  try{
+    const r = await runTransaction(db, async tx => {
+      const sn = await tx.get(ref);
+      if(!sn.exists()) throw { code:'no-profile' };
+      const d = sn.data();
+      if(d.status !== 'active') throw { code:'inactive' };
+      const bal = Number(d.balance) || 0;
+      if(d.purchased && d.purchased[cid]) return { balance:bal, purchased:d.purchased };
+      if(bal + 1e-9 < price) throw { code:'insufficient', balance:bal };
+      const nb = Math.round((bal - price) * 100) / 100;
+      tx.update(ref, { balance:nb, ['purchased.' + cid]:{ at:serverTimestamp(), price, title:c.t || '' } });
+      return { balance:nb, purchased:{ ...(d.purchased || {}), [cid]:{ price, title:c.t || '' } } };
+    });
+    profile = { ...profile, balance:r.balance, purchased:r.purchased }; syncOwned();
+    if(!$('dashPage').hidden) $('dpBal').textContent = money(r.balance) + ' ج.م';
+    closeBuy(); window.toast && toast('تم الاشتراك في الكورس بنجاح');
+    enterCourse(b);
+  }catch(err){
+    if(err && err.code === 'insufficient'){ profile = { ...profile, balance:err.balance }; renderBuy(); window.toast && toast('رصيدك مش كافي للاشتراك', 'err'); }
+    else{ renderBuy(); window.toast && toast(err && err.code === 'permission-denied' ? 'مفيش صلاحية لإتمام الاشتراك، كلّم الدعم' : 'تعذر إتمام الاشتراك: ' + ((err && err.code) || 'error'), 'err'); }
+  }
+  buying = false;
+}
+buyEl.addEventListener('click', e => {
+  if(e.target === buyEl || e.target.closest('[data-bclose]')) return closeBuy();
+  if(e.target.closest('[data-blogin]')){ closeBuy(); return show('login'); }
+  const cb = e.target.closest('[data-bconfirm]'); if(cb) confirmBuy(cb);
+});
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && !buyEl.hidden){ e.stopPropagation(); closeBuy(); } }, true);
 
 /* ---- login ---- */
 $('loginForm').addEventListener('submit', async e => {
@@ -2550,6 +2684,7 @@ getDoc(doc(db, 'site', 'content')).then(s => {
   Object.keys(d).forEach(k => {
     if(k === 'reviews'){ REV_SAVED = Array.isArray(d[k]) ? d[k] : null; return; }
     CONTENT[k] = { videos:[], notes:[], courses:[], ...d[k] };
+    if(Array.isArray(CONTENT[k].courses)) CONTENT[k].courses = CONTENT[k].courses.map((c, i) => c && !c.id ? { ...c, id:k + '_' + i } : c);
   });
   renderReviews();
   if(!$('dashPage').hidden) paintTab();
@@ -2724,7 +2859,7 @@ $('adList').addEventListener('input', e => { if(e.target.matches('input')) e.tar
 /* ---- shared editor helpers ---- */
 const NEWI = {
   videos:() => ({ t:'', id:'' }), notes:() => ({ t:'', url:'' }), files:() => ({ t:'', url:'' }),
-  courses:() => ({ t:'', img:'', price:'', desc:'', videos:[], files:[], _o:true }),
+  courses:() => ({ id:'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), t:'', img:'', price:'', desc:'', videos:[], files:[], _o:true }),
   rev:() => ({ name:'', role:'', text:'', img:'', rating:5, show:true })
 };
 const hasData = it => Object.values(it).some(v => (typeof v === 'string' && v.trim()) || (Array.isArray(v) && v.length));
@@ -2785,7 +2920,7 @@ function bindEditor(box, base, rerender){
 function edLoad(){
   const src = CONTENT[ED.g], d = clone(src || DEF);
   ED.saved = !!src;
-  ED.data = { videos:d.videos || [], notes:d.notes || [], courses:(d.courses || []).map(c => ({ t:'', img:'', price:'', desc:'', ...c, videos:c.videos || [], files:c.files || [] })) };
+  ED.data = { videos:d.videos || [], notes:d.notes || [], courses:(d.courses || []).map((c, i) => ({ t:'', img:'', price:'', desc:'', ...c, id:c.id || (ED.g + '_' + i), videos:c.videos || [], files:c.files || [] })) };
   dirtyC = false;
 }
 function setGrade(g){
@@ -2807,7 +2942,7 @@ const noteCard = (f, i, n) => `<div class="it" style="--c:var(--a-sky)"><div cla
   + `<p class="hint">لازم الملف يكون متاح لأي حد معاه الرابط (Anyone with the link) عشان الطلاب يقدروا يحمّلوه.</p></div>`;
 const subRows = (p, arr, kind) => arr.map((x, i) => `<div class="row"><span class="row-n">${i + 1}</span><div class="rf">${inp(p, i, 't', x.t, kind === 'id' ? 'عنوان المحاضرة' : 'اسم الملف')}${kind === 'id' ? inp(p, i, 'id', showYt(x.id), 'رابط يوتيوب', { ltr:true, bad:!!x.id && !isYt(x.id) }) : inp(p, i, 'url', x.url, 'رابط جوجل درايف', { ltr:true, bad:!!x.url && !isDrive(x.url) })}</div>${tools(p, i, arr.length)}</div>`).join('');
 const edCourseCard = (c, i, n) => `<details class="course" data-i="${i}"${c._o ? ' open' : ''}><summary><span class="it-n" style="--c:var(--a-violet)">${i + 1}</span><span class="cs-img">${safeUrl(c.img) ? `<img src="${esc(c.img)}" alt="" onerror="this.remove()">` : ai('courses')}</span><span class="cs-w"><span class="cs-t">${esc(c.t.trim() || 'كورس جديد')}</span><span class="cs-m">${nfmt(c.videos.length)} فيديو • ${nfmt(c.files.length)} ملف${c.price ? ' • ' + esc(c.price) : ''}</span></span>${tools('courses', i, n, true)}<span class="chev">${ai('chev')}</span></summary>`
-  + `<div class="course-body"><div class="cb-top"><div>${fld('text', 'اسم الكورس', inp('courses', i, 't', c.t, 'مثال: كورس النحو المكثف'))}${fld('tag', 'السعر (اختياري)', inp('courses', i, 'price', c.price, 'مثال: 250 ج.م'))}${fld('chat', 'وصف الكورس', `<textarea data-p="courses" data-i="${i}" data-k="desc" placeholder="وصف الكورس وتفاصيله">${esc(c.desc || '')}</textarea>`)}</div>`
+  + `<div class="course-body"><div class="cb-top"><div>${fld('text', 'اسم الكورس', inp('courses', i, 't', c.t, 'مثال: كورس النحو المكثف'))}${fld('tag', 'السعر بالجنيه (فاضي = كورس مجاني)', inp('courses', i, 'price', c.price, 'مثال: 250 ج.م'))}${fld('chat', 'وصف الكورس', `<textarea data-p="courses" data-i="${i}" data-k="desc" placeholder="وصف الكورس وتفاصيله">${esc(c.desc || '')}</textarea>`)}</div>`
   + `<div><div class="it-thumb">${safeUrl(c.img) ? `<img src="${esc(c.img)}" alt="" onerror="this.remove()">` : `<div class="ph">${ai('image')}<span>معاينة الصورة</span></div>`}</div>${fld('image', 'رابط صورة الكورس', inp('courses', i, 'img', c.img, '/images/course1.webp', { ltr:true }))}</div></div>`
   + `<div class="cb-two"><div class="sub"><div class="sub-t">${ai('videos')}فيديوهات الكورس<span class="gc">${nfmt(c.videos.length)}</span></div>${subRows(`courses.${i}.videos`, c.videos, 'id')}${addBtn(`courses.${i}.videos`, 'إضافة فيديو')}</div><div class="sub"><div class="sub-t">${ai('notes')}ملفات الكورس<span class="gc">${nfmt(c.files.length)}</span></div>${subRows(`courses.${i}.files`, c.files, 'url')}${addBtn(`courses.${i}.files`, 'إضافة ملف')}</div></div></div></details>`;
 function paintEd(){
@@ -2846,7 +2981,7 @@ function cleanContent(d){
     const cv = [], cf = [];
     if((e = list(c.videos, `courses.${i}.videos`, 'id', cv))) return e;
     if((e = list(c.files, `courses.${i}.files`, 'url', cf))) return e;
-    courses.push({ t, img, price:(c.price || '').trim(), desc:(c.desc || '').trim(), videos:cv, files:cf });
+    courses.push({ id:c.id || ('c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6)), t, img, price:(c.price || '').trim(), desc:(c.desc || '').trim(), videos:cv, files:cf });
   }
   return { data:{ videos, notes, courses } };
 }
@@ -2908,7 +3043,7 @@ async function saveRev(){
 window.__contentP.then(() => { if(!adP.hidden){ if(!dirtyC) edLoad(); if(!dirtyR) revLoad(); adTab(adSec); } });
 
 /* ---- URL routes for account pages ---- */
-function closeAllAuth(){ silent(() => { page.hidden = true; $('dashPage').hidden = true; adP.hidden = true; document.body.classList.remove('modal-open'); }); }
+function closeAllAuth(){ silent(() => { closeBuy(); page.hidden = true; $('dashPage').hidden = true; adP.hidden = true; document.body.classList.remove('modal-open'); }); }
 async function applyAuthRoute(r){
   await authReady;
   const same = () => parseRoute(location.pathname).name === r.name;
