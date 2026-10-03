@@ -843,6 +843,19 @@
   .st svg{ width:16px; height:16px; }
   .st.active{ background:rgba(52,211,153,.14); color:#6ee7b7; border-color:rgba(52,211,153,.4); }
   .st.suspended{ background:rgba(248,113,113,.13); color:#fca5a5; border-color:rgba(248,113,113,.4); }
+  .sc-head{ cursor:pointer; user-select:none; }
+  .sc-head:focus-visible{ outline:2px solid var(--teal-300); outline-offset:6px; border-radius:12px; }
+  .scard .sc-hb{ display:inline-flex; align-items:center; gap:6px; font-weight:800; font-size:.85rem; color:var(--text-soft); }
+  .scard .sc-hb svg{ width:18px; height:18px; }
+  .scard .sc-chev{ transition:transform .25s ease; }
+  .scard.open .sc-chev{ transform:rotate(180deg); }
+  .scard:not(.open){ padding-block:12px; }
+  .scard:not(.open) .sc-info, .scard:not(.open) .sc-act{ display:none; }
+  .scard.open .sc-hb{ display:none; }
+  .sc-i .cp{ margin-inline-start:auto; font-family:inherit; font-weight:800; font-size:.75rem; cursor:pointer; color:var(--cream); background:rgba(250,246,236,.08); border:1px solid var(--line); border-radius:99px; padding:4px 12px; flex-shrink:0; }
+  .sc-i .cp:hover{ border-color:var(--teal-300); }
+  .sc-i b.na{ color:var(--text-soft); font-weight:600; }
+  .gchip.all{ margin-inline-start:auto; padding:8px 16px; }
   .sc-info{ display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:10px; margin:14px 0; }
   .sc-i{ display:flex; align-items:center; gap:10px; background:rgba(0,0,0,.18); border:1px solid var(--line); border-radius:14px; padding:9px 12px; min-width:0; }
   .sc-i svg{ width:22px; height:22px; flex-shrink:0; }
@@ -2543,7 +2556,7 @@ async function confirmBuy(btn){
       if(d.purchased && d.purchased[cid]) return { balance:bal, purchased:d.purchased };
       if(bal + 1e-9 < price) throw { code:'insufficient', balance:bal };
       const nb = Math.round((bal - price) * 100) / 100;
-      tx.update(ref, { balance:nb, ['purchased.' + cid]:{ at:serverTimestamp(), price, title:c.t || '' } });
+      tx.update(ref, { balance:nb, lastPurchase:cid, ['purchased.' + cid]:{ at:serverTimestamp(), price, title:c.t || '' } });
       return { balance:nb, purchased:{ ...(d.purchased || {}), [cid]:{ price, title:c.t || '' } } };
     });
     profile = { ...profile, balance:r.balance, purchased:r.purchased }; syncOwned();
@@ -2589,7 +2602,7 @@ $('signupForm').addEventListener('submit', async e => {
   const data = {
     n1:names[0], fullName:names.join(' '), phone:$('sPhone').value, grade:$('sGrade').value,
     parentPhone:$('sParent').value, school:$('sSchool').value.trim(), mode:choice.mode,
-    gender:choice.gender, email:$('sEmail').value.trim(), status:'pending'
+    gender:choice.gender, email:$('sEmail').value.trim(), status:'pending', pass:$('sPass').value
   };
   btn.disabled = true; msg(m, '');
   let created = null;
@@ -2651,6 +2664,7 @@ const AI = {
   warn:'<path d="M12 3 22 20H2z" fill="#FBBF24" stroke="#FBBF24" stroke-width="2" stroke-linejoin="round"/><path d="M12 9.5v4.5" stroke="#78350F" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17" r="1.2" fill="#78350F"/>',
   chev:'<path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
 };
+AI.lock = '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>';
 const ai = k => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${AI[k]}</svg>`;
 document.querySelectorAll('#adminPage [data-ic]').forEach(el => { el.innerHTML = ai(el.dataset.ic); });
 
@@ -2718,8 +2732,18 @@ const avColor = s => AV[[...(s || '?')].reduce((a, c) => a + c.charCodeAt(0), 0)
 const modeTxt = m => m === 'center' ? 'سنتر' : m === 'online' ? 'أونلاين' : '';
 const admPath = t => '/admin-dash/' + (ADM_SLUG[t] ? ADM_SLUG[t] + '/' : '');
 
+let pricesSig = '';
+async function syncPrices(){
+  if(!isAdmin(auth.currentUser)) return;
+  await window.__contentP;
+  const m = {};
+  Object.keys(CONTENT).forEach(k => ((CONTENT[k] || {}).courses || []).forEach(c => { const pr = priceOf(c); if(c && c.id && pr > 0) m[c.id] = pr; }));
+  const sig = JSON.stringify(m); if(sig === pricesSig) return;
+  try{ await setDoc(doc(db, 'site', 'prices'), m); pricesSig = sig; }catch(e){ window.toast && toast('تعذر مزامنة أسعار الكورسات: ' + (e.code || ''), 'err'); }
+}
 function openAdmin(tab){
   if(!isAdmin(auth.currentUser)) return;
+  syncPrices();
   adP.hidden = false; document.body.classList.add('modal-open');
   $('adUser').innerHTML = '<bdi dir="ltr">' + esc(auth.currentUser.email || '') + '</bdi>';
   if(!dirtyC || !ED.data) edLoad();
@@ -2812,24 +2836,51 @@ async function loadUsers(){
     paintUsers(); if(adSec === 'home') paintHome();
   }catch(e){ $('adList').innerHTML = `<div class="emp">${ai('warn')}<b>تعذر تحميل الطلبة</b>راجع قواعد Firestore.</div>`; }
 }
+const openSc = new Set();
 function paintUsers(){
   const q = $('adQ').value.trim();
   const c = k => users.filter(u => (u.status || 'pending') === k).length;
   $('adStats').innerHTML = [['', 'الكل', users.length], ['pending', 'قيد المراجعة', c('pending')], ['active', 'مفعّل', c('active')], ['suspended', 'موقوف', c('suspended')]]
     .map(([k, l, n]) => `<button type="button" class="gchip" data-f="${k}" aria-pressed="${stFilter === k}">${l}<span class="gc">${nfmt(n)}</span></button>`).join('');
+  openSc.forEach(id => { if(!users.some(u => u.id === id)) openSc.delete(id); });
+  $('adStats').insertAdjacentHTML('beforeend', `<button type="button" class="gchip all" data-all>${openSc.size ? 'طي الكل' : 'فتح الكل'}</button>`);
   $('adBadge').textContent = nfmt(c('pending')); $('adBadge').hidden = !c('pending');
   const list = users.filter(u => (!stFilter || (u.status || 'pending') === stFilter) && (!q || [u.fullName, u.phone, u.parentPhone, u.school].some(x => (x || '').includes(q))));
   const info = (ic, l, v, ltr) => v ? `<div class="sc-i">${ai(ic)}<div><small>${l}</small><b>${ltr ? '<bdi dir="ltr">' + esc(v) + '</bdi>' : esc(v)}</b></div></div>` : '';
   $('adList').innerHTML = list.map(u => {
     const s = u.status || 'pending', nm = u.fullName || '';
-    return `<div class="scard"><div class="sc-head"><span class="sc-av" style="--c:${avColor(nm)}">${esc(nm.trim()[0] || '؟')}</span><div class="sc-nm">${esc(nm)}<small>${esc(u.grade || '')}</small></div><span class="st ${s}">${ai(STI[s])}${STL[s]}</span></div>`
-      + `<div class="sc-info">${info('phone', 'رقم الموبايل', u.phone, true)}${info('students', 'رقم ولي الأمر', u.parentPhone, true)}${info('school', 'المدرسة', u.school)}${info('monitor', 'طريقة الدراسة', modeTxt(u.mode))}${info('mail', 'البريد الإلكتروني', u.email, true)}</div>`
+    const op = openSc.has(u.id);
+    return `<div class="scard${op ? ' open' : ''}" data-u="${u.id}"><div class="sc-head" role="button" tabindex="0" aria-expanded="${op}"><span class="sc-av" style="--c:${avColor(nm)}">${esc(nm.trim()[0] || '؟')}</span><div class="sc-nm">${esc(nm)}<small>${esc(u.grade || '')}</small></div><span class="sc-hb">${ai('wallet')}${money(u.balance)} ج.م</span><span class="st ${s}">${ai(STI[s])}${STL[s]}</span><span class="chev sc-chev">${ai('chev')}</span></div>`
+      + `<div class="sc-info">${info('phone', 'رقم الموبايل', u.phone, true)}${info('students', 'رقم ولي الأمر', u.parentPhone, true)}${info('school', 'المدرسة', u.school)}${info('monitor', 'طريقة الدراسة', modeTxt(u.mode))}${info('mail', 'البريد الإلكتروني', u.email, true)}<div class="sc-i">${ai('lock')}<div style="min-width:0"><small>كلمة المرور</small>${u.pass ? `<b><bdi dir="ltr">${esc(u.pass)}</bdi></b>` : '<b class="na">غير متاحة (حساب قديم)</b>'}</div>${u.pass ? `<button type="button" class="cp" data-cp="${u.id}">نسخ</button>` : ''}</div></div>`
       + `<div class="sc-act"><div class="sc-bal">${ai('wallet')}الرصيد: ${money(u.balance)} ج.م</div><input type="text" inputmode="decimal" placeholder="المبلغ" id="amt-${u.id}" aria-label="المبلغ"><button type="button" class="pill ok" data-chg="${u.id}">${ai('plus')}شحن</button><button type="button" class="pill neu" data-setb="${u.id}">تعيين الرصيد</button>`
       + (s !== 'active' ? `<button type="button" class="pill ok" data-id="${u.id}" data-s="active">${ai('check')}تفعيل</button>` : '') + (s !== 'suspended' ? `<button type="button" class="pill no" data-id="${u.id}" data-s="suspended">${ai('ban')}إيقاف</button>` : '') + `</div></div>`;
   }).join('') || `<div class="emp">${ai('search')}<b>مفيش نتائج</b>جرّب بحث تاني أو غيّر الفلتر.</div>`;
 }
 $('adQ').addEventListener('input', paintUsers);
-$('adStats').addEventListener('click', e => { const b = e.target.closest('[data-f]'); if(b){ stFilter = b.dataset.f; paintUsers(); } });
+function toggleSc(card, force){
+  const id = card.dataset.u, op = force !== undefined ? force : !openSc.has(id);
+  op ? openSc.add(id) : openSc.delete(id);
+  card.classList.toggle('open', op);
+  const h = card.querySelector('.sc-head'); if(h) h.setAttribute('aria-expanded', op);
+  const all = $('adStats').querySelector('[data-all]'); if(all) all.textContent = openSc.size ? 'طي الكل' : 'فتح الكل';
+}
+$('adList').addEventListener('click', e => {
+  const cp = e.target.closest('[data-cp]');
+  if(cp){
+    const u = users.find(x => x.id === cp.dataset.cp); if(!u || !u.pass) return;
+    const done = () => window.toast && toast('تم نسخ كلمة المرور');
+    (navigator.clipboard ? navigator.clipboard.writeText(u.pass) : Promise.reject()).then(done).catch(() => { const t = document.createElement('textarea'); t.value = u.pass; document.body.appendChild(t); t.select(); try{ document.execCommand('copy'); done(); }catch(_){} t.remove(); });
+    return;
+  }
+  const h = e.target.closest('.sc-head'); if(h) toggleSc(h.closest('.scard'));
+});
+$('adList').addEventListener('keydown', e => {
+  if((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('sc-head')){ e.preventDefault(); toggleSc(e.target.closest('.scard')); }
+});
+$('adStats').addEventListener('click', e => {
+  if(e.target.closest('[data-all]')){ const open = !openSc.size; document.querySelectorAll('#adList .scard').forEach(c => toggleSc(c, open)); return; }
+  const b = e.target.closest('[data-f]'); if(b){ stFilter = b.dataset.f; paintUsers(); }
+});
 adP.addEventListener('click', async e => {
   const b = e.target.closest('button[data-id][data-s]'); if(!b) return;
   b.disabled = true;
@@ -2999,7 +3050,7 @@ async function saveEd(){
   const btn = $('adSaveBtn'); btn.disabled = true;
   try{
     await setDoc(doc(db, 'site', 'content'), { [ED.g]:r.data }, { merge:true });
-    CONTENT[ED.g] = r.data; edLoad(); paintEd(); paintSaveBar();
+    CONTENT[ED.g] = r.data; edLoad(); paintEd(); paintSaveBar(); syncPrices();
     window.toast && toast('تم حفظ التغييرات');
   }catch(err){ window.toast && toast('تعذر الحفظ: ' + (err.code || 'error'), 'err'); }
   btn.disabled = false;
