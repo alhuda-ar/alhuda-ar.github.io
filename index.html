@@ -1064,6 +1064,14 @@
   .dp-main{ background:var(--bg-alt); border:1px solid var(--panel-border); border-radius:24px; padding:28px; min-height:420px; }
   .dp-h{ font-size:1.35rem; font-weight:800; color:var(--cream); margin-bottom:22px; }
   .dp-h::after{ content:""; display:block; width:64px; height:4px; border-radius:99px; margin-top:12px; background:linear-gradient(90deg,var(--gold),var(--teal-300)); }
+  .fee-list{ display:flex; flex-direction:column; gap:12px; margin-top:22px; }
+  .fee-t{ font-weight:800; color:var(--cream); font-size:1.05rem; margin:26px 0 0; }
+  .fee-row{ display:flex; align-items:center; gap:14px; padding:16px; border-radius:18px; background:var(--panel); border:1px solid var(--panel-border); }
+  .fee-row .fi{ width:44px; height:44px; flex-shrink:0; border-radius:14px; display:flex; align-items:center; justify-content:center; background:rgba(211,166,103,.14); color:var(--gold); }
+  .fee-row .fm{ flex:1; min-width:0; }
+  .fee-row .fm b{ display:block; color:var(--cream); font-weight:800; overflow-wrap:anywhere; }
+  .fee-row .fm small{ display:block; color:var(--text-soft); font-weight:600; margin-top:4px; font-size:.8rem; }
+  .fee-row .fp{ font-weight:800; color:var(--gold); white-space:nowrap; font-size:1.05rem; }
   .dp-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
   .dp-info{ display:flex; align-items:center; gap:14px; padding:16px; border-radius:18px; background:var(--panel); border:1px solid var(--panel-border); min-width:0; }
   .dp-info .ci{ width:44px; height:44px; border-radius:50%; background:rgba(169,207,198,.12); color:var(--teal-300); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -2432,7 +2440,6 @@ const TABS = [
 ];
 const SOON = {
   exams:['الامتحانات','هتلاقي هنا امتحاناتك ونتايجها قريبًا.'],
-  fees:['المصروفات','تفاصيل مصروفاتك هتظهر هنا قريبًا.'],
   schedule:['جدول السنتر','مواعيد حصصك في السنتر هتظهر هنا قريبًا.']
 };
 const GKEY = { 'الأول الإعدادي':'prep1', 'الثاني الإعدادي':'prep2', 'الثالث الإعدادي':'prep3', 'الأول الثانوي':'sec1', 'الثاني الثانوي':'sec2' };
@@ -2507,6 +2514,18 @@ function paintTab(){
       }
     }
     else box.innerHTML = head('الكورسات') + (d.courses.length ? '<div class="cgrid">' + d.courses.map(courseCard).join('') + '</div>' : EMPTY);
+  }else if(dTab === 'fees'){
+    const toD = v => v && typeof v.toDate === 'function' ? v.toDate() : v instanceof Date ? v : (v && v.seconds ? new Date(v.seconds * 1000) : null);
+    const fmt = d => d ? d.toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' }) + ' – ' + d.toLocaleTimeString('ar-EG', { hour:'numeric', minute:'2-digit' }) : 'التاريخ غير متاح';
+    const pu = (profile && profile.purchased) || {};
+    const items = Object.keys(pu).map(id => ({ id, d:toD(pu[id].at), price:Number(pu[id].price) || 0, title:pu[id].title || 'كورس' }))
+      .sort((a, b) => (b.d ? b.d.getTime() : 0) - (a.d ? a.d.getTime() : 0));
+    const total = items.reduce((a, x) => a + x.price, 0);
+    const card = (ic, l, v) => `<div class="dp-info"><span class="ci">${dIc(DI[ic], 21)}</span><div><small>${l}</small><b>${v}</b></div></div>`;
+    box.innerHTML = head('المصروفات') + '<div class="dp-grid">' + card('fees', 'إجمالي ما دفعته في الكورسات', money(total) + ' ج.م') + card('courses', 'عدد الكورسات المشترك فيها', nfmt(items.length)) + card('wallet', 'رصيد المحفظة الحالي', money(profile && profile.balance) + ' ج.م') + '</div>'
+      + (items.length
+        ? '<h3 class="fee-t">سجل الاشتراكات</h3><div class="fee-list">' + items.map(x => `<div class="fee-row"><span class="fi">${dIc(DI.courses, 22)}</span><div class="fm"><b>${esc(x.title)}</b><small>${fmt(x.d)}</small></div><span class="fp">- ${money(x.price)} ج.م</span></div>`).join('') + '</div>'
+        : `<div class="dp-empty"><div class="ei">${dIc(DI.fees, 32)}</div><h3>مفيش اشتراكات لسه</h3><p>أول ما تشترك في كورس مدفوع هتلاقي هنا سجل بكل المبالغ اللي دفعتها.</p></div>`);
   }else{
     const [t, m] = SOON[dTab];
     box.innerHTML = head(t) + `<div class="dp-empty"><div class="ei">${dIc(DI[dTab], 32)}</div><h3>قريبًا</h3><p>${m}</p></div>`;
@@ -2594,7 +2613,7 @@ async function confirmBuy(btn){
       if(bal + 1e-9 < price) throw { code:'insufficient', balance:bal };
       const nb = Math.round((bal - price) * 100) / 100;
       tx.update(ref, { balance:nb, lastPurchase:cid, ['purchased.' + cid]:{ at:serverTimestamp(), price, title:c.t || '' } });
-      return { balance:nb, purchased:{ ...(d.purchased || {}), [cid]:{ price, title:c.t || '' } } };
+      return { balance:nb, purchased:{ ...(d.purchased || {}), [cid]:{ at:new Date(), price, title:c.t || '' } } };
     });
     profile = { ...profile, balance:r.balance, purchased:r.purchased }; syncOwned();
     if(!$('dashPage').hidden) $('dpBal').textContent = money(r.balance) + ' ج.م';
