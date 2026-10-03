@@ -1851,6 +1851,10 @@ function replaceTo(path){ history.replaceState(null, '', path); syncMeta(); }
   window.__acc = { admin:false };
   const isLocked = c => !!c && priceOf(c) > 0 && !window.__acc.admin && !ownedSet.has(c.id);
   const LOCK_IC = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+  const FULL = {};
+  const detailOf = c => !(priceOf(c) > 0) ? c : (Array.isArray(c.videos) ? c : (FULL[c.id] || null));
+  const courseParts = det => `<div class="sub-h">الفيديوهات التعليمية</div>${((det || {}).videos || []).map(vidH).join('') || EMPTY}<div class="sub-h">الملفات</div>${((det || {}).files || []).map(fileH).join('') || EMPTY}`;
+  const stripC = c => { const { videos, files, ...r } = c; return { ...r, nv:(videos || []).length, nf:(files || []).length }; };
   const courseCard = (c, i) => {
     const lk = isLocked(c), own = priceOf(c) > 0 && ownedSet.has(c.id);
     return `<div class="cc"><div class="th">${c.img ? `<img src="${esc(c.img)}" alt="" loading="lazy">` : '⭐'}${lk ? `<span class="lk-badge">${LOCK_IC}</span>` : ''}</div><h4>${esc(c.t)}</h4>${c.price ? `<div class="pr">${esc(c.price)}</div>` : ''}<p>${esc(c.desc)}</p><button type="button" class="b1${lk ? ' locked' : ''}" data-course="${i}">${lk ? LOCK_IC : ''}الدخول للكورس</button>${lk ? `<button type="button" class="b2" data-buy="${i}">الاشتراك في الكورس !</button>` : own ? '<div class="own">✓ أنت مشترك في الكورس</div>' : '<a class="b2" href="#contact" data-sub>الاشتراك في الكورس !</a>'}</div>`;
@@ -1867,7 +1871,18 @@ function replaceTo(path){ history.replaceState(null, '', path); syncMeta(); }
     if(kind === 'videos'){ tt.textContent = '🎬 الفيديوهات التعليمية – ' + g; sp.innerHTML = d.videos.map(vidH).join('') || EMPTY; }
     if(kind === 'notes'){ tt.textContent = '📄 المذكرات والملازم – ' + g; sp.innerHTML = d.notes.map(fileH).join('') || EMPTY; }
     if(kind === 'courses'){ tt.textContent = '⭐ كورسات مميزة – ' + g; sp.innerHTML = d.courses.length ? '<div class="cgrid">' + d.courses.map(courseCard).join('') + '</div>' : EMPTY; }
-    if(kind === 'course'){ const c = d.courses[ci]; tt.textContent = c.t; sp.innerHTML = `<p style="color:var(--text-soft);line-height:1.8;margin-bottom:8px">${esc(c.desc)}</p><div class="sub-h">الفيديوهات التعليمية</div>${c.videos.map(vidH).join('') || EMPTY}<div class="sub-h">الملفات</div>${c.files.map(fileH).join('') || EMPTY}`; }
+    if(kind === 'course'){
+      const c = d.courses[ci]; tt.textContent = c.t;
+      const shell = inner => `<p style="color:var(--text-soft);line-height:1.8;margin-bottom:8px">${esc(c.desc)}</p>${inner}`, det = detailOf(c), g0 = curGrade;
+      if(det) sp.innerHTML = shell(courseParts(det));
+      else{
+        sp.innerHTML = shell('<p class="sub-h">جاري تحميل المحتوى…</p>');
+        const ok = () => spView === 'course' && window.__curCi === ci && curGrade === g0;
+        (window.__loadCourse ? window.__loadCourse(c) : Promise.reject())
+          .then(dd => { if(ok()) sp.innerHTML = shell(courseParts(dd)); })
+          .catch(() => { if(ok()) sp.innerHTML = shell('<p class="sub-h">تعذر تحميل المحتوى. اتأكد إنك مشترك في الكورس وحاول تاني.</p>'); });
+      }
+    }
     const m = document.getElementById('courseModal'); m.classList.remove('open');
     document.getElementById('secPage').hidden = false; document.getElementById('secPage').scrollTop = 0;
     window.__curCi = ci;
@@ -2213,7 +2228,7 @@ applyRoute();
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, getDocs, collection, serverTimestamp, increment, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, getDocs, collection, serverTimestamp, increment, runTransaction, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const app = initializeApp({
   apiKey: "AIzaSyDHKNywy1vuzskBAJjD0QRMlhjNuI-r57Q",
@@ -2228,7 +2243,7 @@ const auth = getAuth(app), db = getFirestore(app);
 auth.languageCode = 'ar';
 const $ = id => document.getElementById(id);
 const toEmail = phone => phone + '@alhuda-ar.app';
-const ADMINS = ['opaidamazed@gmail.com','obaidamazed@gmail.com','016nooralhuda@gmail.com','01223093974@alhuda-ar.app'];
+const ADMINS = ['opaidamazed@gmail.com','obaidamazed@gmail.com','016nooralhuda@gmail.com','01019771940@alhuda-ar.app','01223093974@alhuda-ar.app'];
 const isAdmin = u => !!(u && u.email && ADMINS.includes(u.email.toLowerCase()));
 
 /* ---- icons ---- */
@@ -2348,6 +2363,7 @@ async function loadProfile(u){
   syncOwned();
 }
 function syncOwned(){
+  Object.keys(FULL).forEach(k => delete FULL[k]);
   ownedSet.clear();
   const pu = profile && profile.purchased;
   if(pu && typeof pu === 'object') Object.keys(pu).forEach(k => ownedSet.add(k));
@@ -2478,7 +2494,18 @@ function paintTab(){
   }else if(dTab === 'courses'){
     let c = d.courses[dCourse];
     if(c && isLocked(c)){ const ix = dCourse; dCourse = -1; c = null; navTo(dashPath()); setTimeout(() => openBuy(dGrade(), ix, 'dash'), 0); }
-    if(c) box.innerHTML = `<button type="button" class="dp-link" data-dback>← الكورسات</button>${head(esc(c.t))}<p style="color:var(--text-soft);line-height:1.8;margin-bottom:8px">${esc(c.desc || '')}</p><div class="sub-h">الفيديوهات التعليمية</div>${(c.videos || []).map(vidH).join('') || EMPTY}<div class="sub-h">الملفات</div>${(c.files || []).map(fileH).join('') || EMPTY}`;
+    if(c){
+      const ix = dCourse;
+      const shell = inner => `<button type="button" class="dp-link" data-dback>← الكورسات</button>${head(esc(c.t))}<p style="color:var(--text-soft);line-height:1.8;margin-bottom:8px">${esc(c.desc || '')}</p>${inner}`, det = detailOf(c);
+      if(det) box.innerHTML = shell(courseParts(det));
+      else{
+        box.innerHTML = shell('<p class="sub-h">جاري تحميل المحتوى…</p>');
+        const ok = () => dTab === 'courses' && dCourse === ix;
+        window.__loadCourse(c)
+          .then(dd => { if(ok()) box.innerHTML = shell(courseParts(dd)); })
+          .catch(() => { if(ok()) box.innerHTML = shell('<p class="sub-h">تعذر تحميل المحتوى. اتأكد إنك مشترك في الكورس وحاول تاني.</p>'); });
+      }
+    }
     else box.innerHTML = head('الكورسات') + (d.courses.length ? '<div class="cgrid">' + d.courses.map(courseCard).join('') + '</div>' : EMPTY);
   }else{
     const [t, m] = SOON[dTab];
@@ -2504,6 +2531,15 @@ $('dpBack').addEventListener('click', closeDash);
 $('dpOut').addEventListener('click', async () => { await signOut(auth); closeDash(); });
 document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('dashPage').hidden) closeDash(); });
 
+/* ---- محتوى الكورسات المدفوعة (محمي في courseContent) ---- */
+window.__loadCourse = async c => {
+  if(!(priceOf(c) > 0) || Array.isArray(c.videos)) return c;
+  if(FULL[c.id]) return FULL[c.id];
+  const sn = await getDoc(doc(db, 'courseContent', String(c.id)));
+  const d = sn.exists() ? sn.data() : {};
+  return (FULL[c.id] = { videos:d.videos || [], files:d.files || [] });
+};
+
 /* ---- course purchase (wallet) ---- */
 const buyEl = $('buyPage'), buyBody = $('buyBody');
 let BUY = null, buying = false;
@@ -2522,7 +2558,8 @@ window.openBuy = async (g, ci, ctx) => {
 };
 function renderBuy(){
   const { c } = BUY, u = auth.currentUser, price = priceOf(c);
-  const meta = `<div class="bp-m"><span>🎬 ${nfmt((c.videos || []).length)} فيديو</span><span>📄 ${nfmt((c.files || []).length)} ملف</span></div>`;
+  const nv = c.nv != null ? c.nv : (c.videos || []).length, nf = c.nf != null ? c.nf : (c.files || []).length;
+  const meta = `<div class="bp-m"><span>🎬 ${nfmt(nv)} فيديو</span><span>📄 ${nfmt(nf)} ملف</span></div>`;
   const head = `<button type="button" class="bp-x" data-bclose>← رجوع</button><div class="bp-th">${c.img ? `<img src="${esc(c.img)}" alt="" onerror="this.remove()">` : '⭐'}</div><h3>${esc(c.t)}</h3><p class="bp-d">${esc(c.desc || '')}</p>${meta}`;
   let h = head, rows = `<div class="bp-r pr"><span>سعر الكورس</span><b>${money(price)} ج.م</b></div>`;
   if(!u){
@@ -2741,9 +2778,47 @@ async function syncPrices(){
   const sig = JSON.stringify(m); if(sig === pricesSig) return;
   try{ await setDoc(doc(db, 'site', 'prices'), m); pricesSig = sig; }catch(e){ window.toast && toast('تعذر مزامنة أسعار الكورسات: ' + (e.code || ''), 'err'); }
 }
+let hydOk = false, hydP = null;
+function hydrateAdmin(){
+  if(hydP) return hydP;
+  hydP = (async () => {
+    await window.__contentP;
+    const m = {};
+    (await getDocs(collection(db, 'courseContent'))).forEach(d => { m[d.id] = d.data(); });
+    const legacy = [];
+    Object.keys(CONTENT).forEach(k => ((CONTENT[k] || {}).courses || []).forEach(c => {
+      if(!c || !(priceOf(c) > 0)) return;
+      if(Array.isArray(c.videos) || Array.isArray(c.files)){ if(!legacy.includes(k)) legacy.push(k); c.videos = c.videos || []; c.files = c.files || []; }
+      else{ const x = m[c.id] || {}; c.videos = x.videos || []; c.files = x.files || []; }
+    }));
+    for(const k of legacy){
+      const b = writeBatch(db);
+      const cs = CONTENT[k].courses.map(c => {
+        if(!c || !(priceOf(c) > 0)) return c;
+        b.set(doc(db, 'courseContent', String(c.id)), { videos:c.videos, files:c.files, g:k });
+        return stripC(c);
+      });
+      b.set(doc(db, 'site', 'content'), { [k]:{ videos:CONTENT[k].videos || [], notes:CONTENT[k].notes || [], courses:cs } }, { merge:true });
+      await b.commit();
+    }
+    hydOk = true;
+    if(legacy.length) window.toast && toast('تم تأمين محتوى الكورسات المدفوعة');
+  })().catch(err => { hydP = null; window.toast && toast('تعذر تحميل محتوى الكورسات المدفوعة: ' + ((err && err.code) || 'error'), 'err'); });
+  return hydP;
+}
+function afterHydrate(){
+  if(!hydOk || adP.hidden) return;
+  if(!dirtyC) edLoad();
+  else if(ED.data){
+    const src = (CONTENT[ED.g] || {}).courses || [];
+    ED.data.courses.forEach(c => { if(priceOf(c) > 0 && !c.videos.length && !c.files.length){ const o = src.find(x => x && x.id === c.id); if(o){ c.videos = clone(o.videos || []); c.files = clone(o.files || []); } } });
+  }
+  adTab(adSec);
+}
 function openAdmin(tab){
   if(!isAdmin(auth.currentUser)) return;
   syncPrices();
+  hydrateAdmin().then(afterHydrate);
   adP.hidden = false; document.body.classList.add('modal-open');
   $('adUser').innerHTML = '<bdi dir="ltr">' + esc(auth.currentUser.email || '') + '</bdi>';
   if(!dirtyC || !ED.data) edLoad();
@@ -3047,9 +3122,20 @@ function showErr(e, boxId){
 }
 async function saveEd(){
   const r = cleanContent(ED.data); if(r.err) return showErr(r.err);
+  if(!hydOk){ window.toast && toast('استنى لحد ما يتحمّل محتوى الكورسات المدفوعة وبعدين احفظ', 'err'); hydrateAdmin().then(afterHydrate); return; }
   const btn = $('adSaveBtn'); btn.disabled = true;
   try{
-    await setDoc(doc(db, 'site', 'content'), { [ED.g]:r.data }, { merge:true });
+    const prevPaid = ((CONTENT[ED.g] || {}).courses || []).filter(c => c && c.id && priceOf(c) > 0).map(c => c.id);
+    const nowPaid = new Set(r.data.courses.filter(c => priceOf(c) > 0).map(c => c.id));
+    const b = writeBatch(db);
+    const pubCourses = r.data.courses.map(c => {
+      if(!(priceOf(c) > 0)) return c;
+      b.set(doc(db, 'courseContent', String(c.id)), { videos:c.videos, files:c.files, g:ED.g });
+      return stripC(c);
+    });
+    prevPaid.forEach(id => { if(!nowPaid.has(id)) b.delete(doc(db, 'courseContent', String(id))); });
+    b.set(doc(db, 'site', 'content'), { [ED.g]:{ ...r.data, courses:pubCourses } }, { merge:true });
+    await b.commit();
     CONTENT[ED.g] = r.data; edLoad(); paintEd(); paintSaveBar(); syncPrices();
     window.toast && toast('تم حفظ التغييرات');
   }catch(err){ window.toast && toast('تعذر الحفظ: ' + (err.code || 'error'), 'err'); }
