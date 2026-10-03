@@ -1,8 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /studentprofile/
+Disallow: /admin-dash/
+Disallow: /login/
+Disallow: /signup/
 
 Sitemap: https://alhuda-ar.github.io/sitemap.xml
-  Disallow: /studentprofile/
-  Disallow: /admin-dash/
-  Disallow: /login/
-  Disallow: /signup/
