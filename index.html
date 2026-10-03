@@ -283,7 +283,23 @@
 
   /* ---------- Section shell ---------- */
   section{ padding:88px 0; }
-  .section-alt{ background:var(--bg-alt); }
+  .section-alt{ background:rgba(23,48,43,.78); }
+
+  /* ---------- Interactive Arabic background ---------- */
+  .ar-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; --mx:-999px; --my:-999px; }
+  .ar-grid{
+    position:absolute; inset:0; background-size:56px 56px; background-position:center top;
+    background-image:linear-gradient(rgba(250,246,236,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(250,246,236,.055) 1px, transparent 1px);
+    -webkit-mask-image:radial-gradient(ellipse 95% 85% at 50% 40%, #000 35%, transparent 100%);
+            mask-image:radial-gradient(ellipse 95% 85% at 50% 40%, #000 35%, transparent 100%);
+  }
+  .ar-grid.hl{
+    background-image:linear-gradient(rgba(211,166,103,.34) 1px, transparent 1px), linear-gradient(90deg, rgba(211,166,103,.34) 1px, transparent 1px);
+    -webkit-mask-image:radial-gradient(circle 220px at var(--mx) var(--my), #000, transparent 72%);
+            mask-image:radial-gradient(circle 220px at var(--mx) var(--my), #000, transparent 72%);
+  }
+  .ar-bg canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+  @media (max-width:640px){ .ar-grid{ background-size:44px 44px; } }
   .section-head{ max-width:640px; margin-bottom:52px; }
   .section-head h2{ font-size:clamp(1.6rem, 3vw, 2.2rem); font-weight:800; color:var(--cream); line-height:1.4; }
   .section-head p{ margin-top:14px; color:var(--text-soft); font-size:1.05rem; }
@@ -1276,6 +1292,7 @@
 <noscript><style>.section-reveal{opacity:1 !important; transform:none !important;}</style></noscript>
 </head>
 <body>
+<div class="ar-bg" id="arBg" aria-hidden="true"><div class="ar-grid"></div><div class="ar-grid hl"></div><canvas id="arCanvas"></canvas></div>
 <a href="#main" class="skip-link">تخطي إلى المحتوى</a>
 
 <header>
@@ -2143,6 +2160,69 @@ function replaceTo(path){ history.replaceState(null, '', path); syncMeta(); }
       f.allow = 'autoplay; encrypted-media; picture-in-picture'; f.allowFullscreen = true; f.title = 'فيديو شرح';
       btn.replaceWith(f);
     });
+  })();
+
+  /* ---------- Interactive Arabic background (floating letters + grid spotlight) ---------- */
+  (function(){
+    const layer = document.getElementById('arBg'), cv = document.getElementById('arCanvas');
+    if(!layer || !cv || !cv.getContext) return;
+    const ctx = cv.getContext('2d');
+    const RMo = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const CH = ['ا','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي','ء','أ','ة','ـَ','ـُ','ـِ','ـّ','ـْ'];
+    const R = 170;
+    let W = 0, H = 0, items = [], mx = -9999, my = -9999, raf = 0, last = 0, lastVarX = null, lastVarY = null;
+    const mk = (init) => ({
+      ch: CH[(Math.random() * CH.length) | 0],
+      x: Math.random() * W, y: init ? Math.random() * H : H + 80,
+      s: 28 + Math.random() * 62, a: .07 + Math.random() * .07, rot: (Math.random() - .5) * .9, vr: (Math.random() - .5) * .0005,
+      vx: (Math.random() - .5) * .1, vy: -(.04 + Math.random() * .1), ox: 0, oy: 0, gold: Math.random() < .35
+    });
+    function size(){
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth; H = window.innerHeight;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = W < 700 ? 12 : 22;
+      items = Array.from({ length: n }, () => mk(true));
+      if(RMo) draw();
+    }
+    function draw(){
+      ctx.clearRect(0, 0, W, H);
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      for(const it of items){
+        const x = it.x + it.ox, y = it.y + it.oy;
+        const d = Math.hypot(x - mx, y - my);
+        const a = it.a + (d < R ? (1 - d / R) * .14 : 0);
+        ctx.save(); ctx.translate(x, y); ctx.rotate(it.rot);
+        ctx.font = '800 ' + it.s + 'px Tajawal, sans-serif';
+        ctx.fillStyle = (it.gold ? 'rgba(211,166,103,' : 'rgba(169,207,198,') + a.toFixed(3) + ')';
+        ctx.fillText(it.ch, 0, 0); ctx.restore();
+      }
+    }
+    function tick(t){
+      raf = requestAnimationFrame(tick);
+      const dt = Math.min((t - last) / 16.7 || 1, 3); last = t;
+      for(let i = 0; i < items.length; i++){
+        const it = items[i];
+        it.x += it.vx * dt; it.y += it.vy * dt; it.rot += it.vr * dt;
+        const x = it.x + it.ox, y = it.y + it.oy, dx = x - mx, dy = y - my, d = Math.hypot(dx, dy);
+        if(d < R && d > .01){ const f = (1 - d / R) * 2.2 * dt; it.ox += dx / d * f; it.oy += dy / d * f; it.rot += (dx > 0 ? 1 : -1) * (1 - d / R) * .01 * dt; }
+        it.ox *= Math.pow(.95, dt); it.oy *= Math.pow(.95, dt);
+        if(it.y < -90 || it.x < -90 || it.x > W + 90){ items[i] = mk(false); items[i].x = Math.random() * W; }
+      }
+      draw();
+      if(mx !== lastVarX || my !== lastVarY){ layer.style.setProperty('--mx', mx + 'px'); layer.style.setProperty('--my', my + 'px'); lastVarX = mx; lastVarY = my; }
+    }
+    function start(){ if(!raf && !RMo && !document.hidden){ last = performance.now(); raf = requestAnimationFrame(tick); } }
+    function stop(){ if(raf){ cancelAnimationFrame(raf); raf = 0; } }
+    size();
+    let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(size, 150); }, { passive:true });
+    if(RMo) return;
+    window.addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; }, { passive:true });
+    window.addEventListener('pointerup', e => { if(e.pointerType !== 'mouse'){ mx = -9999; my = -9999; } }, { passive:true });
+    document.documentElement.addEventListener('pointerleave', () => { mx = -9999; my = -9999; });
+    document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+    start();
   })();
 
   /* ---------- Phase 3: active nav, back-to-top, external links ---------- */
