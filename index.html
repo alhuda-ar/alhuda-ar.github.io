@@ -472,18 +472,83 @@
   .modal-box .btn-primary{ width:100%; text-align:center; box-shadow:none; }
 
   /* ---------- Footer ---------- */
-  footer{ padding:52px 0 40px; border-top:1px solid var(--line); }
-  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
-  .footer-brand{ font-weight:800; color:var(--cream); }
-  .footer-links{ display:flex; gap:24px; color:var(--text-soft); font-size:0.95rem; }
-  .footer-social{ display:flex; gap:14px; }
-  .footer-social a{
-    width:36px; height:36px; border-radius:50%; border:1px solid var(--panel-border);
-    display:flex; align-items:center; justify-content:center; color:var(--text-soft);
-    transition:color .2s ease, border-color .2s ease;
+  .site-footer{
+    position:relative; padding:68px 0 0; border-top:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(23,48,43,.55), rgba(23,48,43,.9));
   }
-  .footer-social a:hover{ color:var(--cream); border-color:var(--teal-300); }
-  .footer-copy{ margin-top:26px; color:var(--text-soft); font-size:0.85rem; }
+  .site-footer::before{
+    content:""; position:absolute; top:-1px; inset-inline:0; height:1px; margin:auto; width:min(520px,70%);
+    background:linear-gradient(90deg, transparent, var(--gold), transparent); opacity:.7;
+  }
+  .ft-grid{ display:grid; grid-template-columns:1.5fr 1fr 1.25fr 1.25fr 1fr; gap:40px 36px; align-items:start; }
+  .ft-logo{ display:inline-flex; align-items:center; gap:12px; font-size:1.55rem; font-weight:900; color:var(--cream); }
+  .ft-logo-ic{
+    width:42px; height:42px; border-radius:13px; display:flex; align-items:center; justify-content:center;
+    color:var(--gold); background:rgba(211,166,103,.14); border:1px solid rgba(211,166,103,.3);
+  }
+  .ft-logo-ic svg{ width:22px; height:22px; }
+  .ft-about{ margin-top:16px; color:var(--text-soft); font-size:.95rem; line-height:1.9; max-width:34ch; }
+  .ft-social{ display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
+  .ft-social a{
+    width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+    color:var(--c); background:color-mix(in srgb, var(--c) 12%, transparent); border:1px solid color-mix(in srgb, var(--c) 32%, transparent);
+    transition:transform .2s ease, background .2s ease, border-color .2s ease;
+  }
+  .ft-social a:hover{ transform:translateY(-3px); background:color-mix(in srgb, var(--c) 22%, transparent); border-color:var(--c); }
+  .ft-social svg{ width:19px; height:19px; }
+  .ft-col h4{ display:flex; align-items:center; gap:8px; font-size:1.05rem; font-weight:800; color:var(--cream); padding-bottom:12px; margin-bottom:18px; position:relative; }
+  .ft-col h4 svg{ width:20px; height:20px; color:var(--gold); }
+  .ft-col h4::after{ content:""; position:absolute; bottom:0; inset-inline-start:0; width:38px; height:2px; border-radius:2px; background:linear-gradient(90deg, var(--gold), rgba(211,166,103,.15)); }
+  .ft-list{ list-style:none; display:flex; flex-direction:column; gap:11px; }
+  .ft-list a, .ft-link{
+    display:inline-flex; align-items:center; gap:10px; color:var(--text-soft); font-size:.94rem; font-weight:500;
+    background:none; border:none; padding:0; cursor:pointer; font-family:inherit; text-align:start;
+    transition:color .2s ease, transform .2s ease;
+  }
+  .ft-list a::before, .ft-link::before{
+    content:""; width:6px; height:6px; flex-shrink:0; border-left:2px solid var(--gold); border-bottom:2px solid var(--gold); transform:rotate(45deg);
+  }
+  .ft-list a:hover, .ft-link:hover{ color:var(--cream); transform:translateX(-4px); }
+  .ft-contact{ list-style:none; display:flex; flex-direction:column; gap:14px; }
+  .ft-contact li, .ft-contact a{ display:flex; align-items:center; gap:12px; color:var(--text-soft); font-size:.94rem; }
+  .ft-contact a:hover{ color:var(--cream); }
+  .ft-ic{
+    width:36px; height:36px; flex-shrink:0; border-radius:11px; display:flex; align-items:center; justify-content:center;
+    color:var(--teal-300); background:var(--panel); border:1px solid var(--panel-border);
+  }
+  .ft-ic svg{ width:18px; height:18px; }
+  .ft-ltr{ direction:ltr; unicode-bidi:isolate; overflow-wrap:anywhere; }
+  .ft-support-note{ color:var(--text-soft); font-size:.92rem; line-height:1.8; margin-bottom:16px; }
+  .ft-wa{
+    display:inline-flex; align-items:center; gap:10px; padding:11px 18px; border-radius:999px;
+    color:#4ade80; font-weight:800; font-size:.95rem; background:rgba(37,211,102,.1); border:1px solid rgba(37,211,102,.35);
+    transition:transform .2s ease, background .2s ease, border-color .2s ease;
+  }
+  .ft-wa svg{ width:20px; height:20px; }
+  .ft-wa:hover{ transform:translateY(-2px); background:rgba(37,211,102,.18); border-color:rgba(37,211,102,.6); }
+  .ft-bottom{
+    margin-top:54px; padding:22px 0 26px; border-top:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; gap:12px 20px; flex-wrap:wrap;
+    color:var(--text-soft); font-size:.85rem;
+  }
+  .legal-box{ max-width:640px; padding:36px 32px 28px; }
+  .legal-box h3{ margin-bottom:18px; padding-inline-end:32px; }
+  .legal-body{ max-height:min(62vh,520px); overflow-y:auto; padding-inline-end:8px; color:var(--text-soft); font-size:.96rem; line-height:1.95; outline:none; }
+  .legal-body h4{ color:var(--cream); font-size:1rem; font-weight:800; margin:20px 0 6px; }
+  .legal-body h4:first-child{ margin-top:0; }
+  .legal-body ul{ padding-inline-start:20px; display:flex; flex-direction:column; gap:4px; }
+  .legal-body:focus-visible{ outline:2px solid var(--teal-300); outline-offset:4px; border-radius:8px; }
+  @media (max-width:1000px){
+    .ft-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .ft-brand-col{ grid-column:1 / -1; }
+    .ft-about{ max-width:56ch; }
+  }
+  @media (max-width:560px){
+    .site-footer{ padding-top:52px; }
+    .ft-grid{ grid-template-columns:1fr; gap:34px; }
+    .ft-bottom{ justify-content:center; text-align:center; padding-bottom:92px; }
+    .legal-box{ padding:30px 20px 22px; }
+  }
 
   @media (max-width:640px){
     section.hero{ padding-top:44px; }
@@ -661,9 +726,6 @@
   body.modal-open{ overflow:hidden; }
   .program:focus-visible{ outline-offset:-4px; }
   @media (max-width:640px){
-    .footer-row{ flex-direction:column; text-align:center; }
-    .footer-links{ flex-wrap:wrap; justify-content:center; gap:14px 20px; }
-    .footer-copy{ text-align:center; }
     .section-head{ margin-bottom:38px; }
     section{ padding:68px 0; }
   }
@@ -1589,37 +1651,64 @@
 
 </main>
 
-<footer>
+<footer class="site-footer">
   <div class="wrap">
-    <div class="footer-row">
-      <div class="footer-brand">الهُدى — مع الأستاذة نور الهدى</div>
-      <div class="footer-links">
-        <a href="#about">عني</a>
-        <a href="#why">ليه أنا</a>
-        <a href="#programs">البرامج</a>
-        <a href="#videos">فيديوهات</a>
-        <a href="#faq">أسئلة شائعة</a>
-        <a href="#contact">تواصل</a>
+    <div class="ft-grid">
+      <div class="ft-col ft-brand-col">
+        <a href="#main" class="ft-logo"><span class="ft-logo-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 7c-1.6-1.5-3.8-2-7-2v12c3.2 0 5.4.5 7 2 1.6-1.5 3.8-2 7-2V5c-3.2 0-5.4.5-7 2Z"/><path d="M12 7v12"/></svg></span><span>الهُدى</span></a>
+        <p class="ft-about">منصة تعليمية متخصصة في تعليم اللغة العربية للمرحلتين الإعدادية والثانوية، بأسلوب مبسط ومختلف مع الأستاذة نور الهدى.</p>
+        <div class="ft-social">
+          <a href="https://wa.me/201019771940" target="_blank" rel="noopener" aria-label="واتساب" style="--c:#4ade80"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3.3 3.2l-4.8 1.3Z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8c-1-.4-1.9-1.3-2.3-2.3l.8-1-1-2-1 .5Z"/></svg></a>
+          <a href="https://www.youtube.com/@MsNour.Elhoda" target="_blank" rel="noopener" aria-label="يوتيوب" style="--c:#ff4d4d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="m10 9.5 5 2.5-5 2.5v-5Z"/></svg></a>
+          <a href="https://www.facebook.com/share/1CKBYqXb71/" target="_blank" rel="noopener" aria-label="فيسبوك" style="--c:#5b9bff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 9h2V6h-2c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h2.2l.8-3H14V9Z"/></svg></a>
+          <a href="https://www.tiktok.com/@mis.nourelhoda" target="_blank" rel="noopener" aria-label="تيك توك" style="--c:#FAF6EC"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 3v10.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M15 3c.5 2.5 2 4 4.5 4.3"/></svg></a>
+          <a href="https://www.instagram.com/noure.lhoda00?stkn=NnduaGducXZsMTQ3" target="_blank" rel="noopener" aria-label="انستجرام" style="--c:#f472b6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
+        </div>
       </div>
-      <div class="footer-social">
-        <a href="https://www.instagram.com/noure.lhoda00?stkn=NnduaGducXZsMTQ3" target="_blank" rel="noopener" aria-label="انستجرام">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
-        </a>
-        <a href="https://www.tiktok.com/@mis.nourelhoda" target="_blank" rel="noopener" aria-label="تيك توك">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M15 3v10.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M15 3c.5 2.5 2 4 4.5 4.3"/></svg>
-        </a>
-        <a href="https://www.facebook.com/share/1CKBYqXb71/" target="_blank" rel="noopener" aria-label="فيسبوك">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M14 9h2V6h-2c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h2.2l.8-3H14V9Z"/></svg>
-        </a>
-        <a href="https://www.youtube.com/@MsNour.Elhoda" target="_blank" rel="noopener" aria-label="يوتيوب">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="m10 9.5 5 2.5-5 2.5v-5Z"/></svg>
-        </a>
-        <a href="https://wa.me/201019771940" target="_blank" rel="noopener" aria-label="واتساب">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3.3 3.2l-4.8 1.3Z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8c-1-.4-1.9-1.3-2.3-2.3l.8-1-1-2-1 .5Z"/></svg>
-        </a>
+
+      <nav class="ft-col" aria-label="روابط سريعة">
+        <h4>روابط سريعة</h4>
+        <ul class="ft-list">
+          <li><a href="#main">الرئيسية</a></li>
+          <li><a href="#about">عن المعلمة</a></li>
+          <li><a href="#why">ليه أنا</a></li>
+          <li><a href="#programs">البرامج</a></li>
+          <li><a href="#testimonials">آراء الطلبة</a></li>
+          <li><a href="#videos">فيديوهات</a></li>
+          <li><a href="#faq">أسئلة شائعة</a></li>
+        </ul>
+      </nav>
+
+      <div class="ft-col">
+        <h4>تواصل معنا</h4>
+        <ul class="ft-contact">
+          <li><a href="tel:+201019771940"><span class="ft-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 4h3.5l1.7 4.2-2.1 1.3a11 11 0 0 0 5.4 5.4l1.3-2.1 4.2 1.7V18a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span><span class="ft-ltr">+20 101 977 1940</span></a></li>
+          <li><a href="https://wa.me/201019771940" data-wa="أهلاً ميس نور، عايز أستفسر عن الحصص." target="_blank" rel="noopener"><span class="ft-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.5L3 21l1.5-5.4A8.5 8.5 0 1 1 21 12Z"/></svg></span><span>واتساب مباشر</span></a></li>
+          <li><a href="mailto:016nooralhuda@gmail.com"><span class="ft-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></span><span class="ft-ltr">016nooralhuda@gmail.com</span></a></li>
+          <li><span class="ft-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span>الإسكندرية، مصر</span></li>
+        </ul>
+      </div>
+
+      <div class="ft-col">
+        <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/><path d="M19 20c0 1-1.5 1.5-4 1.5"/></svg>الدعم الفني</h4>
+        <p class="ft-support-note">واجهتك مشكلة في الدخول أو في الحساب أو الرصيد؟ كلّم الدعم الفني مباشرة على واتساب.</p>
+        <a class="ft-wa" href="https://wa.me/201223093974?text=%D8%A3%D9%87%D9%84%D8%A7%D9%8B%D8%8C%20%D9%85%D8%AD%D8%AA%D8%A7%D8%AC%20%D8%AF%D8%B9%D9%85%20%D9%81%D9%86%D9%8A%20%D9%81%D9%8A%20%D8%A7%D9%84%D9%85%D9%86%D8%B5%D8%A9." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3.3 3.2l-4.8 1.3Z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8c-1-.4-1.9-1.3-2.3-2.3l.8-1-1-2-1 .5Z"/></svg><span class="ft-ltr">+20 122 309 3974</span></a>
+      </div>
+
+      <div class="ft-col">
+        <h4>قانوني</h4>
+        <ul class="ft-list">
+          <li><button type="button" class="ft-link" data-legal="terms">الشروط والأحكام</button></li>
+          <li><button type="button" class="ft-link" data-legal="privacy">سياسة الخصوصية</button></li>
+          <li><a href="#contact">تواصل معنا</a></li>
+        </ul>
       </div>
     </div>
-    <div class="footer-copy">© 2026 الهُدى. جميع الحقوق محفوظة.</div>
+
+    <div class="ft-bottom">
+      <span>© 2026 الهُدى. جميع الحقوق محفوظة.</span>
+      <span>الهُدى — مع الأستاذة نور الهدى</span>
+    </div>
   </div>
 </footer>
 
@@ -1634,6 +1723,14 @@
     <h3 id="modalTitle"></h3>
     <div class="modal-duration" id="modalDuration"></div>
     <div class="opts" id="modalTopics"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="legalModal" onclick="if(event.target===this) closeLegal()">
+  <div class="modal-box legal-box" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+    <button type="button" class="modal-close" onclick="closeLegal()" aria-label="إغلاق">✕</button>
+    <h3 id="legalTitle"></h3>
+    <div class="legal-body" id="legalBody" tabindex="0"></div>
   </div>
 </div>
 
@@ -2161,6 +2258,58 @@ function replaceTo(path){ history.replaceState(null, '', path); syncMeta(); }
       btn.replaceWith(f);
     });
   })();
+
+  /* ---------- Footer legal modals (terms / privacy) ---------- */
+  const LEGAL = {
+    terms: { t:'الشروط والأحكام', h:`
+      <h4>1. القبول</h4><p>باستخدامك منصة «الهُدى» وإنشاء حساب عليها، فأنت توافق على هذه الشروط. لو مش موافق عليها، برجاء عدم استخدام المنصة.</p>
+      <h4>2. الحساب</h4>
+      <ul><li>لازم تدخل بيانات صحيحة وقت التسجيل (الاسم، رقم الهاتف، الصف الدراسي، وطريقة الدراسة).</li><li>الحساب شخصي ولا يجوز مشاركته مع أي شخص آخر.</li><li>أنت مسؤول عن الحفاظ على سرية كلمة السر، وعن أي نشاط يتم من خلال حسابك.</li></ul>
+      <h4>3. المحتوى التعليمي</h4><p>كل المحتوى على المنصة (شروحات، مراجعات، ملفات، فيديوهات) ملك للأستاذة نور الهدى. لا يجوز نسخه أو تسجيله أو إعادة نشره أو بيعه بأي شكل دون إذن كتابي.</p>
+      <h4>4. الرصيد والشحن</h4><p>الرصيد المشحون في حسابك يُستخدم داخل المنصة فقط. تتولى إدارة المنصة تحديد آلية الشحن والاستخدام، ولأي استفسار عن عملية معيّنة تواصل مع الدعم الفني.</p>
+      <h4>5. الاستخدام السليم</h4><p>يُمنع إساءة استخدام المنصة أو محاولة اختراقها أو الإضرار بها أو بمستخدميها. يحق للإدارة إيقاف أي حساب يخالف هذه الشروط.</p>
+      <h4>6. تعديل الشروط</h4><p>قد نقوم بتحديث هذه الشروط من وقت لآخر، واستمرارك في استخدام المنصة بعد التحديث يعني موافقتك عليه.</p>
+      <h4>7. التواصل</h4><p>لأي استفسار بخصوص هذه الشروط، تواصل معنا عبر واتساب الدعم الفني الموجود في الفوتر.</p>` },
+    privacy: { t:'سياسة الخصوصية', h:`
+      <h4>1. البيانات اللي بنجمعها</h4>
+      <ul><li>بيانات الحساب: الاسم ورقم الهاتف والصف الدراسي وطريقة الدراسة.</li><li>بيانات استخدام الحساب داخل المنصة، مثل الرصيد وعمليات الشحن.</li></ul>
+      <h4>2. بنستخدمها في إيه</h4><p>إنشاء حسابك وإدارته، وتقديم الخدمة التعليمية، والتواصل معك بخصوص الدعم الفني أو أي تحديث يخص حسابك.</p>
+      <h4>3. التخزين والحماية</h4><p>بيانات الحسابات بتتحفظ على خوادم سحابية، وبنتخذ إجراءات معقولة لحمايتها من الوصول غير المصرّح به.</p>
+      <h4>4. المشاركة مع أطراف أخرى</h4><p>لا نبيع بياناتك ولا نشاركها مع أي جهة خارجية، إلا للضرورة التقنية لتشغيل المنصة أو إذا طُلب ذلك قانونيًا.</p>
+      <h4>5. حقوقك</h4><p>تقدر في أي وقت تطلب تعديل بياناتك أو حذف حسابك عن طريق التواصل مع الدعم الفني.</p>
+      <h4>6. الطلاب الأصغر سنًا</h4><p>بما إن منصتنا موجهة لطلاب المدارس، بنوصي إن التسجيل يتم بعلم ولي الأمر.</p>
+      <h4>7. تحديث السياسة</h4><p>ممكن نحدّث هذه السياسة عند الحاجة، وأي تغيير مهم هيظهر على المنصة.</p>` }
+  };
+  let legalOpener = null;
+  function openLegal(key, opener){
+    const d = LEGAL[key]; if(!d) return;
+    legalOpener = opener || null;
+    document.getElementById('legalTitle').textContent = d.t;
+    const b = document.getElementById('legalBody'); b.innerHTML = d.h; b.scrollTop = 0;
+    document.getElementById('legalModal').classList.add('open');
+    document.body.classList.add('modal-open');
+    document.querySelector('#legalModal .modal-close').focus();
+  }
+  function closeLegal(){
+    const m = document.getElementById('legalModal');
+    if(!m.classList.contains('open')) return;
+    m.classList.remove('open');
+    document.body.classList.remove('modal-open');
+    if(legalOpener && legalOpener.focus) legalOpener.focus({ preventScroll:true });
+  }
+  window.closeLegal = closeLegal;
+  document.querySelectorAll('[data-legal]').forEach(btn => btn.addEventListener('click', () => openLegal(btn.dataset.legal, btn)));
+  document.addEventListener('keydown', (e) => {
+    const m = document.getElementById('legalModal');
+    if(!m.classList.contains('open')) return;
+    if(e.key === 'Escape'){ closeLegal(); }
+    if(e.key === 'Tab'){
+      const f = [m.querySelector('.modal-close'), document.getElementById('legalBody')];
+      const i = f.indexOf(document.activeElement);
+      if(e.shiftKey && i <= 0){ e.preventDefault(); f[f.length - 1].focus(); }
+      else if(!e.shiftKey && i === f.length - 1){ e.preventDefault(); f[0].focus(); }
+    }
+  });
 
   /* ---------- Interactive Arabic background (floating letters + grid spotlight) ---------- */
   (function(){
