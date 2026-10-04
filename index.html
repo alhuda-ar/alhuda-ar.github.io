@@ -289,12 +289,12 @@
   .ar-bg{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; --mx:-999px; --my:-999px; }
   .ar-grid{
     position:absolute; inset:0; background-size:56px 56px; background-position:center top;
-    background-image:linear-gradient(rgba(250,246,236,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(250,246,236,.055) 1px, transparent 1px);
+    background-image:linear-gradient(rgba(250,246,236,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(250,246,236,.03) 1px, transparent 1px);
     -webkit-mask-image:radial-gradient(ellipse 95% 85% at 50% 40%, #000 35%, transparent 100%);
             mask-image:radial-gradient(ellipse 95% 85% at 50% 40%, #000 35%, transparent 100%);
   }
   .ar-grid.hl{
-    background-image:linear-gradient(rgba(211,166,103,.34) 1px, transparent 1px), linear-gradient(90deg, rgba(211,166,103,.34) 1px, transparent 1px);
+    background-image:linear-gradient(rgba(211,166,103,.24) 1px, transparent 1px), linear-gradient(90deg, rgba(211,166,103,.24) 1px, transparent 1px);
     -webkit-mask-image:radial-gradient(circle 220px at var(--mx) var(--my), #000, transparent 72%);
             mask-image:radial-gradient(circle 220px at var(--mx) var(--my), #000, transparent 72%);
   }
@@ -2182,7 +2182,7 @@ function replaceTo(path){ history.replaceState(null, '', path); syncMeta(); }
       W = window.innerWidth; H = window.innerHeight;
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = W < 700 ? 12 : 22;
+      const n = W < 700 ? 4 : 8;
       items = Array.from({ length: n }, () => mk(true));
       if(RMo) draw();
     }
