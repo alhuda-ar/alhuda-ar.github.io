@@ -531,6 +531,8 @@
     display:flex; align-items:center; justify-content:space-between; gap:12px 20px; flex-wrap:wrap;
     color:var(--text-soft); font-size:.85rem;
   }
+  .ft-credit a{ color:var(--gold); font-weight:700; unicode-bidi:isolate; text-decoration:none; border-bottom:1px solid rgba(211,166,103,.4); transition:color .2s ease, border-color .2s ease; }
+  .ft-credit a:hover{ color:var(--cream); border-color:var(--cream); }
   .legal-box{ max-width:640px; padding:36px 32px 28px; }
   .legal-box h3{ margin-bottom:18px; padding-inline-end:32px; }
   .legal-body{ max-height:min(62vh,520px); overflow-y:auto; padding-inline-end:8px; color:var(--text-soft); font-size:.96rem; line-height:1.95; outline:none; }
@@ -1008,6 +1010,20 @@
   .pill{ font-family:inherit; font-weight:800; cursor:pointer; border-radius:999px; padding:8px 16px; font-size:.86rem; border:1.5px solid transparent; display:inline-flex; align-items:center; gap:6px; transition:background .2s ease, transform .15s ease; }
   .pill:active{ transform:scale(.96); }
   .pill[disabled]{ opacity:.55; cursor:wait; }
+  .act-note{ display:flex; gap:10px; align-items:flex-start; margin:0 0 16px; padding:12px 14px; border-radius:14px; background:rgba(56,189,248,.08); border:1px solid rgba(56,189,248,.28); color:var(--text-soft); font-size:.86rem; line-height:1.75; }
+  .act-note svg{ width:20px; height:20px; flex-shrink:0; margin-top:2px; color:#7dd3fc; }
+  .act-ic{ width:48px; height:48px; flex-shrink:0; border-radius:14px; display:flex; align-items:center; justify-content:center; color:var(--c); background:color-mix(in srgb, var(--c) 14%, transparent); border:1px solid color-mix(in srgb, var(--c) 32%, transparent); }
+  .act-ic svg{ width:24px; height:24px; }
+  .act-cnt{ display:inline-flex; align-items:center; gap:6px; font-weight:800; font-size:.82rem; padding:5px 13px; border-radius:99px; color:var(--cream); background:rgba(250,246,236,.08); border:1px solid var(--line); }
+  .act-cnt svg{ width:16px; height:16px; }
+  .act-cnt.zero{ color:var(--text-soft); opacity:.7; }
+  .scard:not(.open) .act-body{ display:none; }
+  .act-body{ margin-top:14px; overflow-x:auto; }
+  .act-body .gt{ min-width:480px; }
+  .act-body .gt td{ font-weight:600; font-size:.88rem; }
+  .act-body .gt td.nm{ font-weight:800; }
+  .act-body .gt td small{ display:block; color:var(--text-soft); font-weight:600; font-size:.74rem; }
+  .act-empty{ color:var(--text-soft); padding:6px 2px 2px; font-size:.9rem; }
   .pill svg{ width:17px; height:17px; }
   .pill.ok{ background:rgba(52,211,153,.16); color:#6ee7b7; border-color:rgba(52,211,153,.4); }
   .pill.ok:hover{ background:rgba(52,211,153,.26); }
@@ -1707,7 +1723,7 @@
 
     <div class="ft-bottom">
       <span>© 2026 الهُدى. جميع الحقوق محفوظة.</span>
-      <span>الهُدى — مع الأستاذة نور الهدى</span>
+      <span class="ft-credit">تمت برمجة المنصة بواسطة فريق <a href="https://www.facebook.com/profile.php?id=61582261975354" target="_blank" rel="noopener">creatix studio</a></span>
     </div>
   </div>
 </footer>
@@ -1859,6 +1875,7 @@
         <div class="adm-grp">عام</div>
         <button type="button" class="adm-ni" data-t="home"><span class="ni c-sky" data-ic="home"></span><span>نظرة عامة</span></button>
         <button type="button" class="adm-ni" data-t="stu"><span class="ni c-green" data-ic="students"></span><span>الطلبة</span><span class="nb" id="adBadge" hidden>0</span></button>
+        <button type="button" class="adm-ni" data-t="act"><span class="ni c-violet" data-ic="activity"></span><span>نشاط الطلبة</span></button>
         <div class="adm-grp">المحتوى التعليمي</div>
         <button type="button" class="adm-ni" data-t="videos"><span class="ni c-red" data-ic="videos"></span><span>الفيديوهات</span></button>
         <button type="button" class="adm-ni" data-t="notes"><span class="ni c-sky" data-ic="notes"></span><span>المذكرات والملازم</span></button>
@@ -1883,6 +1900,10 @@
           <div class="tools"><div class="srch"><span data-ic="search"></span><input id="adQ" type="text" placeholder="ابحث بالاسم أو رقم الموبايل أو المدرسة" aria-label="بحث في الطلبة" autocomplete="off"></div></div>
           <div class="chips" id="adStats"></div>
           <div id="adList"></div>
+        </section>
+        <section id="adAct" hidden>
+          <div class="tools"><div class="srch"><span data-ic="search"></span><input id="actQ" type="text" placeholder="ابحث باسم الفيديو أو الكورس أو الملزمة أو اسم الطالب" aria-label="بحث في نشاط الطلبة" autocomplete="off"></div></div>
+          <div id="actBody"></div>
         </section>
         <section id="adCon" hidden>
           <div class="gbar" id="edGrades" role="group" aria-label="اختيار الصف"></div>
@@ -1911,7 +1932,7 @@ const NG = Object.fromEntries(Object.entries(GN).map(([k, v]) => [v, k]));
 const TAB_SLUG = { videos:'videos', notes:'books', courses:'courses', exams:'exams', fees:'fees', schedule:'schedule' };
 const SLUG_TAB = Object.fromEntries(Object.entries(TAB_SLUG).map(([k, v]) => [v, k]));
 const SEC_SLUG = { videos:'videos', notes:'books', courses:'courses' };
-const ADM_SLUG = { home:'', stu:'students', videos:'videos', notes:'books', courses:'courses', reviews:'testimonials' };
+const ADM_SLUG = { home:'', stu:'students', act:'activity', videos:'videos', notes:'books', courses:'courses', reviews:'testimonials' };
 const SLUG_ADM = Object.fromEntries(Object.entries(ADM_SLUG).filter(([, v]) => v).map(([k, v]) => [v, k]));
 function parseRoute(path){
   const seg = path.split('/').filter(Boolean), [a, b, c, d] = seg, n = seg.length, num = x => /^[1-9]\d{0,2}$/.test(x || '');
@@ -2045,7 +2066,7 @@ function replaceTo(path){ history.replaceState(null, '', path); syncMeta(); }
   ];
   let curGrade = '', spView = '';
   const esc = x => String(x).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const vidH = v => `<div class="vid"><h4>${esc(v.t)}</h4><div class="vf"><iframe src="https://www.youtube.com/embed/${esc(v.id)}" title="${esc(v.t)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>`;
+  const vidH = v => `<div class="vid"><h4>${esc(v.t)}</h4><div class="vf"><iframe src="https://www.youtube.com/embed/${esc(v.id)}?enablejsapi=1${/^https?:/.test(location.protocol) ? '&origin=' + encodeURIComponent(location.origin) : ''}" data-vid="${esc(v.id)}" title="${esc(v.t)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div></div>`;
   const fileH = f => `<div class="fr"><span>📄</span><b>${esc(f.t)}</b><button type="button" data-dl="${esc(f.url)}">⬇ تحميل</button></div>`;
   /* ---- أسعار الكورسات والاشتراك ---- */
   const priceOf = c => {
@@ -2109,7 +2130,12 @@ function replaceTo(path){ history.replaceState(null, '', path); syncMeta(); }
   document.getElementById('spBack').addEventListener('click', spBack);
   document.getElementById('modalTopics').addEventListener('click', e => { const b = e.target.closest('[data-sec]'); if(b) paintSec(b.dataset.sec); });
   document.getElementById('secPage').addEventListener('click', e => {
-    const d = e.target.closest('[data-dl]'); if(d) return dl(d.dataset.dl);
+    const d = e.target.closest('[data-dl]');
+    if(d){
+      const row = d.closest('.fr'), tt = row && row.querySelector('b'), fm = d.dataset.dl.match(/\/d\/([\w-]+)|[?&]id=([\w-]+)/);
+      if(fm && window.__track) window.__track('d', fm[1] || fm[2], tt ? tt.textContent : '');
+      return dl(d.dataset.dl);
+    }
     const bb = e.target.closest('[data-buy]'); if(bb) return window.openBuy && window.openBuy(curGrade, +bb.dataset.buy, 'sec');
     const c = e.target.closest('[data-course]'); if(c) return paintSec('course', +c.dataset.course);
     if(e.target.closest('[data-sub]')){ document.getElementById('secPage').hidden = true; document.body.classList.remove('modal-open'); navTo('/'); }
@@ -2257,6 +2283,26 @@ function replaceTo(path){ history.replaceState(null, '', path); syncMeta(); }
       f.allow = 'autoplay; encrypted-media; picture-in-picture'; f.allowFullscreen = true; f.title = 'فيديو شرح';
       btn.replaceWith(f);
     });
+  })();
+
+  /* ---------- Track video plays (YouTube IFrame API) ---------- */
+  (function(){
+    const sp = document.getElementById('spBody'); if(!sp) return;
+    let st = 0; const wait = [];
+    function loadApi(){
+      if(st) return; st = 1;
+      const prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => { st = 2; if(typeof prev === 'function'){ try{ prev(); }catch(e){} } wait.splice(0).forEach(bind); };
+      const sc = document.createElement('script'); sc.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(sc);
+    }
+    function bind(f){
+      if(st !== 2){ wait.push(f); return loadApi(); }
+      try{ new YT.Player(f, { events:{ onStateChange:e => { if(e.data === 1 && window.__track) window.__track('v', f.dataset.vid, f.title); } } }); }catch(e){}
+    }
+    new MutationObserver(() => {
+      if(!(window.__canTrack && window.__canTrack())) return;
+      sp.querySelectorAll('iframe[data-vid]:not([data-yt])').forEach(f => { f.dataset.yt = '1'; bind(f); });
+    }).observe(sp, { childList:true, subtree:true });
   })();
 
   /* ---------- Footer legal modals (terms / privacy) ---------- */
@@ -2945,6 +2991,21 @@ buyEl.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => { if(e.key === 'Escape' && !buyEl.hidden){ e.stopPropagation(); closeBuy(); } }, true);
 
+/* ---- activity tracking: videos watched / files downloaded (saved inside the student's own doc) ---- */
+const seenAct = new Map();
+window.__canTrack = () => { const u = auth.currentUser; return !!(u && !isAdmin(u)); };
+window.__track = async (kind, key, title) => {
+  try{
+    const u = auth.currentUser, f = kind === 'v' ? 'watched' : kind === 'd' ? 'downloaded' : '';
+    if(!f || !u || isAdmin(u) || !/^[\w-]{3,80}$/.test(key || '')) return;
+    const sk = f + ':' + key, now = Date.now(), last = seenAct.get(sk) || 0;
+    if(kind === 'v' ? last : now - last < 4000) return;
+    seenAct.set(sk, now);
+    const pth = f + '.' + key;
+    await updateDoc(doc(db, 'users', u.uid), { [pth + '.t']:String(title || '').trim().slice(0, 120), [pth + '.at']:serverTimestamp(), [pth + '.n']:increment(1) });
+  }catch(e){ console.warn('activity not saved:', (e && e.code) || e); }
+};
+
 /* ---- login ---- */
 $('loginForm').addEventListener('submit', async e => {
   e.preventDefault(); clearErr();
@@ -3033,6 +3094,7 @@ const AI = {
   warn:'<path d="M12 3 22 20H2z" fill="#FBBF24" stroke="#FBBF24" stroke-width="2" stroke-linejoin="round"/><path d="M12 9.5v4.5" stroke="#78350F" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="17" r="1.2" fill="#78350F"/>',
   chev:'<path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
 };
+AI.activity = '<path d="M3 12h4l3-8 4 16 3-8h4"/>';
 AI.lock = '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>';
 const ai = k => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${AI[k]}</svg>`;
 document.querySelectorAll('#adminPage [data-ic]').forEach(el => { el.innerHTML = ai(el.dataset.ic); });
@@ -3082,6 +3144,7 @@ const CONTENT_TABS = ['videos', 'notes', 'courses'];
 const ADM_T = {
   home:['نظرة عامة', 'ملخص سريع لكل حاجة في المنصة'],
   stu:['الطلبة', 'راجع الحسابات، فعّل أو أوقف، واشحن الرصيد'],
+  act:['نشاط الطلبة', 'مين شاهد الفيديوهات واشترك في الكورسات وحمّل الملازم'],
   videos:['الفيديوهات التعليمية', 'أضف فيديوهات يوتيوب لكل صف دراسي'],
   notes:['المذكرات والملازم', 'ملفات من جوجل درايف لكل صف دراسي'],
   courses:['الكورسات المميزة', 'كورسات بصورة وسعر ووصف وفيديوهات وملفات'],
@@ -3168,10 +3231,11 @@ function adTab(t){
   adSec = t;
   $('adTabs').querySelectorAll('.adm-ni').forEach(b => { b.removeAttribute('aria-current'); if(b.dataset.t === t) b.setAttribute('aria-current', 'page'); });
   $('adTitle').textContent = ADM_T[t][0]; $('adSub').textContent = ADM_T[t][1];
-  $('adHome').hidden = t !== 'home'; $('adStu').hidden = t !== 'stu';
+  $('adHome').hidden = t !== 'home'; $('adStu').hidden = t !== 'stu'; $('adAct').hidden = t !== 'act';
   $('adCon').hidden = !CONTENT_TABS.includes(t); $('adRev').hidden = t !== 'reviews';
   closeDrawer();
   if(t === 'home') paintHome();
+  if(t === 'act') paintAct();
   if(CONTENT_TABS.includes(t)) paintEd();
   if(t === 'reviews') paintRev();
   paintSaveBar();
@@ -3240,7 +3304,7 @@ async function loadUsers(){
   try{
     const snap = await getDocs(collection(db, 'users'));
     users = snap.docs.map(d => ({ id:d.id, ...d.data() })).sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-    paintUsers(); if(adSec === 'home') paintHome();
+    paintUsers(); if(adSec === 'home') paintHome(); if(adSec === 'act') paintAct();
   }catch(e){ $('adList').innerHTML = `<div class="emp">${ai('warn')}<b>تعذر تحميل الطلبة</b>راجع قواعد Firestore.</div>`; }
 }
 const openSc = new Set();
@@ -3313,6 +3377,67 @@ $('adList').addEventListener('click', async e => {
   }catch(err){ c.disabled = false; window.toast && toast('تعذر التحديث: ' + (err.code || ''), 'err'); }
 });
 $('adList').addEventListener('input', e => { if(e.target.matches('input')) e.target.classList.remove('bad'); });
+
+/* ---- activity: who watched / subscribed / downloaded ---- */
+let actKind = 'videos', actQ = '';
+const openAct = new Set();
+const ACT_K = {
+  videos:{ l:'الفيديوهات', ic:'videos', col:'#f87171', cl:'red', sl:'طالب شاهد فيديو', unit:'مشاهدة', empty:'لسه مفيش أي طالب شاهد فيديو.', note:'المشاهدة بتتسجل لما الطالب (وهو مسجّل دخوله) يضغط تشغيل على الفيديو. التسجيل بدأ من وقت تفعيل التحديث ده، فمشاهدات قبل كده مش موجودة.' },
+  courses:{ l:'الكورسات', ic:'courses', col:'#a78bfa', cl:'violet', sl:'طالب مشترك في كورس', unit:'', empty:'لسه مفيش اشتراكات في الكورسات.', note:'الاشتراكات مأخوذة من سجل المشتريات في حساب كل طالب (الخصم من المحفظة)، وفيها كل الاشتراكات من البداية.' },
+  notes:{ l:'الملازم', ic:'notes', col:'#38bdf8', cl:'sky', sl:'طالب حمّل ملزمة', unit:'تحميل', empty:'لسه مفيش أي طالب حمّل ملزمة.', note:'التحميل بيتسجل لما الطالب (وهو مسجّل دخوله) يضغط زر التحميل. التسجيل بدأ من وقت تفعيل التحديث ده، فتحميلات قبل كده مش موجودة.' }
+};
+function actData(){
+  const M = { videos:new Map(), courses:new Map(), notes:new Map() };
+  const add = (m, key, t, u, rec) => { let e = m.get(key); if(!e){ e = { key, t:'', rows:[] }; m.set(key, e); } if(t) e.t = t; e.rows.push({ u, ...rec }); };
+  users.forEach(u => {
+    Object.entries(u.watched || {}).forEach(([k, r]) => add(M.videos, k, r && r.t, u, { n:(r && r.n) || 1, at:r && r.at }));
+    Object.entries(u.downloaded || {}).forEach(([k, r]) => add(M.notes, k, r && r.t, u, { n:(r && r.n) || 1, at:r && r.at }));
+    Object.entries(u.purchased || {}).forEach(([k, r]) => add(M.courses, k, r && r.title, u, { price:Number(r && r.price) || 0, at:r && r.at }));
+  });
+  Object.keys(coursesData).forEach(g => ((CONTENT[g] || {}).courses || []).forEach(c => {
+    if(!c || !(priceOf(c) > 0)) return;
+    const id = String(c.id), e = M.courses.get(id);
+    if(e){ if(c.t) e.t = c.t; } else M.courses.set(id, { key:id, t:c.t || '', rows:[] });
+  }));
+  return M;
+}
+const actTs = ts => !ts ? 0 : ts.seconds ? ts.seconds : ts.toDate ? ts.toDate().getTime() / 1000 : ts instanceof Date ? ts.getTime() / 1000 : 0;
+const actWhen = ts => { const t = actTs(ts); if(!t) return '—'; const d = new Date(t * 1000); return d.toLocaleDateString('ar-EG', { day:'numeric', month:'short', year:'numeric' }) + ' · ' + d.toLocaleTimeString('ar-EG', { hour:'numeric', minute:'2-digit' }); };
+function paintAct(){
+  const el = $('actBody'); if(!el) return;
+  if(!users.length){ el.innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>'; return; }
+  const M = actData(), K = ACT_K[actKind], q = actQ.trim(), ql = q.toLowerCase();
+  const distinct = m => new Set([...m.values()].flatMap(e => e.rows.map(r => r.u.id))).size;
+  const cards = Object.keys(ACT_K).map(k => `<button type="button" class="stc c-${ACT_K[k].cl}" data-act="${k}"><span class="ni">${ai(ACT_K[k].ic)}</span><span><b>${nfmt(distinct(M[k]))}</b><span class="l">${ACT_K[k].sl}</span></span></button>`).join('');
+  const chips = Object.keys(ACT_K).map(k => `<button type="button" class="gchip" data-act="${k}" aria-pressed="${actKind === k}">${ACT_K[k].l}<span class="gc">${nfmt(M[k].size)}</span></button>`).join('');
+  const studentHit = r => [r.u.fullName, r.u.phone].some(x => (x || '').includes(q));
+  let items = [...M[actKind].values()];
+  if(q) items = items.filter(e => (e.t || '').toLowerCase().includes(ql) || e.rows.some(studentHit));
+  items.sort((a, b) => b.rows.length - a.rows.length || (a.t || '').localeCompare(b.t || '', 'ar'));
+  const th = actKind === 'courses' ? ['الطالب', 'الموبايل', 'المبلغ', 'تاريخ الاشتراك'] : ['الطالب', 'الموبايل', 'عدد المرات', 'آخر مرة'];
+  const list = items.map(e => {
+    const titleHit = !q || (e.t || '').toLowerCase().includes(ql);
+    const rows = (titleHit ? e.rows : e.rows.filter(studentHit)).slice().sort((a, b) => actTs(b.at) - actTs(a.at));
+    const c = e.rows.length, key = actKind + ':' + e.key, op = openAct.has(key);
+    const sum = e.rows.reduce((s, r) => s + (actKind === 'courses' ? r.price : r.n), 0);
+    const sub = !c ? 'لسه مفيش حد' : actKind === 'courses' ? 'إجمالي الاشتراكات ' + money(sum) + ' ج.م' : nfmt(sum) + ' ' + K.unit;
+    const body = rows.length
+      ? `<table class="gt"><thead><tr>${th.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr><td class="nm">${esc(r.u.fullName || '')}<small>${esc(r.u.grade || '')}</small></td><td><bdi dir="ltr">${esc(r.u.phone || '')}</bdi></td><td>${actKind === 'courses' ? money(r.price) + ' ج.م' : nfmt(r.n)}</td><td>${actWhen(r.at)}</td></tr>`).join('')}</tbody></table>`
+      : `<div class="act-empty">مفيش طلبة لسه.</div>`;
+    return `<div class="scard${op ? ' open' : ''}" data-ak="${esc(key)}"><div class="sc-head" role="button" tabindex="0" aria-expanded="${op}"><span class="act-ic" style="--c:${K.col}">${ai(K.ic)}</span><div class="sc-nm">${esc(e.t || 'بدون عنوان')}<small>${sub}</small></div><span class="act-cnt${c ? '' : ' zero'}">${ai('students')}${nfmt(c)} طالب</span><span class="chev sc-chev">${ai('chev')}</span></div><div class="act-body">${body}</div></div>`;
+  }).join('');
+  el.innerHTML = `<div class="stats">${cards}</div><div class="chips">${chips}</div><div class="act-note">${ai('warn')}<span>${K.note}</span></div>`
+    + (list || `<div class="emp">${ai('search')}<b>${q ? 'مفيش نتائج' : K.empty}</b>${q ? 'جرّب بحث تاني.' : ''}</div>`);
+}
+$('adAct').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if(b){ actKind = b.dataset.act; paintAct(); return; }
+  const h = e.target.closest('.sc-head'); if(!h) return;
+  const card = h.closest('.scard'), k = card.dataset.ak, op = !openAct.has(k);
+  op ? openAct.add(k) : openAct.delete(k);
+  card.classList.toggle('open', op); h.setAttribute('aria-expanded', op);
+});
+$('adAct').addEventListener('keydown', e => { if((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('sc-head')){ e.preventDefault(); e.target.click(); } });
+$('actQ').addEventListener('input', e => { actQ = e.target.value; paintAct(); });
 
 /* ---- shared editor helpers ---- */
 const NEWI = {
