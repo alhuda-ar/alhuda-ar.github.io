@@ -533,6 +533,62 @@
   }
   .ft-credit a{ color:var(--gold); font-weight:700; unicode-bidi:isolate; text-decoration:none; border-bottom:1px solid rgba(211,166,103,.4); transition:color .2s ease, border-color .2s ease; }
   .ft-credit a:hover{ color:var(--cream); border-color:var(--cream); }
+
+  /* ---------- Footer animations ---------- */
+  @keyframes ftLine{ 0%,100%{ opacity:.45; width:min(380px,55%); } 50%{ opacity:.95; width:min(560px,75%); } }
+  @keyframes ftFloat{ 0%,100%{ transform:translateY(0) rotate(0); } 50%{ transform:translateY(-4px) rotate(-3deg); } }
+  @keyframes ftRing{ 0%{ box-shadow:0 0 0 0 rgba(37,211,102,.38); } 70%,100%{ box-shadow:0 0 0 14px rgba(37,211,102,0); } }
+  @keyframes ftItem{ from{ opacity:0; transform:translateX(14px); } to{ opacity:1; transform:none; } }
+  .site-footer::before{ animation:ftLine 6s ease-in-out infinite; }
+
+  /* staggered reveal: columns first, then their items */
+  .js .ft-grid > .ft-col{ opacity:0; }
+  .ft-grid.in-view > .ft-col{ opacity:1; animation:rvIn .8s var(--ease) calc(var(--i,0) * 120ms) backwards; }
+  .ft-grid > :nth-child(1){ --i:0; } .ft-grid > :nth-child(2){ --i:1; } .ft-grid > :nth-child(3){ --i:2; }
+  .ft-grid > :nth-child(4){ --i:3; } .ft-grid > :nth-child(5){ --i:4; }
+  .ft-grid.in-view .ft-list li, .ft-grid.in-view .ft-contact li{
+    animation:ftItem .55s var(--ease) calc(var(--i,0) * 120ms + 260ms + var(--k,0) * 60ms) backwards;
+  }
+  .ft-list > :nth-child(1), .ft-contact > :nth-child(1){ --k:0; } .ft-list > :nth-child(2), .ft-contact > :nth-child(2){ --k:1; }
+  .ft-list > :nth-child(3), .ft-contact > :nth-child(3){ --k:2; } .ft-list > :nth-child(4), .ft-contact > :nth-child(4){ --k:3; }
+  .ft-list > :nth-child(5){ --k:4; } .ft-list > :nth-child(6){ --k:5; } .ft-list > :nth-child(7){ --k:6; }
+  .ft-grid.in-view .ft-social a{ animation:popIn .55s var(--ease) calc(500ms + var(--s,0) * 70ms) backwards; }
+  .ft-social > :nth-child(1){ --s:0; } .ft-social > :nth-child(2){ --s:1; } .ft-social > :nth-child(3){ --s:2; }
+  .ft-social > :nth-child(4){ --s:3; } .ft-social > :nth-child(5){ --s:4; }
+  .ft-logo-ic{ transition:transform .4s var(--ease), background .3s ease, border-color .3s ease; }
+  .ft-logo-ic{ animation:ftFloat 5s ease-in-out infinite; }
+  .ft-logo:hover .ft-logo-ic{ animation-play-state:paused; transform:rotate(-8deg) scale(1.1); background:rgba(211,166,103,.24); border-color:var(--gold); }
+
+  /* hover / focus polish */
+  .ft-col h4::after{ transition:width .45s var(--ease); }
+  .ft-col:hover h4::after{ width:64px; }
+  .ft-list a, .ft-list .ft-link{ transition:color .25s ease, transform .35s var(--ease); }
+  .ft-list a::before, .ft-link::before{ transition:transform .35s var(--ease), border-color .25s ease; }
+  .ft-list a:hover::before, .ft-link:hover::before{ transform:rotate(45deg) scale(1.35) translate(-1px,1px); border-color:var(--cream); }
+  .ft-list a:hover, .ft-link:hover{ transform:translateX(-6px); }
+  .ft-list a:active, .ft-link:active{ transform:translateX(-3px) scale(.98); }
+  .ft-contact a{ transition:color .25s ease, transform .35s var(--ease); }
+  .ft-contact a:hover{ transform:translateX(-4px); }
+  .ft-ic{ transition:transform .35s var(--ease), color .25s ease, background .25s ease, border-color .25s ease; }
+  .ft-contact a:hover .ft-ic{ transform:translateY(-3px) scale(1.08); color:var(--gold); background:rgba(211,166,103,.14); border-color:rgba(211,166,103,.5); }
+  .ft-social a{ transition:transform .35s var(--ease), background .25s ease, border-color .25s ease, box-shadow .3s ease; }
+  .ft-social a:hover{ transform:translateY(-5px) rotate(-6deg) scale(1.08); box-shadow:0 12px 22px -10px var(--c); }
+  .ft-social a:active{ transform:translateY(-2px) scale(.95); }
+  .ft-social svg{ transition:transform .35s var(--ease); }
+  .ft-social a:hover svg{ transform:scale(1.12); }
+  .ft-wa{ position:relative; overflow:hidden; animation:ftRing 2.8s ease-out infinite; transition:transform .35s var(--ease), background .25s ease, border-color .25s ease; }
+  .ft-wa::after{ content:""; position:absolute; inset:0; pointer-events:none; transform:translateX(120%); background:linear-gradient(110deg, transparent 30%, rgba(255,255,255,.28) 50%, transparent 70%); transition:transform .8s var(--ease); }
+  .ft-wa:hover{ animation-play-state:paused; transform:translateY(-3px); }
+  .ft-wa:hover::after{ transform:translateX(-120%); }
+  .ft-wa:active{ transform:translateY(-1px) scale(.97); }
+  .ft-wa svg{ transition:transform .4s var(--ease); }
+  .ft-wa:hover svg{ transform:rotate(-12deg) scale(1.15); }
+  .ft-bottom.section-reveal{ transition-delay:.35s; }
+  :is(.ft-list a, .ft-link, .ft-contact a, .ft-social a, .ft-wa, .ft-logo):focus-visible{ outline:2px solid var(--gold); outline-offset:4px; border-radius:8px; }
+  @media (prefers-reduced-motion:reduce){
+    .js .ft-grid > .ft-col{ opacity:1 !important; }
+    .site-footer::before, .ft-logo-ic, .ft-wa{ animation:none !important; }
+  }
   .legal-box{ max-width:640px; padding:36px 32px 28px; }
   .legal-box h3{ margin-bottom:18px; padding-inline-end:32px; }
   .legal-body{ max-height:min(62vh,520px); overflow-y:auto; padding-inline-end:8px; color:var(--text-soft); font-size:.96rem; line-height:1.95; outline:none; }
@@ -1669,7 +1725,7 @@
 
 <footer class="site-footer">
   <div class="wrap">
-    <div class="ft-grid">
+    <div class="ft-grid section-reveal stagger">
       <div class="ft-col ft-brand-col">
         <a href="#main" class="ft-logo"><span class="ft-logo-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 7c-1.6-1.5-3.8-2-7-2v12c3.2 0 5.4.5 7 2 1.6-1.5 3.8-2 7-2V5c-3.2 0-5.4.5-7 2Z"/><path d="M12 7v12"/></svg></span><span>الهُدى</span></a>
         <p class="ft-about">منصة تعليمية متخصصة في تعليم اللغة العربية للمرحلتين الإعدادية والثانوية، بأسلوب مبسط ومختلف مع الأستاذة نور الهدى.</p>
@@ -1700,7 +1756,6 @@
         <ul class="ft-contact">
           <li><a href="tel:+201019771940"><span class="ft-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 4h3.5l1.7 4.2-2.1 1.3a11 11 0 0 0 5.4 5.4l1.3-2.1 4.2 1.7V18a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span><span class="ft-ltr">+20 101 977 1940</span></a></li>
           <li><a href="https://wa.me/201019771940" data-wa="أهلاً ميس نور، عايز أستفسر عن الحصص." target="_blank" rel="noopener"><span class="ft-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.5L3 21l1.5-5.4A8.5 8.5 0 1 1 21 12Z"/></svg></span><span>واتساب مباشر</span></a></li>
-          <li><a href="mailto:016nooralhuda@gmail.com"><span class="ft-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></span><span class="ft-ltr">016nooralhuda@gmail.com</span></a></li>
           <li><span class="ft-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span>الإسكندرية، مصر</span></li>
         </ul>
       </div>
@@ -1721,7 +1776,7 @@
       </div>
     </div>
 
-    <div class="ft-bottom">
+    <div class="ft-bottom section-reveal">
       <span>© 2026 الهُدى. جميع الحقوق محفوظة.</span>
       <span class="ft-credit">تمت برمجة المنصة بواسطة فريق <a href="https://www.facebook.com/profile.php?id=61582261975354" target="_blank" rel="noopener">creatix studio</a></span>
     </div>
