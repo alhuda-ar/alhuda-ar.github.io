@@ -3718,5 +3718,228 @@ window.__authHooks = { apply:applyAuthRoute, closeAll:closeAllAuth };
 if(window.__routerPending){ const pr = window.__routerPending; window.__routerPending = null; applyAuthRoute(pr); }
 </script>
 
+<style id="exams-css">
+.xo{position:fixed;inset:0;z-index:400;overflow:auto;background:#0f1f1c;color:#eaf3f0;padding:20px 14px;direction:rtl}.xo[hidden]{display:none}
+.xw{max-width:760px;margin:0 auto}.xh{display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;background:#0f1f1c;padding:10px 0;z-index:2;border-bottom:1px solid #2b4a43;margin-bottom:14px}
+.xtm{font:700 1.4rem/1 monospace;background:#1d3a34;padding:8px 14px;border-radius:12px;direction:ltr}.xtm.low{background:#7a2323;color:#fff}
+.xq{background:#17302b;border:1px solid #2b4a43;border-radius:14px;padding:14px;margin:10px 0;display:flex;flex-direction:column;gap:8px}.xq.ok{border-color:#3fa67a}.xq.no{border-color:#c0505a}
+.xl{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;background:#1d3a34;cursor:pointer}
+.xo textarea,.xa textarea,.xa input,.xa select{width:100%;background:#10201d;color:inherit;border:1px solid #2b4a43;border-radius:10px;padding:9px;font:inherit}.xa input[type=radio]{width:auto}
+.xbtn,.xa button,.xb button,.exc button{background:#D3A667;color:#1b1b1b;border:0;border-radius:10px;padding:9px 16px;font:inherit;font-weight:700;cursor:pointer}.xbtn{width:100%;margin:14px 0}
+.xk{color:#9fd6bf}.xs{text-align:center;padding:14px;background:#1d3a34;border-radius:14px}.xs b{font-size:1.8rem;display:block}
+.xc{background:#17302b;border:1px solid #2b4a43;border-radius:16px;padding:14px;margin:10px 0;display:flex;flex-direction:column;gap:8px}.xc small,.xq small{color:#9db8b0;display:block}
+.xm,.xb,.xp,.xr{display:flex;flex-wrap:wrap;gap:8px}.xr>*{flex:1}.xm span,.xp span{background:#1d3a34;border-radius:8px;padding:3px 10px;font-size:.85rem}.xst{color:#D3A667}
+.exc{background:#17302b;border:1px dashed #D3A667;border-radius:14px;padding:14px;margin:8px 0 18px;display:flex;flex-direction:column;gap:6px}.exc button{align-self:flex-start;margin-top:4px}
+.vid.xlk .vf{display:none}.vid.xlk::after{content:'🔒 خلّص امتحان المحاضرة اللي قبلها الأول عشان الفيديو ده يتفتح';display:block;padding:26px;text-align:center;background:#17302b;border-radius:14px;color:#D3A667}
+.xa{display:flex;flex-direction:column;gap:10px}.xa label{display:flex;flex-direction:column;gap:4px}.xa .pri{background:#3fa67a}
+.xrow{background:#17302b;border:1px solid #2b4a43;border-radius:12px;padding:10px}.xrow.fail{border-color:#c0505a;background:#2b1b1d}.xrow summary{cursor:pointer}
+</style>
+<script type="module" id="exams-js">
+import { getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, getDocs, collection, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const A = getAuth(getApp()), D = getFirestore(getApp());
+const ADMINS = ['opaidamazed@gmail.com','obaidamazed@gmail.com','016nooralhuda@gmail.com','01019771940@alhuda-ar.app','01223093974@alhuda-ar.app'];
+const $ = s => document.querySelector(s);
+const esc = x => String(x == null ? '' : x).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const N = n => Number(n || 0).toLocaleString('ar-EG', { maximumFractionDigits:1 });
+const sh = a => { a = [...a]; for(let i = a.length; i > 1;){ const j = Math.random() * i-- | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pr = s => { const t = String(s || '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)); const m = t.match(/\d+(?:\.\d+)?/); return m ? parseFloat(m[0]) : 0; };
+let U = null, ISA = false, EX = [], MY = {}, PUR = {}, KEYS = {}, SRC = [], SUBS = [], T = 0, R = null, ED = null, SEEN = new Set();
+
+/* ---------- grading ---------- */
+const calc = (e, key, s) => { let got = 0, tot = 0, pend = 0;
+  e.q.forEach((q, i) => { const p = q.y === 'e' ? e.ep : e.mp; tot += p;
+    if(q.y === 'e'){ const g = s.eg && s.eg[i]; if(g == null) pend++; else got += Math.min(+g, p); }
+    else if(s.ans && s.ans[i] === key.a[i]) got += p; });
+  return { got, tot, pend, pct: tot ? got / tot * 100 : 0 }; };
+const loadKey = async id => { if(KEYS[id]) return KEYS[id]; const s = await getDoc(doc(D, 'examKeys', id)); return (KEYS[id] = s.exists() ? s.data() : { a:[] }); };
+const aTxt = (q, v) => v == null || v === '' ? '— لم تجب —' : q.y === 'm' ? esc(q.o[v]) : q.y === 't' ? (v == 1 ? 'صح' : 'خطأ') : esc(v);
+
+/* ---------- loading ---------- */
+async function loadAll(){
+  EX = (await getDocs(collection(D, 'exams'))).docs.map(d => ({ id:d.id, ...d.data() }));
+  if(ISA){
+    (await getDocs(collection(D, 'examKeys'))).forEach(d => { KEYS[d.id] = d.data(); });
+    SUBS = (await getDocs(collection(D, 'examSubs'))).docs.map(d => ({ sid:d.id, ...d.data() }));
+  }else if(U){
+    MY = {};
+    (await getDocs(query(collection(D, 'examSubs'), where('uid', '==', U.uid)))).docs.map(d => d.data()).sort((a, b) => a.n - b.n).forEach(s => (MY[s.eid] = MY[s.eid] || []).push(s));
+    try{ const u = await getDoc(doc(D, 'users', U.uid)); PUR = (u.exists() && u.data().purchased) || {}; }catch(e){ PUR = {}; }
+  }
+}
+const visible = e => !ISA && U && (e.src === 'v' || !e.paid || PUR[e.cid]);
+const done = e => (MY[e.id] || []).length > 0;
+
+/* ---------- overlay ---------- */
+function ov(h){ let o = $('#xo'); if(!o){ o = document.createElement('div'); o.id = 'xo'; o.className = 'xo'; document.body.appendChild(o); } o.innerHTML = h; o.hidden = false; document.body.classList.add('modal-open'); o.scrollTop = 0; return o; }
+function closeOv(){ const o = $('#xo'); if(o) o.hidden = true; clearInterval(T); const d = $('#dashPage'); if(!(d && !d.hidden)) document.body.classList.remove('modal-open'); sync(true); }
+
+/* ---------- student: take exam ---------- */
+function startExam(id){
+  const e = EX.find(x => x.id === id); if(!e || !U) return;
+  const used = (MY[id] || []).length;
+  if(used >= e.maxTry) return showRes(e, MY[id][used - 1]);
+  R = { e, ord:sh(e.q.map((_, i) => i)), opt:{}, t:Math.round(e.dur * 60), sent:false };
+  e.q.forEach((q, i) => { if(q.y === 'm') R.opt[i] = sh(q.o.map((_, j) => j)); });
+  const qs = R.ord.map((i, p) => { const q = e.q[i];
+    return `<div class="xq"><b>${N(p + 1)}. ${esc(q.t)}</b>` + (q.y === 'm' ? R.opt[i].map(j => `<label class="xl"><input type="radio" name="q${i}" value="${j}"> ${esc(q.o[j])}</label>`).join('')
+      : q.y === 't' ? `<label class="xl"><input type="radio" name="q${i}" value="1"> صح</label><label class="xl"><input type="radio" name="q${i}" value="0"> خطأ</label>`
+      : `<textarea name="q${i}" rows="4" placeholder="اكتب إجابتك هنا"></textarea>`) + '</div>'; }).join('');
+  ov(`<div class="xw"><div class="xh"><div><h2>${esc(e.title)}</h2><small>المحاولة ${N(used + 1)} من ${N(e.maxTry)}</small></div><div class="xtm" id="xt"></div></div>${qs}<button class="xbtn" id="xsub" type="button">تسليم الامتحان</button></div>`);
+  const tick = () => { const m = Math.floor(R.t / 60), s = R.t % 60, el = $('#xt'); if(!el) return; el.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'); el.classList.toggle('low', R.t <= 60); if(R.t <= 0){ submit(true); return; } R.t--; };
+  clearInterval(T); tick(); T = setInterval(tick, 1000);
+  $('#xsub').onclick = () => { if(confirm('متأكد إنك عايز تسلّم الامتحان؟')) submit(false); };
+}
+async function submit(auto){
+  if(!R || R.sent) return; R.sent = true; clearInterval(T);
+  const e = R.e, o = $('#xo'), n = (MY[e.id] || []).length + 1;
+  const ans = e.q.map((q, i) => { if(q.y === 'e'){ const t = o.querySelector(`[name=q${i}]`); return t ? t.value.trim() : ''; } const c = o.querySelector(`[name=q${i}]:checked`); return c ? +c.value : null; });
+  const sub = { uid:U.uid, eid:e.id, n, ans, name:(U.displayName || ''), at:serverTimestamp() };
+  try{ await setDoc(doc(D, 'examSubs', `${U.uid}_${e.id}_${n}`), sub); }
+  catch(err){ R.sent = false; alert('تعذر تسليم الامتحان، اتأكد من النت وجرب تاني.'); return; }
+  (MY[e.id] = MY[e.id] || []).push({ ...sub, at:null });
+  showRes(e, MY[e.id][n - 1], auto);
+}
+async function showRes(e, s, auto){
+  ov('<div class="xw"><p>جاري التصحيح…</p></div>');
+  let key; try{ key = await loadKey(e.id); }catch(err){ return ov('<div class="xw"><p>تعذر تحميل النتيجة.</p><button class="xbtn" id="xcl">إغلاق</button></div>'), $('#xcl').onclick = closeOv; }
+  const c = calc(e, key, s);
+  const items = e.q.map((q, i) => { const ok = q.y !== 'e' && s.ans[i] === key.a[i];
+    const st = q.y === 'e' ? (s.eg && s.eg[i] != null ? `درجتك: ${N(s.eg[i])} من ${N(e.ep)}` : 'بانتظار تصحيح المعلمة') : ok ? '✔ صح' : '✘ غلط';
+    return `<div class="xq ${q.y === 'e' ? '' : ok ? 'ok' : 'no'}"><b>${N(i + 1)}. ${esc(q.t)}</b><div>إجابتك: ${aTxt(q, s.ans[i])}</div>` + (q.y !== 'e' && !ok ? `<div class="xk">الإجابة الصحيحة: ${aTxt(q, key.a[i])}</div>` : '') + (q.y === 'e' && key.a[i] ? `<div class="xk">الإجابة النموذجية: ${esc(key.a[i])}</div>` : '') + `<small>${st}</small></div>`; }).join('');
+  ov(`<div class="xw"><div class="xh"><h2>نتيجة: ${esc(e.title)}</h2></div>${auto ? '<p class="xk">انتهى الوقت وتم تسليم إجاباتك تلقائيًا.</p>' : ''}<div class="xs"><b>${N(c.got)} / ${N(c.tot)}</b><span>${N(c.pct)}%</span>${c.pend ? '<small>الدرجة مبدئية لحد ما الأسئلة المقالية تتصحح</small>' : ''}</div>${items}<button class="xbtn" id="xcl" type="button">إغلاق</button></div>`);
+  $('#xcl').onclick = closeOv;
+}
+
+/* ---------- student: profile tab + video cards ---------- */
+async function paintTab(){
+  const box = $('#dpMain'); if(!box || !U) return;
+  box.innerHTML = '<h2 class="dp-h">الامتحانات</h2><div class="xt"><p class="sub-h">جاري التحميل…</p></div>';
+  const list = EX.filter(visible);
+  await Promise.all(list.filter(done).map(e => loadKey(e.id).catch(() => null)));
+  const cards = list.map(e => { const subs = MY[e.id] || [], last = subs[subs.length - 1], k = KEYS[e.id];
+    const st = last && k ? (c => `تم ✔ — ${N(c.got)}/${N(c.tot)} (${N(c.pct)}%)`)(calc(e, k, last)) : 'لم يبدأ';
+    const prev = subs.length > 1 || (subs.length === 1 && k) ? '<div class="xp">' + subs.map(s => { const c = k ? calc(e, k, s) : null; return `<span>محاولة ${N(s.n)}: ${c ? N(c.got) + '/' + N(c.tot) : '—'}</span>`; }).join('') + '</div>' : '';
+    return `<div class="xc"><div><b>${esc(e.title)}</b><small>${esc(e.srcT || '')}</small></div><div class="xm"><span>${N(e.q.length)} سؤال</span><span>${N(e.dur)} دقيقة</span><span class="xst">${st}</span></div>${prev}<div class="xb">${subs.length < e.maxTry ? `<button type="button" data-xs="${e.id}">${subs.length ? 'إعادة الامتحان' : 'ابدأ الامتحان'}</button>` : ''}${subs.length ? `<button type="button" data-xv="${e.id}">عرض آخر نتيجة</button>` : ''}</div></div>`; }).join('');
+  if($('#dpMain .xt')) $('#dpMain .xt').innerHTML = cards || '<p class="sub-h">مفيش امتحانات متاحة ليك دلوقتي.</p>';
+}
+function vidCards(){
+  if(!U || ISA || !EX.length) return;
+  document.querySelectorAll('.vid').forEach(v => {
+    const f = v.querySelector('iframe'), m = f && (f.getAttribute('src') || f.dataset.src || '').match(/embed\/([\w-]{11})/);
+    v._e = m ? EX.find(x => x.vid === m[1] && visible(x)) : null;
+    let c = v.nextElementSibling; if(c && !c.classList.contains('exc')) c = null;
+    const show = v._e && (v._e.src === 'c' || SEEN.has(v._e.vid) || done(v._e));
+    if(show && !c){ c = document.createElement('div'); c.className = 'exc'; v.after(c); }
+    if(!show && c) c.remove();
+    if(show){ const e = v._e, d = done(e), left = e.maxTry - (MY[e.id] || []).length;
+      const h = `<b>📝 ${esc(e.title)}</b><p>${esc(e.desc || '')}</p><small>${N(e.q.length)} سؤال · ${N(e.dur)} دقيقة${e.src === 'c' && !d ? ' · لازم تخلصه عشان تفتح الفيديو اللي بعده' : ''}</small>`
+        + (left > 0 ? `<button type="button" data-xs="${e.id}">${d ? 'إعادة الامتحان' : 'ابدأ الامتحان'}</button>` : '') + (d ? `<button type="button" data-xv="${e.id}">النتيجة</button>` : '');
+      if(c.dataset.h !== h){ c.innerHTML = h; c.dataset.h = h; } }
+  });
+  document.querySelectorAll('.vid').forEach(v => { const g = [...v.parentElement.children].filter(x => x.classList.contains('vid')); if(g[0] !== v) return;
+    let lock = false; g.forEach(x => { x.classList.toggle('xlk', lock && !!x.closest('#dpMain')); if(x._e && x._e.src === 'c' && !done(x._e)) lock = true; }); });
+}
+let busy = false;
+function sync(force){
+  if(busy && !force) return; busy = true;
+  requestAnimationFrame(() => { try{
+    vidCards();
+    const dp = $('#dashPage'), cur = $('#dpNav [aria-current]');
+    if(dp && !dp.hidden && cur && cur.dataset.tab === 'exams' && (force || !$('#dpMain .xt'))) paintTab();
+  }finally{ busy = false; } });
+}
+document.addEventListener('click', e => {
+  const s = e.target.closest('[data-xs]'); if(s) return startExam(s.dataset.xs);
+  const v = e.target.closest('[data-xv]'); if(v){ const x = EX.find(y => y.id === v.dataset.xv); if(x && MY[x.id]) showRes(x, MY[x.id][MY[x.id].length - 1]); }
+});
+(() => { const o = window.__track; if(typeof o === 'function') window.__track = function(kind, key){ if(kind === 'v' && key){ SEEN.add(key); sync(true); } return o.apply(this, arguments); }; })();
+new MutationObserver(() => sync()).observe(document.body, { childList:true, subtree:true });
+
+/* ---------- admin ---------- */
+const failCount = () => SUBS.filter(s => { const e = EX.find(x => x.id === s.eid), k = KEYS[s.eid]; if(!e || !k) return false; const c = calc(e, k, s); return !c.pend && c.pct < 50; }).length;
+function badge(){ const b = $('#xBadge'); if(b){ const n = failCount(); b.textContent = n; b.hidden = !n; } }
+async function loadSrc(){
+  const s = await getDoc(doc(D, 'site', 'content')), d = s.exists() ? s.data() : {}; SRC = [];
+  for(const g of Object.keys(d)){ const o = d[g] || {};
+    (o.videos || []).forEach(v => SRC.push({ k:'v|' + g + '|' + v.id, src:'v', g, vid:v.id, t:'فيديو تعليمي: ' + v.t }));
+    for(const c of o.courses || []){ let vs = c.videos;
+      if(!Array.isArray(vs)){ try{ const x = await getDoc(doc(D, 'courseContent', String(c.id))); vs = x.exists() ? x.data().videos || [] : []; }catch(e){ vs = []; } }
+      vs.forEach(v => SRC.push({ k:'c|' + g + '|' + c.id + '|' + v.id, src:'c', g, cid:c.id, paid:pr(c.price) > 0, vid:v.id, t:'كورس ' + c.t + ' ← ' + v.t })); } }
+}
+const qH = (q, i, a) => `<div class="xq" data-i="${i}"><div class="xr"><select class="qy"><option value="m"${q.y === 'm' ? ' selected' : ''}>اختيار من متعدد</option><option value="t"${q.y === 't' ? ' selected' : ''}>صح وخطأ</option><option value="e"${q.y === 'e' ? ' selected' : ''}>مقالي</option></select><button type="button" data-rm="${i}">حذف السؤال</button></div><textarea class="qt" rows="2" placeholder="نص السؤال">${esc(q.t)}</textarea>`
+  + (q.y === 'm' ? q.o.map((o, j) => `<label class="xr"><input type="radio" name="c${i}" value="${j}"${a == j ? ' checked' : ''}><input class="qo" value="${esc(o)}" placeholder="اختيار ${j + 1}"></label>`).join('') + '<small>حدد الاختيار الصحيح بالدائرة</small>'
+  : q.y === 't' ? `<label>الإجابة الصحيحة: <select class="qa"><option value="1"${a == 1 ? ' selected' : ''}>صح</option><option value="0"${a == 0 ? ' selected' : ''}>خطأ</option></select></label>`
+  : `<textarea class="qa" rows="2" placeholder="الإجابة النموذجية (للمعلمة وللطالب بعد التسليم)">${esc(a || '')}</textarea>`) + '</div>';
+function collect(){
+  const b = $('#adExams'); if(!b.querySelector('#xf')) return;
+  ['title', 'desc'].forEach(k => ED[k] = b.querySelector('#x_' + k).value);
+  ['dur', 'maxTry', 'mp', 'ep'].forEach(k => ED[k] = +b.querySelector('#x_' + k).value);
+  ED.sk = b.querySelector('#x_src').value;
+  ED.q = []; ED.a = [];
+  b.querySelectorAll('.xq').forEach(el => { const y = el.querySelector('.qy').value, q = { y, t:el.querySelector('.qt').value }; let a;
+    if(y === 'm'){ q.o = [...el.querySelectorAll('.qo')].map(x => x.value); if(!q.o.length) q.o = ['', '', '', '']; const c = el.querySelector('input[type=radio]:checked'); a = c ? +c.value : 0; }
+    else if(y === 't') a = el.querySelector('.qa') && el.querySelector('.qa').tagName === 'SELECT' ? +el.querySelector('.qa').value : 1;
+    else a = el.querySelector('.qa') && el.querySelector('.qa').tagName === 'TEXTAREA' ? el.querySelector('.qa').value : '';
+    ED.q.push(q); ED.a.push(a); });
+}
+function drawForm(){
+  const b = $('#adExams');
+  b.innerHTML = `<div id="xf" class="xa"><button type="button" id="xback">← رجوع للامتحانات</button>
+  <label>الفيديو / المحاضرة المرتبط بها الامتحان<select id="x_src"><option value="">— اختار —</option>${SRC.map(s => `<option value="${esc(s.k)}"${ED.sk === s.k ? ' selected' : ''}>${esc(s.t)}</option>`).join('')}</select></label>
+  <label>عنوان الامتحان<input id="x_title" value="${esc(ED.title)}"></label><label>وصف الامتحان<textarea id="x_desc" rows="2">${esc(ED.desc)}</textarea></label>
+  <div class="xr"><label>الوقت (دقيقة)<input id="x_dur" type="number" min="1" value="${ED.dur}"></label><label>عدد مرات الإعادة المسموحة (إجمالي المحاولات)<input id="x_maxTry" type="number" min="1" value="${ED.maxTry}"></label></div>
+  <div class="xr"><label>درجة السؤال (اختيار وصح/خطأ)<input id="x_mp" type="number" min="0" step="0.5" value="${ED.mp}"></label><label>درجة السؤال المقالي<input id="x_ep" type="number" min="0" step="0.5" value="${ED.ep}"></label></div>
+  <div id="xqs">${ED.q.map((q, i) => qH(q, i, ED.a[i])).join('')}</div><div class="xr"><button type="button" id="xaddq">＋ إضافة سؤال</button><button type="button" id="xsave" class="pri">حفظ الامتحان</button></div></div>`;
+}
+async function aSave(){
+  collect(); const s = SRC.find(x => x.k === ED.sk);
+  if(!s) return alert('اختار الفيديو المرتبط بالامتحان'); if(!ED.title.trim()) return alert('اكتب عنوان الامتحان');
+  if(!ED.q.length) return alert('ضيف سؤال واحد على الأقل'); if(!(ED.dur > 0) || !(ED.maxTry > 0)) return alert('راجع الوقت وعدد المحاولات');
+  for(const [i, q] of ED.q.entries()){ if(!q.t.trim()) return alert('نص السؤال ' + (i + 1) + ' فاضي'); if(q.y === 'm' && q.o.filter(o => o.trim()).length < 2) return alert('السؤال ' + (i + 1) + ' محتاج اختيارين على الأقل'); if(q.y === 'e' && !String(ED.a[i]).trim()) return alert('اكتب إجابة نموذجية للسؤال المقالي ' + (i + 1)); }
+  const id = ED.id || 'x' + Date.now().toString(36), e = { src:s.src, g:s.g, cid:s.cid || '', paid:!!s.paid, vid:s.vid, srcT:s.t, title:ED.title.trim(), desc:ED.desc.trim(), dur:ED.dur, maxTry:ED.maxTry, mp:ED.mp, ep:ED.ep, q:ED.q };
+  try{ await setDoc(doc(D, 'examKeys', id), { a:ED.a }); await setDoc(doc(D, 'exams', id), e); }catch(err){ return alert('تعذر الحفظ: ' + (err.code || 'error')); }
+  KEYS[id] = { a:ED.a }; const i = EX.findIndex(x => x.id === id); if(i < 0) EX.push({ id, ...e }); else EX[i] = { id, ...e };
+  ED = null; aPaint(); badge();
+}
+function aPaint(){
+  const b = $('#adExams');
+  const rows = EX.map(e => `<div class="xc"><div><b>${esc(e.title)}</b><small>${esc(e.srcT || '')}</small></div><div class="xm"><span>${N(e.q.length)} سؤال</span><span>${N(e.dur)} دقيقة</span><span>${N(e.maxTry)} محاولة</span></div><div class="xb"><button data-ed="${e.id}">تعديل</button><button data-del="${e.id}">حذف</button></div></div>`).join('') || '<p class="sub-h">مفيش امتحانات لسه.</p>';
+  const res = SUBS.slice().sort((a, b) => ((b.at && b.at.seconds) || 0) - ((a.at && a.at.seconds) || 0)).map(s => { const e = EX.find(x => x.id === s.eid), k = KEYS[s.eid]; if(!e || !k) return ''; const c = calc(e, k, s), fail = !c.pend && c.pct < 50;
+    const ess = e.q.map((q, i) => q.y === 'e' ? `<div class="xq"><b>${esc(q.t)}</b><div>إجابة الطالب: ${esc(s.ans[i] || '— فارغة —')}</div><div class="xk">النموذجية: ${esc(k.a[i])}</div><label>الدرجة (من ${N(e.ep)}) <input type="number" min="0" max="${e.ep}" step="0.5" data-eg="${i}" value="${s.eg && s.eg[i] != null ? s.eg[i] : ''}"></label></div>` : '').join('');
+    return `<details class="xrow${fail ? ' fail' : ''}"><summary>${fail ? '⚠ سقط — ' : ''}<b>${esc(s.name || s.uid.slice(0, 6))}</b> · ${esc(e.title)} · محاولة ${N(s.n)} · ${N(c.got)}/${N(c.tot)} (${N(c.pct)}%)${c.pend ? ' · مقالي لسه مصححش' : ''}</summary>${ess ? ess + `<button type="button" data-sg="${s.sid}">حفظ درجات المقالي</button>` : '<small>كل الأسئلة تصحيح تلقائي.</small>'}</details>`; }).join('');
+  b.innerHTML = `<div class="xa"><button type="button" id="xnew" class="pri">＋ امتحان جديد</button>${rows}<h3>نتائج الطلبة <small>(الراسبين تحت 50% باللون الأحمر)</small></h3>${res || '<p class="sub-h">مفيش نتائج لسه.</p>'}</div>`;
+}
+async function aOpen(){
+  const b = $('#adExams'); b.innerHTML = '<p class="sub-h">جاري التحميل…</p>';
+  try{ await Promise.all([loadAll(), loadSrc()]); }catch(e){ b.innerHTML = '<p class="sub-h">تعذر التحميل، راجع قواعد Firestore.</p>'; return; }
+  aPaint(); badge();
+}
+function initAdmin(){
+  const nav = $('#adTabs'); if(!nav || $('#xNav')) return;
+  nav.querySelector('[data-t=courses]').insertAdjacentHTML('afterend', '<button type="button" class="adm-ni" id="xNav" data-x="exams"><span class="ni c-amber">📝</span><span>الامتحانات</span><span class="nb" id="xBadge" hidden>0</span></button>');
+  $('#adBody').insertAdjacentHTML('beforeend', '<section id="adExams" hidden></section>');
+  nav.addEventListener('click', e => { const b = e.target.closest('button'); if(!b) return;
+    if(b.dataset.x){ $('#adBody').querySelectorAll(':scope > section').forEach(s => s.hidden = s.id !== 'adExams'); nav.querySelectorAll('.adm-ni').forEach(x => x.removeAttribute('aria-current')); b.setAttribute('aria-current', 'page'); $('#adTitle').textContent = 'الامتحانات'; $('#adSub').textContent = 'أسئلة وأوقات ونتائج الامتحانات'; aOpen(); }
+    else $('#adExams').hidden = true; }, true);
+  const x = $('#adExams');
+  x.addEventListener('click', async e => { const t = e.target;
+    if(t.id === 'xnew'){ ED = { sk:'', title:'', desc:'', dur:15, maxTry:1, mp:1, ep:5, q:[{ y:'m', t:'', o:['', '', '', ''] }], a:[0] }; drawForm(); }
+    else if(t.dataset.ed){ const ex = EX.find(y => y.id === t.dataset.ed); ED = { id:ex.id, sk:SRC.find(s => s.src === ex.src && s.vid === ex.vid && (s.cid || '') === (ex.cid || '') && s.g === ex.g)?.k || '', title:ex.title, desc:ex.desc || '', dur:ex.dur, maxTry:ex.maxTry, mp:ex.mp, ep:ex.ep, q:JSON.parse(JSON.stringify(ex.q)), a:[...(KEYS[ex.id] || { a:[] }).a] }; drawForm(); }
+    else if(t.dataset.del){ if(confirm('حذف الامتحان؟')){ await deleteDoc(doc(D, 'exams', t.dataset.del)); await deleteDoc(doc(D, 'examKeys', t.dataset.del)); EX = EX.filter(y => y.id !== t.dataset.del); aPaint(); badge(); } }
+    else if(t.id === 'xback'){ ED = null; aPaint(); }
+    else if(t.id === 'xaddq'){ collect(); ED.q.push({ y:'m', t:'', o:['', '', '', ''] }); ED.a.push(0); drawForm(); }
+    else if(t.dataset.rm != null){ collect(); const i = +t.dataset.rm; ED.q.splice(i, 1); ED.a.splice(i, 1); drawForm(); }
+    else if(t.id === 'xsave') aSave();
+    else if(t.dataset.sg){ const d = t.closest('details'), eg = {}; d.querySelectorAll('[data-eg]').forEach(i => { if(i.value !== '') eg[i.dataset.eg] = +i.value; });
+      try{ await updateDoc(doc(D, 'examSubs', t.dataset.sg), { eg }); const s = SUBS.find(y => y.sid === t.dataset.sg); s.eg = eg; aPaint(); badge(); }catch(err){ alert('تعذر الحفظ'); } } });
+  x.addEventListener('change', e => { if(e.target.classList.contains('qy')){ const el = e.target.closest('.xq'), i = +el.dataset.i, y = e.target.value; collect(); ED.q[i] = y === 'm' ? { y, t:ED.q[i].t, o:['', '', '', ''] } : { y, t:ED.q[i].t }; ED.a[i] = y === 't' ? 1 : y === 'm' ? 0 : ''; drawForm(); } });
+}
+initAdmin();
+onAuthStateChanged(A, async u => { U = u; ISA = !!(u && ADMINS.includes((u.email || '').toLowerCase())); EX = []; MY = {}; PUR = {};
+  try{ if(u){ await loadAll(); if(ISA) badge(); } }catch(e){ console.warn('exams not loaded', e && e.code); }
+  sync(true); });
+</script>
 </body>
 </html>
