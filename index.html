@@ -934,6 +934,13 @@
   .bp .bp-note{ border-radius:14px; padding:12px 14px; font-weight:700; line-height:1.7; font-size:.92rem; margin-bottom:14px; background:rgba(169,207,198,.1); border:1px solid rgba(169,207,198,.28); color:var(--teal-300); }
   .bp .bp-note.bad{ background:rgba(240,163,154,.1); border-color:rgba(240,163,154,.4); color:#f0a39a; }
   .bp .bp-btn{ display:block; width:100%; text-align:center; text-decoration:none; font-family:inherit; font-weight:800; font-size:1rem; cursor:pointer; border-radius:14px; padding:13px; border:none; background:var(--cream); color:var(--bg-base); margin-top:10px; }
+  .wl-in{ text-align:center; }
+  .wl-in .bp-x{ display:block; margin-inline-start:auto; margin-inline-end:0; }
+  .wl-ic{ width:72px; height:72px; margin:0 auto 14px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--gold); background:rgba(211,166,103,.14); border:1px solid rgba(211,166,103,.35); }
+  .wl-t{ font-size:1.3rem; font-weight:800; color:var(--cream); margin-bottom:10px; }
+  .wl-p{ color:var(--text-soft); line-height:1.8; font-weight:600; }
+  .wl-num{ margin:16px 0 6px; font-size:1.6rem; font-weight:800; letter-spacing:1px; color:var(--gold); background:var(--panel); border:1px solid var(--panel-border); border-radius:14px; padding:12px; unicode-bidi:isolate; }
+  .wl-wa{ background:#25D366; color:#0b2b1a; }
   .bp .bp-btn.alt{ background:transparent; color:var(--cream); border:1.5px solid var(--teal-300); }
   .bp .bp-btn:disabled{ opacity:.45; cursor:not-allowed; }
   .sub-h{ color:var(--teal-300); font-weight:700; margin:22px 0 12px; font-size:1.05rem; }
@@ -1289,18 +1296,18 @@
   .dp-info .ci{ width:44px; height:44px; border-radius:50%; background:rgba(169,207,198,.12); color:var(--teal-300); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .dp-info small{ display:block; font-size:.78rem; color:var(--teal-300); font-weight:700; margin-bottom:2px; }
   .dp-info b{ display:block; color:var(--cream); font-weight:800; overflow-wrap:anywhere; }
-  .sc-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
-  .sc-card{ position:relative; overflow:hidden; padding:26px 20px 20px; border-radius:20px; background:var(--panel); border:1px solid var(--panel-border); display:flex; flex-direction:column; gap:16px; min-width:0; }
-  .sc-ribbon{ position:absolute; top:20px; left:-44px; width:170px; padding:5px 0; transform:rotate(-45deg); text-align:center; background:var(--gold); color:var(--bg-base); font-size:.68rem; font-weight:800; box-shadow:0 3px 8px rgba(0,0,0,.25); }
-  .sc-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding-top:34px; }
-  .sc-head h3{ font-size:1.12rem; font-weight:800; color:var(--cream); line-height:1.5; }
-  .sc-tag{ font-size:.74rem; font-weight:800; padding:3px 12px; border-radius:999px; color:var(--gold); background:rgba(211,166,103,.14); border:1px solid rgba(211,166,103,.3); }
-  .sc-list{ display:flex; flex-direction:column; gap:10px; }
-  .sc-row{ display:grid; grid-template-columns:76px 1fr auto; align-items:center; gap:10px; padding:11px 12px; border-radius:14px; background:rgba(169,207,198,.07); border:1px solid var(--panel-border); }
-  .sc-day{ font-weight:800; font-size:.86rem; color:var(--bg-base); background:var(--teal-300); border-radius:10px; padding:5px 0; text-align:center; }
-  .sc-grade{ color:var(--cream); font-weight:700; font-size:.9rem; min-width:0; }
-  .sc-time{ display:inline-flex; align-items:center; gap:6px; color:var(--teal-300); font-weight:800; font-size:.86rem; white-space:nowrap; }
-  @media (max-width:420px){ .sc-row{ grid-template-columns:70px 1fr; } .sc-time{ grid-column:1 / -1; } }
+  .cs-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+  .cs-card{ position:relative; overflow:hidden; padding:26px 20px 20px; border-radius:20px; background:var(--panel); border:1px solid var(--panel-border); display:flex; flex-direction:column; gap:16px; min-width:0; }
+  .cs-ribbon{ position:absolute; top:20px; left:-44px; width:170px; padding:5px 0; transform:rotate(-45deg); text-align:center; background:var(--gold); color:var(--bg-base); font-size:.68rem; font-weight:800; box-shadow:0 3px 8px rgba(0,0,0,.25); }
+  .cs-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding-top:34px; }
+  .cs-head h3{ font-size:1.12rem; font-weight:800; color:var(--cream); line-height:1.5; }
+  .cs-tag{ font-size:.74rem; font-weight:800; padding:3px 12px; border-radius:999px; color:var(--gold); background:rgba(211,166,103,.14); border:1px solid rgba(211,166,103,.3); }
+  .cs-list{ display:flex; flex-direction:column; gap:10px; }
+  .cs-row{ display:grid; grid-template-columns:76px 1fr auto; align-items:center; gap:10px; padding:11px 12px; border-radius:14px; background:rgba(169,207,198,.07); border:1px solid var(--panel-border); }
+  .cs-day{ font-weight:800; font-size:.86rem; color:var(--bg-base); background:var(--teal-300); border-radius:10px; padding:5px 0; text-align:center; }
+  .cs-grade{ color:var(--cream); font-weight:700; font-size:.9rem; min-width:0; }
+  .cs-time{ display:inline-flex; align-items:center; gap:6px; color:var(--teal-300); font-weight:800; font-size:.86rem; white-space:nowrap; }
+  @media (max-width:420px){ .cs-row{ grid-template-columns:70px 1fr; } .cs-time{ grid-column:1 / -1; } }
   .dp-empty{ text-align:center; padding:56px 16px; }
   .dp-empty .ei{ width:72px; height:72px; margin:0 auto 18px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--teal-300); background:rgba(169,207,198,.1); border:1px solid rgba(169,207,198,.3); }
   .dp-empty h3{ color:var(--cream); font-size:1.15rem; font-weight:800; margin-bottom:8px; }
@@ -1910,7 +1917,7 @@
         <button type="button" class="dp-top dp-out" id="dpOut">تسجيل الخروج</button>
         <svg class="dp-wave" viewBox="0 0 1200 140" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70C200 20 400 120 600 70S1000 20 1200 70V140H0Z"/></svg>
       </div>
-      <a class="dp-wallet" id="dpWallet" target="_blank" rel="noopener" aria-label="الرصيد والشحن عبر واتساب">
+      <a class="dp-wallet" id="dpWallet" href="#" role="button" aria-haspopup="dialog" aria-label="الرصيد والشحن">
         <span class="wi" id="dpWi"></span>
         <span class="wt"><small>الرصيد والشحن</small><b id="dpBal">٠ ج.م</b></span>
         <span class="wc" id="dpWc"></span>
@@ -1988,6 +1995,7 @@
   </div>
 </div>
 
+<div class="bp" id="walletPage" hidden><div class="bp-in wl-in" role="dialog" aria-modal="true" aria-labelledby="wlTitle"><button type="button" class="bp-x" data-wclose>إغلاق ✕</button><div class="wl-ic" id="wlIc"></div><h3 id="wlTitle" class="wl-t">شحن رصيد المحفظة</h3><p class="wl-p">حاليًا، عشان تشحن رصيد المحفظة لازم تتواصل مع الميس على الرقم ده:</p><div class="wl-num" dir="ltr">01019771940</div><a class="bp-btn wl-wa" id="wlWa" target="_blank" rel="noopener">تواصل عبر واتساب</a></div></div>
 <div class="bp" id="buyPage" hidden><div class="bp-in" id="buyBody"></div></div>
 <div class="sp" id="secPage" hidden><div class="sp-in"><button type="button" class="sp-back" id="spBack">← رجوع</button><h2 id="spTitle"></h2><div id="spBody"></div></div></div>
 
@@ -2880,7 +2888,7 @@ const CENTER_SCHEDULE = [
     ['الثلاثاء','الثاني الثانوي – عام','4:00 م'],
     ['الثلاثاء','الثاني الثانوي – بكالوريا','6:00 م'] ] }
 ];
-const scheduleH = () => '<div class="sc-grid">' + CENTER_SCHEDULE.map(c => `<div class="sc-card"><span class="sc-ribbon">طلبة السناتر فقط</span><div class="sc-head"><h3>${esc(c.name)}</h3><span class="sc-tag">${esc(c.stage)}</span></div><div class="sc-list">${c.rows.map(r => `<div class="sc-row"><span class="sc-day">${esc(r[0])}</span><span class="sc-grade">${esc(r[1])}</span><span class="sc-time">${dIc(DI.clock, 16)}${esc(r[2])}</span></div>`).join('')}</div></div>`).join('') + '</div>';
+const scheduleH = () => '<div class="cs-grid">' + CENTER_SCHEDULE.map(c => `<div class="cs-card"><span class="cs-ribbon">طلبة السناتر فقط</span><div class="cs-head"><h3>${esc(c.name)}</h3><span class="cs-tag">${esc(c.stage)}</span></div><div class="cs-list">${c.rows.map(r => `<div class="cs-row"><span class="cs-day">${esc(r[0])}</span><span class="cs-grade">${esc(r[1])}</span><span class="cs-time">${dIc(DI.clock, 16)}${esc(r[2])}</span></div>`).join('')}</div></div>`).join('') + '</div>';
 const GKEY = { 'الأول الإعدادي':'prep1', 'الثاني الإعدادي':'prep2', 'الثالث الإعدادي':'prep3', 'الأول الثانوي':'sec1', 'الثاني الثانوي':'sec2' };
 const money = n => (Math.round((Number(n) || 0) * 100) / 100).toLocaleString('ar-EG', { maximumFractionDigits:2 });
 let dTab = 'overview', dCourse = -1;
@@ -2913,7 +2921,8 @@ function paintDash(u){
   $('dpAvFb').innerHTML = dIc(DI.user, 54);
   $('dpWi').innerHTML = dIc(DI.wallet, 24); $('dpWc').innerHTML = dIc(DI.chev, 18);
   $('dpBal').textContent = money(p.balance) + ' ج.م';
-  $('dpWallet').href = waSupport('أهلاً، عايز أشحن رصيد في حسابي.\nالاسم: ' + name + '\nرقم الموبايل: ' + (p.phone || ''));
+  $('dpWallet').href = '#';
+  $('wlWa').href = 'https://wa.me/201019771940?text=' + encodeURIComponent('أهلاً ميس، عايز أشحن رصيد في محفظتي.\nالاسم: ' + name + '\nرقم الموبايل: ' + (p.phone || ''));
   const chip = (ic, l, v) => v ? `<div class="dp-chip"><span class="ci">${dIc(DI[ic], 19)}</span><div><small>${l}</small><b>${esc(v)}</b></div></div>` : '';
   $('dpChips').innerHTML = chip('phone', 'الهاتف', p.phone) + chip('book', 'الصف الدراسي', p.grade) + chip('monitor', 'طريقة الدراسة', p.mode === 'center' ? 'سنتر' : p.mode === 'online' ? 'أونلاين' : '');
   $('dpNav').innerHTML = TABS.map(([k, t]) => `<button type="button" class="dp-nav" data-tab="${k}"><span class="ni">${dIc(DI[k], 20)}</span>${t}<span class="nc">${dIc(DI.chev, 16)}</span></button>`).join('');
@@ -3072,6 +3081,14 @@ buyEl.addEventListener('click', e => {
   const cb = e.target.closest('[data-bconfirm]'); if(cb) confirmBuy(cb);
 });
 document.addEventListener('keydown', e => { if(e.key === 'Escape' && !buyEl.hidden){ e.stopPropagation(); closeBuy(); } }, true);
+
+/* ---- wallet top-up modal ---- */
+const walletEl = $('walletPage');
+const openWallet = () => { $('wlIc').innerHTML = dIc(DI.wallet, 34); walletEl.hidden = false; };
+const closeWallet = () => { walletEl.hidden = true; };
+$('dpWallet').addEventListener('click', e => { e.preventDefault(); openWallet(); });
+walletEl.addEventListener('click', e => { if(e.target === walletEl || e.target.closest('[data-wclose]')) closeWallet(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && !walletEl.hidden){ e.stopPropagation(); closeWallet(); } }, true);
 
 /* ---- activity tracking: videos watched / files downloaded (saved inside the student's own doc) ---- */
 const seenAct = new Map();
