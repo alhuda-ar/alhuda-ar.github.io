@@ -11,7 +11,7 @@ import { getFirestore, doc, getDoc, collection, addDoc, deleteDoc, query, orderB
 
 /* ★ بعد ما ترفع الـ Worker على Cloudflare حط رابطه هنا (من غير / في الآخر) ★
    مثال: 'https://alhuda-push.YOURNAME.workers.dev'                                   */
-const PUSH_URL = '';
+const PUSH_URL = 'https://alhuda-push.016nooralhuda.workers.dev/';
 
 const app = getApp(), A = getAuth(app), D = getFirestore(app);
 const $ = s => document.querySelector(s);
