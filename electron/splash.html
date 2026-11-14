@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>الهدى</title>
+<style>
+*{box-sizing:border-box}html,body{height:100%;margin:0;overflow:hidden}
+body{background:radial-gradient(90% 90% at 50% 20%,#1E3E38,#12281f 75%);color:#FAF6EC;font-family:"Segoe UI",Tahoma,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;-webkit-app-region:drag;user-select:none}
+.ld{position:absolute;inset:0;pointer-events:none}
+.ld span{position:absolute;bottom:-60px;color:#A9CFC6;opacity:.1;animation:up linear infinite}
+@keyframes up{to{transform:translateY(-420px) rotate(14deg);opacity:0}}
+img{width:112px;height:auto;filter:drop-shadow(0 8px 24px rgba(211,166,103,.35));animation:in .9s cubic-bezier(.2,.9,.3,1.2) both,fl 3.4s ease-in-out .9s infinite}
+@keyframes in{from{transform:scale(.4) translateY(14px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fl{50%{transform:translateY(-6px)}}
+h1{font-size:34px;margin:16px 0 4px;letter-spacing:.5px;animation:fd .8s .35s both}
+.ln{width:0;height:2px;background:linear-gradient(90deg,transparent,#D3A667,transparent);animation:wd .8s .6s forwards}
+@keyframes wd{to{width:120px}}@keyframes fd{from{opacity:0;transform:translateY(8px)}}
+.tg{height:22px;margin-top:12px;color:#A9CFC6;font-size:14px;position:relative;width:100%;text-align:center}
+.tg span{position:absolute;inset:0;opacity:0;animation:tg 7.5s infinite}
+.tg span:nth-child(2){animation-delay:2.5s}.tg span:nth-child(3){animation-delay:5s}
+@keyframes tg{0%{opacity:0;transform:translateY(6px)}6%,30%{opacity:1;transform:none}36%,100%{opacity:0;transform:translateY(-6px)}}
+.tr{position:absolute;bottom:34px;width:220px;height:4px;border-radius:4px;background:rgba(169,207,198,.18);overflow:hidden}
+.tr i{display:block;height:100%;width:40%;border-radius:4px;background:linear-gradient(90deg,#D3A667,#E9C58B);animation:rn 1.4s ease-in-out infinite}
+@keyframes rn{from{transform:translateX(240%)}to{transform:translateX(-120%)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important}}
+</style></head><body>
+<div class="ld" id="ld"></div>
+<img src="assets/logo-mark.png" alt="">
+<h1>الهُدى</h1><div class="ln"></div>
+<div class="tg"><span>العربي بقى أسهل</span><span>ابدأ رحلتك لأعلى الدرجات</span><span>مع ميس نور الهدى</span></div>
+<div class="tr"><i></i></div>
+<script>
+var L='أبتثجحخدذرزسشصضطظعغفقكلمنهوي',ld=document.getElementById('ld');
+for(var i=0;i<14;i++){var s=document.createElement('span');s.textContent=L[Math.floor(Math.random()*L.length)];
+s.style.left=(Math.random()*94)+'%';s.style.fontSize=(20+Math.random()*34)+'px';
+s.style.animationDuration=(6+Math.random()*6)+'s';s.style.animationDelay=(-Math.random()*8)+'s';ld.appendChild(s)}
+</script></body></html>
