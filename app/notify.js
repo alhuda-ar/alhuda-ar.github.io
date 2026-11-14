@@ -11,7 +11,7 @@ import { getFirestore, doc, getDoc, collection, addDoc, deleteDoc, query, orderB
 
 /* ★ بعد ما ترفع الـ Worker على Cloudflare حط رابطه هنا (من غير / في الآخر) ★
    مثال: 'https://alhuda-push.YOURNAME.workers.dev'                                   */
-const PUSH_URL = 'https://alhuda-push.016nooralhuda.workers.dev/';
+const PUSH_URL = '';
 
 const app = getApp(), A = getAuth(app), D = getFirestore(app);
 const $ = s => document.querySelector(s);
@@ -121,8 +121,8 @@ css.textContent = `
 #adNotify .nt-phone{ border-radius:22px; padding:16px; background:linear-gradient(160deg,#1a2a28,#0e1a18); border:1px solid rgba(250,246,236,.1); }
 #adNotify .nt-phone small{ display:block; margin-bottom:10px; color:#8fb0a6; font-weight:700; }
 #adNotify .nt-pv{ display:flex; gap:11px; padding:12px; border-radius:18px; background:rgba(250,246,236,.1); backdrop-filter:blur(6px); }
-#adNotify .nt-pv .app{ width:38px; height:38px; border-radius:11px; background:#1E3E38; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-#adNotify .nt-pv .app svg{ width:26px; height:26px; }
+#adNotify .nt-pv .app{ width:38px; height:38px; border-radius:50%; background:#0F5A43; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+#adNotify .nt-pv .app img{ width:22px; height:22px; display:block; }
 #adNotify .nt-pv .nm{ font-size:.72rem; color:#A9CFC6; font-weight:800; display:flex; justify-content:space-between; }
 #adNotify .nt-pv b{ display:block; font-size:.94rem; color:#fff; margin:2px 0; }
 #adNotify .nt-pv p{ font-size:.84rem; color:#d9e5e0; line-height:1.6; white-space:pre-wrap; word-break:break-word; }
@@ -247,7 +247,7 @@ function banner(x){
 function systemNotify(x){
   if(!window.alhudaDesktop || document.hasFocus()) return;
   try{
-    const n = new Notification(x.title, { body: x.body, silent: false });
+    const n = new Notification(x.title, { body: x.body, icon: '/app/icon-192.png', silent: false });
     n.onclick = () => { if(window.alhudaDesktop.focus) window.alhudaDesktop.focus(); if(x.link) go(x.link); else openPanel(); };
   }catch(e){}
 }
@@ -322,7 +322,7 @@ function adHTML(){
       ${PUSH_URL ? '' : '<div class="nt-setup">إشعارات الموبايل (التطبيق) لسه مش متفعّلة: الإشعار بيظهر جوه الموقع والتطبيق، وبيوصل للموبايل نفسه بعد ما تربط خدمة الإرسال (الـ Worker). شوف ملف الشرح.</div>'}
     </div></div>
     <div><div class="nt-phone"><small>معاينة شكل الإشعار على الموبايل</small>
-      <div class="nt-pv"><div class="app"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="#A9CFC6" stroke-width="1.5"/><path d="M20 6 L23 17 L34 20 L23 23 L20 34 L17 23 L6 20 L17 17 Z" fill="#D3A667"/></svg></div>
+      <div class="nt-pv"><div class="app"><img src="/app/ic-notif.png" alt="" width="22" height="22"></div>
       <div style="min-width:0;flex:1"><div class="nm"><span>الهدى</span><span>الآن</span></div><b id="pvT">عنوان الإشعار</b><p id="pvB">نص الإشعار هيظهر هنا.</p></div></div></div>
       <div class="nt-card" style="margin-top:18px"><h3>آخر الإشعارات</h3><div class="nt-hist" id="ntHist"></div></div></div></div>`;
 }
