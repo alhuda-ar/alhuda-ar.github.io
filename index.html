@@ -4,7 +4,7 @@
 <meta name="google-site-verification" content="AdWBxb-n7zd79DslRVtZb86kg6VE-Yr_Sm-tZ4zLl0g" />
 <meta charset="UTF-8">
 <script>document.documentElement.classList.add("js")</script>
-<script>(function(l){if(l.search[1]==="/"){var d=l.search.slice(1).split("&").map(function(x){return x.replace(/~and~/g,"&")}).join("?");window.history.replaceState(null,null,l.pathname.slice(0,-1)+d+l.hash)}}(window.location))</script>
+<script>(function(l){try{if(l.search[1]==="/"){var d=l.search.slice(1).split("&").map(function(x){return x.replace(/~and~/g,"&")}).join("?");window.history.replaceState(null,null,l.pathname.slice(0,-1)+d+l.hash)}}catch(e){}}(window.location))</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ميس نور الهدى | مدرسة لغة عربية للإعدادي والثانوي بالإسكندرية</title>
 <meta name="description" content="ميس نور الهدى، معلمة لغة عربية بخبرة +8 سنين للمرحلة الإعدادية والثانوية بالإسكندرية. حصص أونلاين ونماذج امتحانات. احجز حصة تجريبية مجانية.">
@@ -589,6 +589,129 @@
     .js .ft-grid > .ft-col{ opacity:1 !important; }
     .site-footer::before, .ft-logo-ic, .ft-wa{ animation:none !important; }
   }
+
+  /* ---------- Footer: app download ---------- */
+  .ft-dl{
+    margin-top:48px; padding:30px 32px; border-radius:26px;
+    background:linear-gradient(135deg, rgba(250,246,236,.07), rgba(250,246,236,.025));
+    border:1px solid var(--panel-border);
+    display:grid; grid-template-columns:minmax(0,1fr) auto; gap:26px 44px; align-items:center;
+  }
+  .ft-dl + .ft-bottom{ margin-top:40px; }
+  .dl-title{ display:flex; align-items:center; gap:10px; font-size:1.25rem; font-weight:800; color:var(--cream); margin-bottom:8px; }
+  .dl-title svg{ width:22px; height:22px; color:var(--gold); flex-shrink:0; }
+  .dl-desc{ color:var(--text-soft); font-size:.95rem; line-height:1.85; max-width:46ch; }
+  .dl-note{ display:flex; align-items:flex-start; gap:8px; margin-top:12px; color:var(--teal-300); font-size:.85rem; line-height:1.7; max-width:46ch; }
+  .dl-note svg{ width:17px; height:17px; flex-shrink:0; margin-top:3px; }
+  .dl-btns{ display:flex; flex-wrap:wrap; gap:18px; }
+  .dl-item{ position:relative; }
+  .dl-match{
+    display:none; position:absolute; z-index:3; top:-11px; inset-inline-start:20px; pointer-events:none;
+    padding:1px 11px; border-radius:999px; font-size:.74rem; font-weight:800; line-height:1.7;
+    color:#17302B; background:var(--gold); box-shadow:0 6px 14px -6px rgba(211,166,103,.8);
+  }
+  .dl-item.is-match .dl-match{ display:block; animation:popIn .55s var(--ease) .3s backwards; }
+  .dl-item.is-match .dl-btn{ border-color:color-mix(in srgb, var(--c) 70%, transparent); }
+
+  .dl-btn{
+    --eye:var(--bg-alt);
+    position:relative; overflow:hidden; display:flex; align-items:center; gap:14px;
+    min-width:290px; padding:12px 14px; border-radius:20px; color:var(--cream);
+    background:color-mix(in srgb, var(--c) 9%, var(--bg-alt));
+    border:1px solid color-mix(in srgb, var(--c) 34%, transparent);
+    transition:transform .35s var(--ease), border-color .25s ease, box-shadow .35s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .dl-btn > *:not(.dl-fill){ position:relative; }
+  .dl-btn::after{
+    content:""; position:absolute; inset:0; pointer-events:none; transform:translateX(120%);
+    background:linear-gradient(110deg, transparent 30%, rgba(255,255,255,.2) 50%, transparent 70%);
+    transition:transform .9s var(--ease);
+  }
+  .dl-btn:hover{ transform:translateY(-5px); border-color:var(--c); box-shadow:0 20px 32px -18px var(--c); }
+  .dl-btn:hover::after{ transform:translateX(-120%); }
+  .dl-btn:active{ transform:translateY(-1px) scale(.98); }
+  .dl-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:4px; }
+
+  .dl-fill{
+    position:absolute; inset:0; pointer-events:none; transform:scaleX(0); transform-origin:100% 50%;
+    background:linear-gradient(90deg, color-mix(in srgb, var(--c) 18%, transparent), color-mix(in srgb, var(--c) 42%, transparent));
+  }
+  .dl-btn.is-loading .dl-fill{ transform:scaleX(1); transition:transform 1.6s cubic-bezier(.45,.05,.3,1); }
+  .dl-btn.is-done .dl-fill{ transform:scaleX(1); opacity:0; transition:opacity .7s ease; }
+
+  .dl-ic{
+    width:58px; height:58px; flex-shrink:0; border-radius:17px; display:flex; align-items:center; justify-content:center;
+    color:var(--c); background:color-mix(in srgb, var(--c) 16%, transparent);
+    border:1px solid color-mix(in srgb, var(--c) 36%, transparent);
+    transition:transform .45s var(--ease), background .3s ease;
+  }
+  .dl-btn:hover .dl-ic{ transform:rotate(-6deg) scale(1.1); background:color-mix(in srgb, var(--c) 26%, transparent); }
+  .dl-svg{ width:34px; height:34px; overflow:visible; }
+
+  .dl-txt{ display:flex; flex-direction:column; flex:1; min-width:0; line-height:1.4; }
+  .dl-sub{ font-size:.8rem; font-weight:500; color:var(--text-soft); white-space:nowrap; }
+  .dl-os{ font-size:1.3rem; font-weight:900; color:var(--cream); }
+
+  .dl-act{
+    width:46px; height:46px; flex-shrink:0; border-radius:50%; color:var(--c);
+    transition:background .3s ease, color .3s ease, transform .4s var(--ease);
+  }
+  .dl-act svg{ width:100%; height:100%; display:block; overflow:visible; }
+  .dl-act::after{ content:""; position:absolute; inset:0; border-radius:50%; border:2px solid var(--c); opacity:0; pointer-events:none; }
+  .dl-btn:hover .dl-act{ background:var(--c); color:#17302B; }
+  .act-track{ opacity:.28; }
+  .act-ring{ stroke-dasharray:119.4; stroke-dashoffset:119.4; opacity:0; }
+  .act-check{ stroke-dasharray:30; stroke-dashoffset:30; opacity:0; }
+  .dl-btn.is-loading .act-ring{ opacity:1; stroke-dashoffset:0; transition:stroke-dashoffset 1.6s cubic-bezier(.45,.05,.3,1); }
+  .dl-btn.is-loading .act-arrow{ opacity:0; transition:opacity .2s ease; }
+  .dl-btn.is-done .act-arrow, .dl-btn.is-done .act-ring{ opacity:0; }
+  .dl-btn.is-done .act-check{ opacity:1; stroke-dashoffset:0; transition:stroke-dashoffset .5s var(--ease) .05s; }
+  .dl-btn.is-done .dl-act{ background:var(--c); color:#17302B; }
+  .dl-btn.is-done .dl-act::after{ animation:dlBurst .8s ease-out; }
+  .dl-btn:hover .act-arrow{ animation:dlDrop 1.15s ease-in-out infinite; }
+  .dl-btn.is-loading .act-arrow, .dl-btn.is-done .act-arrow{ animation:none; opacity:0; }
+
+  /* android: eyes blink, antennae wiggle, head nods */
+  .an-eye, .an-head, .an-ant{ transform-box:fill-box; }
+  .an-eye{ transform-origin:50% 50%; animation:dlBlink 5s ease-in-out infinite; }
+  .an-head{ transform-origin:50% 100%; }
+  .an-ant.l{ transform-origin:100% 100%; --r:-1; }
+  .an-ant.r{ transform-origin:0% 100%; --r:1; }
+  .dl-android:hover .an-head, .dl-android.is-loading .an-head{ animation:dlNod 1.2s ease-in-out infinite; }
+  .dl-android:hover .an-ant, .dl-android.is-loading .an-ant{ animation:dlAnt .9s ease-in-out infinite; }
+  .dl-android.is-loading .an{ animation:dlJump .55s ease-out 3; }
+
+  /* windows: panes ripple, open up on hover, flash on click */
+  .wn-p{ transform-box:fill-box; transform-origin:50% 50%; transition:transform .5s var(--ease); animation:dlPane 5s ease-in-out infinite; animation-delay:calc(var(--n) * .3s); }
+  .wn1{ --n:0; --x:-1; --y:-1; } .wn2{ --n:1; --x:-1; --y:1; } .wn3{ --n:2; --x:1; --y:-1; } .wn4{ --n:3; --x:1; --y:1; }
+  .dl-windows:hover .wn-p{ transform:translate(calc(var(--x) * 14px), calc(var(--y) * 14px)) scale(.94); }
+  .dl-windows.is-loading .wn-p{ animation:dlPaneFlash .5s ease-in-out calc(var(--n) * .16s) 3; }
+
+  @keyframes dlBlink{ 0%,90%,100%{ transform:scaleY(1); } 94%{ transform:scaleY(.08); } }
+  @keyframes dlNod{ 0%,100%{ transform:translateY(0) rotate(0); } 50%{ transform:translateY(-12px) rotate(-5deg); } }
+  @keyframes dlAnt{ 0%,100%{ transform:rotate(0); } 30%{ transform:rotate(calc(var(--r) * -16deg)); } 65%{ transform:rotate(calc(var(--r) * 12deg)); } }
+  @keyframes dlJump{ 0%,100%{ transform:translateY(0); } 40%{ transform:translateY(-16%); } }
+  @keyframes dlPane{ 0%,62%,100%{ opacity:1; } 30%{ opacity:.55; } }
+  @keyframes dlPaneFlash{ 50%{ transform:scale(.7); opacity:.35; } }
+  @keyframes dlDrop{ 0%{ transform:translateY(0); opacity:1; } 45%{ transform:translateY(8px); opacity:0; } 46%{ transform:translateY(-8px); opacity:0; } 100%{ transform:translateY(0); opacity:1; } }
+  @keyframes dlBurst{ from{ transform:scale(1); opacity:.7; } to{ transform:scale(1.9); opacity:0; } }
+
+  @media (max-width:1000px){
+    .ft-dl{ grid-template-columns:1fr; padding:28px 24px; }
+    .dl-btns > .dl-item{ flex:1 1 270px; }
+    .dl-btn{ min-width:0; }
+  }
+  @media (max-width:560px){
+    .ft-dl{ border-radius:22px; margin-top:40px; }
+    .dl-btns{ flex-direction:column; gap:22px; }
+    .dl-btns > .dl-item{ flex:none; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .dl-btn *, .dl-btn::after, .dl-match, .dl-android .an, .dl-windows .wn-p{ animation:none !important; }
+    .dl-btn:hover{ transform:none; }
+  }
+
   .legal-box{ max-width:640px; padding:36px 32px 28px; }
   .legal-box h3{ margin-bottom:18px; padding-inline-end:32px; }
   .legal-body{ max-height:min(62vh,520px); overflow-y:auto; padding-inline-end:8px; color:var(--text-soft); font-size:.96rem; line-height:1.95; outline:none; }
@@ -1797,12 +1920,93 @@
       </div>
     </div>
 
+    <div class="ft-dl section-reveal" id="download-app">
+      <div class="dl-info">
+        <h4 class="dl-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 4v11"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>حمّل تطبيق الهُدى</h4>
+        <p class="dl-desc">ذاكر من موبايلك أو من الكمبيوتر. اختار نظام جهازك والتحميل بيبدأ بضغطة واحدة.</p>
+        <p class="dl-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg><span>الملف بيتحمّل مضغوط (ZIP). فُك الضغط الأول وبعدها ثبّت التطبيق.</span></p>
+      </div>
+      <div class="dl-btns">
+        <div class="dl-item" data-os="android">
+          <a class="dl-btn dl-android" href="https://github.com/alhuda-ar/alhuda-ar.github.io/releases/download/android.1.0.0/Alhuda-APK.zip" rel="noopener" style="--c:#7FD6A8">
+            <span class="dl-fill" aria-hidden="true"></span>
+            <span class="dl-ic" aria-hidden="true"><svg class="dl-svg an" viewBox="19.933 68.509 228.155 228.155" focusable="false">
+              <g fill="currentColor">
+                <path d="M101.885 207.092c7.865 0 14.241 6.376 14.241 14.241v61.09c0 7.865-6.376 14.24-14.241 14.24-7.864 0-14.24-6.375-14.24-14.24v-61.09c0-7.864 6.376-14.24 14.24-14.24z"/>
+                <path d="M69.374 133.645c-.047.54-.088 1.086-.088 1.638v92.557c0 9.954 7.879 17.973 17.66 17.973h94.124c9.782 0 17.661-8.02 17.661-17.973v-92.557c0-.552-.02-1.1-.066-1.638H69.374z"/>
+                <path d="M166.133 207.092c7.865 0 14.241 6.376 14.241 14.241v61.09c0 7.865-6.376 14.24-14.241 14.24-7.864 0-14.24-6.375-14.24-14.24v-61.09c0-7.864 6.376-14.24 14.24-14.24z"/>
+                <path d="M46.405 141.882c7.864 0 14.24 6.376 14.24 14.241v61.09c0 7.865-6.376 14.241-14.24 14.241-7.865 0-14.241-6.376-14.241-14.24v-61.09c-.001-7.865 6.375-14.242 14.241-14.242z"/>
+                <path d="M221.614 141.882c7.864 0 14.24 6.376 14.24 14.241v61.09c0 7.865-6.376 14.241-14.24 14.241-7.865 0-14.241-6.376-14.241-14.24v-61.09c0-7.865 6.376-14.242 14.241-14.242z"/>
+              </g>
+              <g class="an-head">
+                <path fill="currentColor" d="M69.79 127.565c.396-28.43 25.21-51.74 57.062-54.812h14.312c31.854 3.073 56.666 26.384 57.062 54.812H69.79z"/>
+                <path class="an-ant l" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" d="M74.743 70.009l15.022 26.02"/>
+                <path class="an-ant r" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" d="M193.276 70.009l-15.023 26.02"/>
+                <path class="an-eye" fill="var(--eye)" d="M114.878 102.087c.012 3.974-3.277 7.205-7.347 7.216-4.068.01-7.376-3.202-7.388-7.176v-.04c-.011-3.975 3.278-7.205 7.347-7.216 4.068-.011 7.376 3.2 7.388 7.176v.04zM169.874 102.087c.012 3.974-3.277 7.205-7.347 7.216-4.068.01-7.376-3.202-7.388-7.176v-.04c-.011-3.975 3.278-7.205 7.347-7.216 4.068-.011 7.376 3.2 7.388 7.176v.04z"/>
+              </g>
+            </svg></span>
+            <span class="dl-txt"><span class="dl-sub" data-idle="تطبيق الموبايل">تطبيق الموبايل</span><span class="dl-os">أندرويد</span></span>
+            <span class="dl-act" aria-hidden="true"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle class="act-track" cx="22" cy="22" r="19"/><circle class="act-ring" cx="22" cy="22" r="19" transform="rotate(-90 22 22)"/><g class="act-arrow"><path d="M22 11v15"/><path d="m15.5 20 6.5 6.5 6.5-6.5"/></g><path d="M14 33h16"/><path class="act-check" d="m14.5 22.5 5 5 10-11"/></svg></span>
+          </a>
+          <span class="dl-match">الأنسب لجهازك</span>
+        </div>
+        <div class="dl-item" data-os="windows">
+          <a class="dl-btn dl-windows" href="https://github.com/alhuda-ar/alhuda-ar.github.io/releases/download/windows.1.0.0/Alhuda-Windows-app.zip" rel="noopener" style="--c:#D3A667">
+            <span class="dl-fill" aria-hidden="true"></span>
+            <span class="dl-ic" aria-hidden="true"><svg class="dl-svg" viewBox="-0.5 0 257 257" focusable="false" fill="currentColor">
+              <path class="wn-p wn1" d="M0 36.357L104.62 22.11l.045 100.914-104.57.595L0 36.358z"/>
+              <path class="wn-p wn2" d="M104.57 134.65l.08 101.002L.081 221.275l-.006-87.302 104.494.677z"/>
+              <path class="wn-p wn3" d="M117.252 20.245L255.968 0v121.74l-138.716 1.1V20.246z"/>
+              <path class="wn-p wn4" d="M256 135.6l-.033 121.191-138.716-19.578-.194-101.84L256 135.6z"/>
+            </svg></span>
+            <span class="dl-txt"><span class="dl-sub" data-idle="تطبيق الكمبيوتر">تطبيق الكمبيوتر</span><span class="dl-os">ويندوز</span></span>
+            <span class="dl-act" aria-hidden="true"><svg viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle class="act-track" cx="22" cy="22" r="19"/><circle class="act-ring" cx="22" cy="22" r="19" transform="rotate(-90 22 22)"/><g class="act-arrow"><path d="M22 11v15"/><path d="m15.5 20 6.5 6.5 6.5-6.5"/></g><path d="M14 33h16"/><path class="act-check" d="m14.5 22.5 5 5 10-11"/></svg></span>
+          </a>
+          <span class="dl-match">الأنسب لجهازك</span>
+        </div>
+      </div>
+    </div>
+
     <div class="ft-bottom section-reveal">
       <span>© 2026 الهُدى. جميع الحقوق محفوظة.</span>
       <span class="ft-credit">تمت برمجة المنصة بواسطة فريق <a href="https://www.facebook.com/profile.php?id=61582261975354" target="_blank" rel="noopener">creatix studio</a></span>
     </div>
   </div>
 </footer>
+
+<script>
+/* أزرار تحميل التطبيق: الرابط بيشتغل عادي، والسكريبت بس بيضيف الأنيميشن */
+(function(){
+  var items = document.querySelectorAll('.dl-item');
+  if(!items.length) return;
+  var ua = navigator.userAgent || '';
+  var mine = /android/i.test(ua) ? 'android' : (/windows/i.test(ua) ? 'windows' : '');
+  items.forEach(function(item){
+    var btn = item.querySelector('.dl-btn');
+    var sub = item.querySelector('.dl-sub');
+    var idle = sub.getAttribute('data-idle');
+    var t1, t2;
+    if(item.getAttribute('data-os') === mine) item.classList.add('is-match');
+    btn.addEventListener('click', function(e){
+      if(btn.classList.contains('is-loading')){ e.preventDefault(); return; }
+      clearTimeout(t1); clearTimeout(t2);
+      btn.classList.remove('is-done');
+      void btn.offsetWidth;
+      btn.classList.add('is-loading');
+      sub.textContent = 'جاري البدء…';
+      t1 = setTimeout(function(){
+        btn.classList.remove('is-loading');
+        btn.classList.add('is-done');
+        sub.textContent = 'التحميل بدأ';
+      }, 1700);
+      t2 = setTimeout(function(){
+        btn.classList.remove('is-done');
+        sub.textContent = idle;
+      }, 6500);
+    });
+  });
+})();
+</script>
 
 <button type="button" class="to-top" id="toTop" aria-label="الرجوع للأعلى">↑</button>
 
