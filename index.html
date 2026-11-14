@@ -6,7 +6,7 @@
 <script>document.documentElement.classList.add("js")</script>
 <script>(function(l){if(l.search[1]==="/"){var d=l.search.slice(1).split("&").map(function(x){return x.replace(/~and~/g,"&")}).join("?");window.history.replaceState(null,null,l.pathname.slice(0,-1)+d+l.hash)}}(window.location))</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ميس نور الهدى | معلمة اللغة العربية للإعدادي والثانوي بالإسكندرية</title>
+<title>ميس نور الهدى | مدرسة لغة عربية للإعدادي والثانوي بالإسكندرية</title>
 <meta name="description" content="ميس نور الهدى، معلمة لغة عربية بخبرة +8 سنين للمرحلة الإعدادية والثانوية بالإسكندرية. حصص أونلاين ونماذج امتحانات. احجز حصة تجريبية مجانية.">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="author" content="ميس نور الهدى">
@@ -1443,6 +1443,8 @@
   }
 </style>
 <noscript><style>.section-reveal{opacity:1 !important; transform:none !important;}</style></noscript>
+<!-- الهدى: وضع التطبيق (بيشتغل بس جوه تطبيق الأندرويد/الويندوز) -->
+<script>(function(){var u=navigator.userAgent||'';if(u.indexOf('AlHudaApp')<0)return;var h=document.documentElement;h.classList.add('am',/AlHudaDesktop/.test(u)?'am-desktop':'am-mobile');var l=document.createElement('link');l.rel='stylesheet';l.href='/app/app-mode.css';document.head.appendChild(l);var m=document.querySelector('meta[name=viewport]');if(m&&!/AlHudaDesktop/.test(u))m.setAttribute('content','width=device-width, initial-scale=1.0, viewport-fit=cover')})();</script>
 </head>
 <body>
 <div class="ar-bg" id="arBg" aria-hidden="true"><div class="ar-grid"></div><div class="ar-grid hl"></div><canvas id="arCanvas"></canvas></div>
@@ -3985,5 +3987,8 @@ onAuthStateChanged(A, async u => { U = u; ISA = !!(u && ADMINS.includes((u.email
   try{ if(u){ await loadAll(); if(ISA) badge(); } }catch(e){ console.warn('exams not loaded', e && e.code); }
   sync(true); });
 </script>
+<!-- الهدى: مركز الإشعارات (للموقع والتطبيق) + وضع التطبيق -->
+<script type="module" src="/app/notify.js"></script>
+<script>if(document.documentElement.classList.contains('am')){var s=document.createElement('script');s.src='/app/app-mode.js';document.body.appendChild(s)}</script>
 </body>
 </html>
