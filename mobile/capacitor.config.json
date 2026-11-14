@@ -1,0 +1,30 @@
+{
+  "appId": "com.alhuda.app",
+  "appName": "الهدى",
+  "webDir": "www",
+  "appendUserAgent": "AlHudaApp",
+  "backgroundColor": "#12281f",
+  "server": {
+    "url": "https://alhuda-ar.github.io",
+    "cleartext": false,
+    "errorPath": "offline.html",
+    "allowNavigation": ["alhuda-ar.github.io", "*.firebaseapp.com", "*.googleapis.com", "*.gstatic.com"]
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#12281f"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 3500,
+      "launchFadeOutDuration": 250,
+      "backgroundColor": "#12281f",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false
+    },
+    "FirebaseMessaging": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  }
+}
