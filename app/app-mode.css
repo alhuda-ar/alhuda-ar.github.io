@@ -97,7 +97,7 @@ html.am-mobile .am-bar::after{ /* لمعة خفيفة */
 }
 .am-it .am-ic{ width:26px; height:26px; display:block; transition:transform .5s cubic-bezier(.2,.9,.25,1.4), color .25s ease; }
 .am-it .am-ic svg{ width:100%; height:100%; display:block; overflow:visible; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-.am-it .am-lb{ opacity:.78; transition:opacity .3s ease, color .3s ease; }
+.am-it .am-lb{ white-space:nowrap; opacity:.78; transition:opacity .3s ease, color .3s ease; }
 .am-it.on{ color:#10241f; }
 .am-it.on .am-ic{ transform:translateY(-23px) scale(1.14); animation:amFloat 2.6s 1s ease-in-out infinite; }
 .am-it.on .am-lb{ color:var(--am-gold); opacity:1; font-weight:800; }
@@ -110,7 +110,7 @@ html.am-mobile .am-bar::after{ /* لمعة خفيفة */
 .am-it.pop .am-ic .dr{ animation:amDraw .7s ease both; }
 .am-it.pop .am-ic .dr2{ animation:amDraw .7s .12s ease both; }
 @keyframes amDraw{ from{ stroke-dashoffset:1; } to{ stroke-dashoffset:0; } }
-.am-ic .tb{ transform-box:fill-box; }
+.am-ic .am-tb{ transform-box:fill-box; }
 /* الرئيسية: الباب بيطلع */
 .am-it.pop .am-ic .door{ transform-origin:50% 100%; animation:amDoor .6s .35s cubic-bezier(.2,1.4,.4,1) both; }
 @keyframes amDoor{ from{ transform:scaleY(0); } to{ transform:scaleY(1); } }
@@ -217,4 +217,3 @@ html.am-mobile body.am-nobar .toast-wrap{ bottom:calc(26px + env(safe-area-inset
 /* ---------------------------------------------------------------- */
 html.am-desktop body{ cursor:default; }
 html.am-desktop ::selection{ background:rgba(211,166,103,.35); }
-
