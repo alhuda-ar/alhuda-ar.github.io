@@ -94,17 +94,17 @@
     home:
       '<svg viewBox="0 0 24 24"><path class="dr" pathLength="1" d="M3 11.2 12 4l9 7.2"/>' +
       '<path class="dr2" pathLength="1" d="M5.5 9.8V19a1 1 0 0 0 1 1H10v-4.5a2 2 0 0 1 4 0V20h3.5a1 1 0 0 0 1-1V9.8"/>' +
-      '<circle class="door tb" cx="12" cy="18.6" r=".9" fill="currentColor" stroke="none"/></svg>',
+      '<circle class="door am-tb" cx="12" cy="18.6" r=".9" fill="currentColor" stroke="none"/></svg>',
     profile:
-      '<svg viewBox="0 0 24 24"><circle class="hd tb" cx="12" cy="8" r="3.6"/>' +
+      '<svg viewBox="0 0 24 24"><circle class="hd am-tb" cx="12" cy="8" r="3.6"/>' +
       '<path class="dr2" pathLength="1" d="M4.8 20.5c.7-4.1 3.8-6.2 7.2-6.2s6.5 2.1 7.2 6.2"/></svg>',
     videos:
       '<svg viewBox="0 0 24 24"><path class="dr" pathLength="1" d="M4 9.5h16V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/>' +
       '<g class="clap"><rect x="4" y="5.2" width="16" height="3.6" rx="1"/></g>' +
-      '<path class="plf tb" d="M10.6 12.6v4.6l4-2.3z" fill="currentColor" stroke="none"/></svg>',
+      '<path class="plf am-tb" d="M10.6 12.6v4.6l4-2.3z" fill="currentColor" stroke="none"/></svg>',
     youtube:
-      '<svg viewBox="0 0 24 24"><rect class="yt tb" x="2.6" y="5.6" width="18.8" height="12.8" rx="4.2"/>' +
-      '<path class="ytp tb" d="M10 9.4v5.2l4.6-2.6z" fill="currentColor" stroke="none"/></svg>'
+      '<svg viewBox="0 0 24 24"><rect class="yt am-tb" x="2.6" y="5.6" width="18.8" height="12.8" rx="4.2"/>' +
+      '<path class="ytp am-tb" d="M10 9.4v5.2l4.6-2.6z" fill="currentColor" stroke="none"/></svg>'
   };
   var ITEMS = [
     { k: 'home',    t: 'الرئيسية' },
@@ -321,4 +321,3 @@
   }
   if(D.readyState === 'loading') D.addEventListener('DOMContentLoaded', init); else init();
 })();
-
