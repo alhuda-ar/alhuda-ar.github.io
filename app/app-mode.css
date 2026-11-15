@@ -217,3 +217,46 @@ html.am-mobile body.am-nobar .toast-wrap{ bottom:calc(26px + env(safe-area-inset
 /* ---------------------------------------------------------------- */
 html.am-desktop body{ cursor:default; }
 html.am-desktop ::selection{ background:rgba(211,166,103,.35); }
+
+/* ---------------------------------------------------------------- */
+/*  راحة الاستخدام + Responsive (موبايل)                            */
+/* ---------------------------------------------------------------- */
+html.am-mobile{ -webkit-text-size-adjust:100%; text-size-adjust:100%; scroll-padding-bottom:calc(100px + env(safe-area-inset-bottom,0px)); }
+html.am-mobile body{ padding-inline:env(safe-area-inset-left,0px) env(safe-area-inset-right,0px); }
+html.am-mobile a, html.am-mobile button, html.am-mobile [role="button"], html.am-mobile .grade-card{ touch-action:manipulation; }
+html.am-mobile :focus:not(:focus-visible){ outline:none; }
+/* مناطق لمس مريحة (٤٤px على الأقل) */
+html.am-mobile .nav-toggle{ min-width:44px; min-height:44px; }
+html.am-mobile .btn-primary, html.am-mobile .btn-light, html.am-mobile .btn-ghost, html.am-mobile .btn-outline-light{ min-height:48px; }
+/* الحقول: ١٦px عشان أندرويد ماينفعش يكبّر الصفحة لما تضغط عليها */
+html.am-mobile input:not([type=checkbox]):not([type=radio]), html.am-mobile select, html.am-mobile textarea{ font-size:max(16px,1rem); }
+/* إحساس الضغط: الكروت والأزرار بتنزل شوية لما تلمسها */
+html.am-mobile .btn-primary, html.am-mobile .btn-light, html.am-mobile .btn-ghost, html.am-mobile .btn-outline-light, html.am-mobile .grade-card{ transition:transform .18s cubic-bezier(.2,.9,.25,1.2), box-shadow .2s ease; }
+html.am-mobile .grade-card:active{ transform:scale(.97); }
+
+/* الشريط: بيتخبّى وانت بتنزل بالصفحة وبيرجع وانت بتطلع (مساحة أكبر للمحتوى) */
+html.am-mobile .am-bar.tuck{ transform:translateY(150%); opacity:0; pointer-events:none; }
+
+/* شاشات صغيرة (٣٦٠px وأقل) */
+@media (max-width:360px){
+  html.am-mobile .am-bar{ inset-inline:8px; height:62px; border-radius:22px; }
+  html.am-mobile .am-it{ font-size:.64rem; }
+  html.am-mobile .am-it .am-ic{ width:24px; height:24px; }
+  html.am-mobile .am-bub{ width:52px; height:52px; }
+}
+/* تابلت / شاشات عريضة: الشريط يتوسّط بعرض مريح */
+@media (min-width:600px){
+  html.am-mobile .am-bar{ max-width:520px; margin-inline:auto; }
+}
+/* وضع أفقي: شريط أنحف عشان المحتوى ياخد مساحة */
+@media (orientation:landscape) and (max-height:480px){
+  html.am-mobile .am-bar{ height:54px; bottom:calc(6px + env(safe-area-inset-bottom,0px)); }
+  html.am-mobile .am-it .am-lb{ display:none; }
+  html.am-mobile .am-it{ padding-bottom:13px; }
+  html.am-mobile body{ padding-bottom:calc(72px + env(safe-area-inset-bottom,0px)); }
+  .am-sp-letters{ display:none; }
+}
+@media (prefers-reduced-motion:reduce){
+  html.am-mobile .am-bar.tuck{ transition:none; }
+  html.am-mobile .grade-card:active{ transform:none; }
+}

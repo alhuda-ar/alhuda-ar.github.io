@@ -301,6 +301,26 @@
   }
 
   /* ------------------------------------------------------------------ */
+  /*  راحة الاستخدام: الشريط يتخبّى مع النزول، واهتزاز خفيف للأزرار        */
+  /* ------------------------------------------------------------------ */
+  function setupComfort(){
+    var tucked = false;
+    function set(v){ if(!bar || v === tucked) return; tucked = v; bar.classList.toggle('tuck', v); }
+    D.addEventListener('scroll', function(e){
+      var t = e.target, doc = (t === D || t === D.documentElement || t === D.body);
+      var y = doc ? (window.pageYOffset || 0) : t.scrollTop;
+      if(typeof y !== 'number') return;
+      var dy = y - (t.__amY || 0); t.__amY = y;
+      var atEnd = doc ? (y + window.innerHeight >= D.documentElement.scrollHeight - 6) : (y + t.clientHeight >= t.scrollHeight - 6);
+      if(y < 40 || dy < -6 || atEnd) set(false); else if(dy > 10 && !kbOpen) set(true);
+    }, { capture: true, passive: true });
+    window.addEventListener('popstate', function(){ set(false); });
+    D.addEventListener('click', function(e){
+      if(navigator.vibrate && e.target.closest && e.target.closest('.btn-primary,.btn-light,.btn-ghost,.btn-outline-light,.grade-btn,.dp-link,.opt,.grade-card')) try{ navigator.vibrate(6); }catch(x){}
+    }, true);
+  }
+
+  /* ------------------------------------------------------------------ */
   /*  تشغيل                                                              */
   /* ------------------------------------------------------------------ */
   buildSplash();
@@ -308,7 +328,7 @@
   function init(){
     buildOff(); setupNet();
     if(MOBILE){
-      buildBar(); buildYt(); setupBack(); setupStatusBar();
+      buildBar(); buildYt(); setupBack(); setupStatusBar(); setupComfort();
       D.addEventListener('focusin', function(e){ if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)){ kbOpen = true; sync(); } });
       D.addEventListener('focusout', function(){ setTimeout(function(){ var a = D.activeElement; kbOpen = !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)); sync(); }, 80); });
       new MutationObserver(sync).observe(D.body, { subtree: true, attributes: true, attributeFilter: ['hidden', 'class'] });
@@ -321,3 +341,4 @@
   }
   if(D.readyState === 'loading') D.addEventListener('DOMContentLoaded', init); else init();
 })();
+
