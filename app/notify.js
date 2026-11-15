@@ -7,11 +7,13 @@
    ===================================================================== */
 import { getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, addDoc, deleteDoc, query, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, addDoc, deleteDoc, query, where, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ★ بعد ما ترفع الـ Worker على Cloudflare حط رابطه هنا (من غير / في الآخر) ★
    مثال: 'https://alhuda-push.YOURNAME.workers.dev'                                   */
 const PUSH_URL = 'https://alhuda-push.016nooralhuda.workers.dev/';
+/* توبيك FCM للزوار غير المسجّلين (بيوصله الإشعارات العادية "رسالة" الموجهة للكل بس) */
+const GUEST_TOPIC = 'guests';
 
 const app = getApp(), A = getAuth(app), D = getFirestore(app);
 const $ = s => document.querySelector(s);
@@ -140,11 +142,11 @@ css.textContent = `
 document.head.appendChild(css);
 
 /* ------------------------------------------------------------ الحالة */
-let me = null, myGrade = null, items = [], seenKey = '', firstSnap = true, unsub = null, panelOpen = false, openSeen = 0;
+let me = null, myGrade = null, items = [], seenKey = '', firstSnap = true, unsub = null, panelOpen = false, openSeen = 0, authReady = false, lg = 0;
 const shown = new Set();
 const seenAt = () => Number(localStorage.getItem(seenKey) || 0);
 const atMs = d => d && d.at && typeof d.at.toMillis === 'function' ? d.at.toMillis() : 0;
-const mine = d => isAdminNow() || !myGrade || d.target === 'all' || d.target === myGrade;
+const mine = d => me ? (isAdminNow() || !myGrade || d.target === 'all' || d.target === myGrade) : (d.type === 'msg' && d.target === 'all');
 
 function ago(ms){
   const s = Math.max(0, (Date.now() - ms) / 1000);
@@ -182,9 +184,9 @@ function mountBells(){
   document.querySelectorAll('.nt-bell').forEach(b => { if(!b._nt){ b._nt = 1; b.addEventListener('click', openPanel); } });
 }
 function paintBadges(ring){
-  const n = unread(), on = !!me;
+  const n = unread();
   document.querySelectorAll('.nt-bell').forEach(b => {
-    b.hidden = !on;
+    b.hidden = false;
     const t = b.querySelector('.nt-b'); if(t){ t.hidden = !n; t.textContent = n > 9 ? N(9) + '+' : N(n); }
     if(ring && n){ b.classList.remove('ring'); void b.offsetWidth; b.classList.add('ring'); }
   });
@@ -254,9 +256,13 @@ function systemNotify(x){
 
 /* ------------------------------------------------------------ Firestore (لحظي) */
 function listen(){
-  if(unsub) unsub(); firstSnap = true;
-  unsub = onSnapshot(query(collection(D, 'notifications'), orderBy('at', 'desc'), limit(40)), snap => {
+  if(unsub){ unsub(); unsub = null; }
+  firstSnap = true;
+  const gen = ++lg, col = collection(D, 'notifications'), guest = !me;
+  const handler = sorted => snap => {
+    if(gen !== lg) return;
     items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if(!sorted) items = items.sort((a, b) => atMs(b) - atMs(a)).slice(0, 40);
     if(!firstSnap){
       snap.docChanges().forEach(ch => {
         if(ch.type !== 'added') return;
@@ -267,7 +273,20 @@ function listen(){
     }
     firstSnap = false;
     paintBadges(); if(panelOpen) paintList(); if(adVisible()) histPaint();
-  }, err => console.warn('notifications listener', err && err.code));
+  };
+  /* الزائر غير المسجّل: لازم الـ query يطابق شروط قواعد Firestore (رسالة + للكل) وإلا بيترفض.
+     الترتيب بالتاريخ محتاج index مركّب؛ لو لسه مش متعمل بنرجع لترتيب محلي لحد ما تعمله. */
+  const start = sorted => {
+    const q = !guest ? query(col, orderBy('at', 'desc'), limit(40))
+      : sorted ? query(col, where('type', '==', 'msg'), where('target', '==', 'all'), orderBy('at', 'desc'), limit(40))
+               : query(col, where('type', '==', 'msg'), where('target', '==', 'all'));
+    unsub = onSnapshot(q, handler(!guest || sorted), err => {
+      if(gen !== lg) return;
+      if(guest && sorted && err && err.code === 'failed-precondition'){ console.warn('notifications: اعمل index مركّب (type, target, at) من اللينك اللي في الخطأ', err.message); firstSnap = true; start(false); return; }
+      console.warn('notifications listener', err && err.code);
+    });
+  };
+  start(true);
 }
 
 /* ------------------------------------------------------------ Push (أندرويد) */
@@ -291,19 +310,24 @@ async function pushSetup(){
 }
 async function pushRegister(){
   const fm = FM(); if(!fm || !(await pushSetup())) return;
+  const u = me;
   try{
-    const p = await fm.requestPermissions(); if(p.receive !== 'granted') return;
+    const p = await fm.requestPermissions(); if(p.receive !== 'granted' || u !== me) return;
+    const old = localStorage.getItem('alhuda_push_topic') || '';
+    if(!u){
+      /* زائر غير مسجّل: توبيك الإشعارات العامة بس (مش الدروس والامتحانات) */
+      try{ await fm.unsubscribeFromTopic({ topic: 'all' }); }catch(e){}
+      if(old){ try{ await fm.unsubscribeFromTopic({ topic: old }); }catch(e){} localStorage.removeItem('alhuda_push_topic'); }
+      await fm.subscribeToTopic({ topic: GUEST_TOPIC });
+      return;
+    }
+    try{ await fm.unsubscribeFromTopic({ topic: GUEST_TOPIC }); }catch(e){}
     await fm.subscribeToTopic({ topic: 'all' });
-    const want = myGrade ? 'grade_' + myGrade : '', old = localStorage.getItem('alhuda_push_topic') || '';
+    const want = myGrade ? 'grade_' + myGrade : '';
     if(old && old !== want) try{ await fm.unsubscribeFromTopic({ topic: old }); }catch(e){}
     if(want){ await fm.subscribeToTopic({ topic: want }); localStorage.setItem('alhuda_push_topic', want); }
     else localStorage.removeItem('alhuda_push_topic');
   }catch(e){ console.warn('push register', e); }
-}
-async function pushUnregister(){
-  const fm = FM(), old = localStorage.getItem('alhuda_push_topic');
-  if(!fm || !old) return;
-  try{ await fm.unsubscribeFromTopic({ topic: old }); localStorage.removeItem('alhuda_push_topic'); }catch(e){}
 }
 
 /* ------------------------------------------------------------ لوحة التحكم: تبويب الإشعارات */
@@ -399,18 +423,24 @@ function adInit(){
 
 /* ------------------------------------------------------------ تشغيل */
 mountPanel(); adInit();
-window.addEventListener('alhuda:app-ready', () => { if(me) pushRegister(); });
+window.addEventListener('alhuda:app-ready', () => { if(authReady) pushRegister(); });
 const mo = new MutationObserver(() => mountBells());
 mo.observe(document.body, { childList: true, subtree: true });
 mountBells();
 
 onAuthStateChanged(A, async u => {
-  me = u; items = []; paintBadges(); if(unsub){ unsub(); unsub = null; }
-  if(!u){ myGrade = null; seenKey = ''; closePanel(); pushUnregister(); return; }
+  me = u; authReady = true; items = []; paintBadges(); if(unsub){ unsub(); unsub = null; }
+  if(!u){
+    /* زائر غير مسجّل: يشوف الإشعارات العادية (رسالة + للكل) بس */
+    myGrade = null; closePanel();
+    seenKey = 'alhuda_n_seen_guest';
+    if(!localStorage.getItem(seenKey)) localStorage.setItem(seenKey, String(Date.now()));
+    listen(); mountBells(); paintBadges(); pushRegister();
+    return;
+  }
   seenKey = 'alhuda_n_seen_' + u.uid;
   if(!localStorage.getItem(seenKey)) localStorage.setItem(seenKey, String(Date.now()));   // أول مرة: ماتعتبرش القديم "جديد"
   try{ const s = await getDoc(doc(D, 'users', u.uid)); myGrade = s.exists() ? (GKEY[s.data().grade] || null) : null; }catch(e){ myGrade = null; }
   listen(); mountBells(); paintBadges();
   if(!isAdminNow()) pushRegister();
 });
-
