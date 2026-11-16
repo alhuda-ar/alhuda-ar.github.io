@@ -113,7 +113,7 @@
     { k: 'youtube', t: 'اليوتيوب' }
   ];
 
-  var bar, bub, active = null, ytOpen = false, kbOpen = false, yt;
+  var bar, bub, active = null, ytOpen = false, kbOpen = false, yt, layer = null, want = null, keepLy = false, LY = {};
 
   function buildBar(){
     if(!MOBILE) return;
@@ -160,6 +160,7 @@
     var blockers = ['adminPage', 'authPage', 'buyPage', 'walletPage', 'secPage', 'xo'];
     for(var i = 0; i < blockers.length; i++) if(vis(blockers[i])) return null;
     var cm = D.getElementById('courseModal'); if(cm && cm.classList.contains('open')) return null;
+    if(layer) return layer === 'gp' ? 'profile' : 'videos';
     if(vis('dashPage')) return /\/studentprofile\/videos/.test(location.pathname) ? 'videos' : 'profile';
     return 'home';
   }
@@ -169,7 +170,9 @@
     if(!bar || pend) return; pend = true;
     requestAnimationFrame(function(){
       pend = false;
+      if(layer && isIn()) closeLayer(true);
       var st = currentState();
+      if(want){ if(st === want.k || Date.now() > want.t) want = null; else if(st) st = want.k; }
       var hide = !st || kbOpen;
       bar.classList.toggle('hide', hide);
       D.body.classList.toggle('am-nobar', hide);
@@ -179,16 +182,98 @@
 
   function onTap(k){
     if(navigator.vibrate) try{ navigator.vibrate(9); }catch(e){}
-    if(k === 'youtube'){ openYt(); setActive('youtube'); return; }
+    want = null;
+    if(k === 'youtube'){ closeLayer(true); openYt(); setActive('youtube'); return; }
     closeYt(true);
     setActive(k);
     if(k === 'home'){
+      closeLayer(true);
       var atHome = location.pathname === '/' && !vis('dashPage');
       navigate('/');
       if(atHome) window.scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' });
-    }else if(k === 'profile') navigate('/studentprofile/');
-    else if(k === 'videos') navigate('/studentprofile/videos/');
+    }else if(!isIn()){
+      openLayer(k === 'profile' ? 'gp' : 'gv');
+    }else{
+      closeLayer(true); goTab(k);
+    }
     setTimeout(sync, 250);
+  }
+
+  /* فتح تبويب الطالب مباشرة (من غير ما نقفل الصفحة ونرجع للرئيسية الأول) */
+  function goTab(k){
+    var path = k === 'profile' ? '/studentprofile/' : '/studentprofile/videos/';
+    want = { k: k, t: Date.now() + 4000 };
+    if(location.pathname !== path) history.pushState(null, '', path);
+    var HK = window.__authHooks;
+    if(HK && typeof parseRoute === 'function'){ if(typeof syncMeta === 'function') syncMeta(); HK.apply(parseRoute(path)); }
+    else navigate(path);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /*  شاشات الزائر (بروفايل + فيديوهات)                                  */
+  /* ------------------------------------------------------------------ */
+  var GNM = { prep1: '01', prep2: '02', prep3: '03', sec1: '04', sec2: '05' };
+  function isIn(){ var b = D.getElementById('authBtn'); return !!(b && b.classList.contains('in')); }
+  function ico(p){ return '<svg viewBox="0 0 24 24">' + p + '</svg>'; }
+  function buildLayers(){
+    var rows = [
+      ['<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9.5 4.5 2.5-4.5 2.5z"/>', 'فيديوهات ومذكرات صفك', 'شروحات الدروس وملفات PDF متقسمة حسب صفك الدراسي.'],
+      ['<path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z"/><rect x="5" y="6" width="14" height="15" rx="2.5"/><path d="m9 14 2 2 4-4.5"/>', 'امتحانات أونلاين', 'اختبر نفسك واعرف نتيجتك ومحاولاتك أول بأول.'],
+      ['<path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9L3.5 9.7l5.9-.8z"/>', 'كورسات مميزة ومصروفاتك', 'اشترك في الباقات وتابع مدفوعاتك من مكان واحد.'],
+      ['<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/>', 'جدول الحصص والتنبيهات', 'مواعيد حصصك وإشعار بكل درس أو امتحان جديد.']
+    ];
+    var gp = el('div', 'am-ly'); gp.id = 'amGp'; gp.setAttribute('role', 'dialog'); gp.setAttribute('aria-label', 'بروفايلي');
+    gp.innerHTML =
+      '<div class="am-ly-in">' +
+        '<div class="am-gp-hero"><div class="am-gp-orb">' + ico('<circle cx="12" cy="8" r="3.8"/><path d="M4.5 20c.7-4 3.7-6 7.5-6s6.8 2 7.5 6"/>') + '</div>' +
+        '<h2>بروفايلك مستنيك</h2><p>سجّل دخولك وكمّل مذاكرتك من حيث وقفت، وكل حاجة خاصة بصفك في مكان واحد.</p></div>' +
+        '<div class="am-gp-list">' + rows.map(function(r){ return '<div class="am-gp-it"><div class="ci">' + ico(r[0]) + '</div><div><b>' + r[1] + '</b><small>' + r[2] + '</small></div></div>'; }).join('') + '</div>' +
+        '<div class="am-gp-cta"><button type="button" class="am-gp-btn" id="amGpLogin">تسجيل الدخول</button></div>' +
+        '<button type="button" class="am-gp-link" id="amGpSign">معندكش حساب؟ <b>أنشئ حساب جديد</b></button>' +
+        '<p class="am-gp-note">الحساب الجديد بيتراجع الأول وبعدها بيتفعّل.</p>' +
+      '</div>';
+    var gv = el('div', 'am-ly'); gv.id = 'amGv'; gv.setAttribute('role', 'dialog'); gv.setAttribute('aria-label', 'الفيديوهات');
+    gv.innerHTML = '<div class="am-ly-in wrap" id="amGvBody"></div>';
+    D.body.appendChild(gp); D.body.appendChild(gv); LY.gp = gp; LY.gv = gv;
+    function toAuth(p){ closeLayer(true); navigate(p); }
+    gp.querySelector('#amGpLogin').addEventListener('click', function(){ toAuth('/login/'); });
+    gp.querySelector('#amGpSign').addEventListener('click', function(){ toAuth('/signup/'); });
+    gv.addEventListener('click', function(e){
+      var c = e.target.closest && e.target.closest('.grade-card');
+      if(c && GNM[c.dataset.grade]){ keepLy = true; try{ navigate('/' + GNM[c.dataset.grade] + '/modal/'); }finally{ keepLy = false; } }
+      else if(e.target.closest && e.target.closest('.am-gv-chip')) toAuth('/login/');
+    });
+  }
+  function fillGv(){
+    var body = LY.gv.querySelector('#amGvBody'), src = D.getElementById('programs');
+    if(body.dataset.done || !src) return;
+    var head = src.querySelector('.section-head'), nodes = [].slice.call(src.querySelectorAll('.grades-row'));
+    if(head){
+      var h = head.cloneNode(true); h.classList.remove('section-reveal'); h.classList.add('in-view'); body.appendChild(h);
+      var h2 = h.querySelector('h2'), hp = h.querySelector('p'); if(h2) h2.textContent = 'فيديوهات الصفوف'; if(hp) hp.textContent = 'اختار صفك وشوف فيديوهاته ومذكراته.';
+    }
+    var chip = el('button', 'am-gv-chip', ico('<rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>') + '<span>عندك حساب؟ <b>سجّل دخولك</b> وافتح كل فيديوهات صفك</span>');
+    chip.type = 'button'; body.appendChild(chip);
+    nodes.forEach(function(n){
+      var c = n.cloneNode(true); c.classList.remove('section-reveal'); c.classList.add('in-view');
+      [].forEach.call(c.querySelectorAll('img'), function(i){ i.loading = 'eager'; });
+      body.appendChild(c);
+    });
+    body.dataset.done = '1';
+  }
+  function openLayer(k){
+    if(layer === k) return;
+    closeYt(true);
+    if(k === 'gv') fillGv();
+    if(layer){ LY[layer].classList.remove('open'); history.replaceState({ am: k }, '', location.pathname + location.search); }
+    else history.pushState({ am: k }, '', location.pathname + location.search);
+    layer = k; LY[k].scrollTop = 0; LY[k].classList.add('open'); D.body.classList.add('am-ly-open');
+    sync();
+  }
+  function closeLayer(quiet){
+    if(!layer) return;
+    LY[layer].classList.remove('open'); layer = null; D.body.classList.remove('am-ly-open');
+    if(!quiet) sync();
   }
 
   /* ------------------------------------------------------------------ */
@@ -231,7 +316,11 @@
     ytOpen = false; yt.classList.remove('open');
     if(!silent) sync();
   }
-  window.addEventListener('popstate', function(){ if(ytOpen) closeYt(true); sync(); });
+  window.addEventListener('popstate', function(){
+    if(ytOpen) closeYt(true);
+    if(layer && !keepLy && !(history.state && history.state.am === layer)) closeLayer(true);
+    sync();
+  });
 
   /* ------------------------------------------------------------------ */
   /*  زر الرجوع في أندرويد                                              */
@@ -244,6 +333,7 @@
       var busy = ['adminPage', 'authPage', 'buyPage', 'walletPage', 'secPage', 'xo', 'dashPage'].some(vis);
       var cm = D.getElementById('courseModal'); if(cm && cm.classList.contains('open')) busy = true;
       var np = D.getElementById('nPanel'); if(np && np.classList.contains('open')){ window.dispatchEvent(new CustomEvent('alhuda:close-notifs')); return; }
+      if(layer && !busy){ closeLayer(); history.back(); return; }
       if(busy || location.pathname !== '/'){
         if(ev && ev.canGoBack) history.back(); else navigate('/');
         return;
@@ -328,7 +418,7 @@
   function init(){
     buildOff(); setupNet();
     if(MOBILE){
-      buildBar(); buildYt(); setupBack(); setupStatusBar(); setupComfort();
+      buildBar(); buildYt(); buildLayers(); setupBack(); setupStatusBar(); setupComfort();
       D.addEventListener('focusin', function(e){ if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)){ kbOpen = true; sync(); } });
       D.addEventListener('focusout', function(){ setTimeout(function(){ var a = D.activeElement; kbOpen = !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)); sync(); }, 80); });
       new MutationObserver(sync).observe(D.body, { subtree: true, attributes: true, attributeFilter: ['hidden', 'class'] });
