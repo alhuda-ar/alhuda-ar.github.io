@@ -53,7 +53,8 @@ css.textContent = `
 @keyframes ntRing{ 0%,100%{ transform:rotate(0); } 15%{ transform:rotate(16deg); } 30%{ transform:rotate(-14deg); } 45%{ transform:rotate(10deg); } 60%{ transform:rotate(-8deg); } 75%{ transform:rotate(4deg); } }
 .nt-bell .nt-b{ position:absolute; top:-5px; inset-inline-start:-5px; min-width:19px; height:19px; padding:0 5px; border-radius:99px; background:#ff4a3d; color:#fff; font:800 .68rem/19px 'Tajawal',sans-serif; text-align:center; box-shadow:0 0 0 2px var(--bg-alt,#17302B); }
 .nt-bell .nt-b[hidden]{ display:none; }
-.nt-dbell{ padding:0; width:42px; height:42px; justify-content:center; }
+.nt-dbell{ padding:0; width:42px; height:42px; justify-content:center; left:50% !important; right:auto !important; top:17px !important; margin-left:-21px; }
+@media (max-width:359px){ .nt-dbell{ top:68px !important; } }
 .nt-dbell svg{ width:21px; height:21px; }
 .nt-dbell .nt-b{ position:absolute; top:-5px; inset-inline-start:-5px; min-width:19px; height:19px; padding:0 5px; border-radius:99px; background:#ff4a3d; color:#fff; font:800 .68rem/19px 'Tajawal',sans-serif; text-align:center; }
 .nt-dbell .nt-b[hidden]{ display:none; }
@@ -171,16 +172,7 @@ function mountBells(){
     w.insertAdjacentHTML('afterbegin', bellBtn('ntBellH', 'nt-bell'));
   }
   const out = $('#dpOut');
-  if(out && !$('#ntBellD')){
-    out.insertAdjacentHTML('afterend', bellBtn('ntBellD', 'dp-top nt-dbell nt-bell'));
-    const place = () => {
-      const b = $('#ntBellD'), back = $('#dpBack'); if(!b) return;
-      b.style.top = ''; b.style.left = (18 + out.offsetWidth + 10) + 'px';
-      if(back && out.offsetWidth){ const r = b.getBoundingClientRect(), br = back.getBoundingClientRect(); if(r.right > br.left - 6) { b.style.left = '18px'; b.style.top = '66px'; } }
-    };
-    if('ResizeObserver' in window) new ResizeObserver(place).observe(out);
-    window.addEventListener('resize', place); setTimeout(place, 300);
-  }
+  if(out && !$('#ntBellD')) out.insertAdjacentHTML('afterend', bellBtn('ntBellD', 'dp-top nt-dbell nt-bell'));
   document.querySelectorAll('.nt-bell').forEach(b => { if(!b._nt){ b._nt = 1; b.addEventListener('click', openPanel); } });
 }
 function paintBadges(ring){
