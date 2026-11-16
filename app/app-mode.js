@@ -410,6 +410,13 @@
     }, true);
   }
 
+  /* قسم تحميل التطبيق داخل التطبيقين: عنوان بسيط + الأيقونتين بس */
+  function simplifyDl(){
+    var t = D.querySelector('.ft-dl .dl-title');
+    if(!t) return;
+    [].forEach.call(t.childNodes, function(n){ if(n.nodeType === 3) n.nodeValue = 'تحميل التطبيق'; });
+  }
+
   /* ------------------------------------------------------------------ */
   /*  تشغيل                                                              */
   /* ------------------------------------------------------------------ */
@@ -417,6 +424,7 @@
 
   function init(){
     buildOff(); setupNet();
+    simplifyDl();
     if(MOBILE){
       buildBar(); buildYt(); buildLayers(); setupBack(); setupStatusBar(); setupComfort();
       D.addEventListener('focusin', function(e){ if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)){ kbOpen = true; sync(); } });
@@ -431,4 +439,3 @@
   }
   if(D.readyState === 'loading') D.addEventListener('DOMContentLoaded', init); else init();
 })();
-
